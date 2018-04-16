@@ -3,6 +3,6 @@ const crypto = require("crypto")
   .toString("hex"); // Provides cryptographic functionality (OpenSSL's hash, HMAC, cipher, decipher, sign and verify functions)
 
 module.exports = {
-  database: "mongodb://localhost:27017/proxyauth",
+  database: "mongodb://localhost:27017/react",
   secret: crypto
 };
