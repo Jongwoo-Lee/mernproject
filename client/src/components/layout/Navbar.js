@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { clearCurrentProfile } from "../../actions/profileActions";
+import logo from "../common/fct_logo_small.png";
+import { Image } from "react-bootstrap";
 
 class Navbar extends Component {
   onLogoutClick(e) {
@@ -65,7 +67,12 @@ class Navbar extends Component {
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
           <Link className="navbar-brand" to="/">
-            Outsid
+            <Image
+              className="mb-1"
+              src={logo}
+              style={{ width: 30, height: 30 }}
+            />
+            <b> FC Total</b>
           </Link>
           <button
             className="navbar-toggler"
@@ -102,6 +109,7 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { logoutUser, clearCurrentProfile })(
-  Navbar
-);
+export default connect(
+  mapStateToProps,
+  { logoutUser, clearCurrentProfile }
+)(Navbar);
