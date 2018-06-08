@@ -72,7 +72,7 @@ class Navbar extends Component {
               src={logo}
               style={{ width: 30, height: 30 }}
             />
-            <b> FC Total</b>
+            <b> FC 토탈</b>
           </Link>
           <button
             className="navbar-toggler"

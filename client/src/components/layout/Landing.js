@@ -13,6 +13,14 @@ class Landing extends Component {
     }
   }
 
+  success(response) {
+    console.log(response);
+  }
+
+  failure(error) {
+    console.log(error);
+  }
+
   render() {
     return (
       <div className="landing">
@@ -25,8 +33,11 @@ class Landing extends Component {
                 <h1 className="display-3 mb-4">FC Total</h1>
                 <p className="lead">
                   {" "}
+                  일리노이 어바나 섐페인 한인 축구팀 커뮤니티 사이트
+                  <br />
                   The Community Website of University of Illinois at Urbana
-                  Champaign Korean Football Club. <br /> Since 2007
+                  Champaign Korean Football Club
+                  <br /> Since 2007.
                 </p>
                 <hr />
                 <Link to="/register" className="btn btn-lg btn-success mr-2">
@@ -35,6 +46,7 @@ class Landing extends Component {
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
+                <hr />
               </div>
             </div>
           </div>
