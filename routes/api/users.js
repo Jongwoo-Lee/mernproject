@@ -102,17 +102,6 @@ router.post("/login", (req, res) => {
   });
 });
 
-// kakao 로그인
-router.get("/login/kakao", passport.authenticate("kakao"));
-// kakao 로그인 연동 콜백
-router.get(
-  "/login/kakao/callback",
-  passport.authenticate("kakao", {
-    successRedirect: "/",
-    failureRedirect: "/login"
-  })
-);
-
 // @route   POST api/users/current
 // @desc    Return current user
 // @access  Private
