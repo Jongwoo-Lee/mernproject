@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import logo from "../common/fct_logo_small.png";
+import kakaoBtn from "../common/kakao_btn.png";
 import { Image } from "react-bootstrap";
 // import LandingButtons from "./LandingButtons";
 
@@ -40,13 +41,16 @@ class Landing extends Component {
                   <br /> Since 2007.
                 </p>
                 <hr />
-                <Link to="/register" className="btn btn-lg btn-success mr-2">
+                <Link to="/register" className="btn btn-lg btn-success mr-3">
                   Sign Up
                 </Link>
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
-                <hr />
+                <br />
+                <a href="http://localhost:5000/auth/kakao" className="btn">
+                  <img src={kakaoBtn} alt={"kakao_login"} />
+                </a>
               </div>
             </div>
           </div>

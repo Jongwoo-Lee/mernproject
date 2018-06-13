@@ -26,6 +26,8 @@ import NotFound from "./components/not-found/NotFound";
 import Posts from "./components/posts/Posts";
 import Post from "./components/post/Post";
 import Field from "./components/field/Field";
+import Kakao from "./components/auth/Kakao";
+import Notices from "./components/posts/Notices";
 
 import "./App.css";
 
@@ -61,8 +63,9 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/profiles" component={Profiles} />
+              <Route exact path="/notice" component={Notices} />
               <Route exact path="/profile/:handle" component={Profile} />
+              <Route exact path="/kakao/:token" component={Kakao} />
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
               </Switch>
