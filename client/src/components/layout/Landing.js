@@ -31,14 +31,16 @@ class Landing extends Component {
               <div className="col-md-12 text-center">
                 <Image src={logo} style={{ width: 250, height: 250 }} />
                 <hr />
-                <h1 className="display-3 mb-4">FC Total</h1>
+                <h1 className="display-2 mb-4">
+                  <b>FC Total</b>
+                </h1>
                 <p className="lead">
                   {" "}
-                  일리노이 어바나 섐페인 한인 축구팀 커뮤니티 사이트
+                  서울 송파구 KFA Division 6 아마추어 축구팀 커뮤니티 사이트
                   <br />
-                  The Community Website of University of Illinois at Urbana
-                  Champaign Korean Football Club
-                  <br /> Since 2007.
+                  The Community Site of KFA Division 6 Amateur Football Team in
+                  Songpa-gu, Seoul
+                  <br />Since 2007, UIUC.
                 </p>
                 <hr />
                 <Link to="/register" className="btn btn-lg btn-success mr-3">

@@ -2,12 +2,29 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 
 const users = require("./routes/api/users");
 const posts = require("./routes/api/posts");
 const profile = require("./routes/api/profile");
 
 const app = express();
+
+// CORS Middleware
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH"
+  );
+  res.header("Access-Control-Max-Age", "86400");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Access-Control-Request-Method, Access-Control-Request-Headers"
+  );
+  next();
+});
 
 // Passport Config
 const passport = require("passport");
