@@ -7,21 +7,33 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  username: {
+    type: String,
+    lowercase: true,
+    required: true
+    //unique: true
+  },
   password: {
     type: String,
-    required: true
+    required: true,
+    default: "kakaoTotalGoovoo"
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true
   },
-  avatar: {
+  profile_image: {
+    type: String
+  },
+  thumbnail_image: {
     type: String
   },
   date: {
     type: String,
     default: Date.now
-  }
+  },
+  active: { type: Boolean, required: true, default: false }
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

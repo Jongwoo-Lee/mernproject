@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import logo from "../common/fct_logo_small.png";
+import kakaoBtn from "../common/kakao_btn.png";
 import { Image } from "react-bootstrap";
 // import LandingButtons from "./LandingButtons";
 
@@ -11,6 +12,14 @@ class Landing extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
+  }
+
+  success(response) {
+    console.log(response);
+  }
+
+  failure(error) {
+    console.log(error);
   }
 
   render() {
@@ -25,16 +34,23 @@ class Landing extends Component {
                 <h1 className="display-3 mb-4">FC Total</h1>
                 <p className="lead">
                   {" "}
+                  일리노이 어바나 섐페인 한인 축구팀 커뮤니티 사이트
+                  <br />
                   The Community Website of University of Illinois at Urbana
-                  Champaign Korean Football Club. <br /> Since 2007
+                  Champaign Korean Football Club
+                  <br /> Since 2007.
                 </p>
                 <hr />
-                <Link to="/register" className="btn btn-lg btn-success mr-2">
+                <Link to="/register" className="btn btn-lg btn-success mr-3">
                   Sign Up
                 </Link>
                 <Link to="/login" className="btn btn-lg btn-light">
                   Login
                 </Link>
+                <br />
+                <a href="http://localhost:5000/auth/kakao" className="btn">
+                  <img src={kakaoBtn} alt={"kakao_login"} />
+                </a>
               </div>
             </div>
           </div>

@@ -37,7 +37,7 @@ class Navbar extends Component {
           >
             <img
               className="rounded-circle"
-              src={user.avatar}
+              src={user.thumbnail_image}
               alt={user.name}
               style={{ width: "25px", marginRight: "5px" }}
               title="You must have a Gravatar connected to your email to display an image"
@@ -72,7 +72,7 @@ class Navbar extends Component {
               src={logo}
               style={{ width: 30, height: 30 }}
             />
-            <b> FC Total</b>
+            <b> FC 토탈</b>
           </Link>
           <button
             className="navbar-toggler"
@@ -86,9 +86,9 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/profiles">
+                <Link className="nav-link" to="/notice">
                   {" "}
-                  Developers
+                  공지사항
                 </Link>
               </li>
             </ul>
