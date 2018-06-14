@@ -1,23 +1,18 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { setCurrentUser } from "../../actions/authActions";
-import jwt_decode from "jwt-decode";
-import setAuthToken from "../../utils/setAuthToken";
+import { loginKakaoUser } from "../../actions/authActions";
 
 class Kakao extends Component {
   componentWillMount() {
-    if (this.props.match.params.token) {
-      // Save to localStorage
-      const { token } = this.props.match.params;
-      // Set token to localStorage
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      // Set current user
-      this.props.setCurrentUser(decoded);
+    if (this.props.match.params.code && !this.props.auth.isAuthenticated) {
+      console.log(this.props.match.params.code);
+      this.props.loginKakaoUser({
+        code: this.props.match.params.code,
+        grant_type: "authorization_code",
+        client_id: "33bdb5c8abf403a5a232ef10aa74c722",
+        redirect_uri: "http://localhost:5000/auth/kakao/callback"
+      });
 
       this.props.history.push("/feed");
     } else {
@@ -31,7 +26,7 @@ class Kakao extends Component {
 }
 
 Kakao.propTypes = {
-  setCurrentUser: PropTypes.func.isRequired,
+  loginKakaoUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -41,5 +36,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setCurrentUser }
+  { loginKakaoUser }
 )(Kakao);

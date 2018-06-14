@@ -14,12 +14,7 @@ import {
 export const addPost = postData => dispatch => {
   dispatch(clearErrors());
   axios
-    .post("/api/posts", postData, {
-      headers: {
-        Origin: "http://localhost:3000"
-        //"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-      }
-    })
+    .post("/api/posts", postData)
     .then(res =>
       dispatch({
         type: ADD_POST,
