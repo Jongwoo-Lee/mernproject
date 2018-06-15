@@ -71,11 +71,13 @@ module.exports = (app, passport) => {
   passport.use(
     new KakaoStrategy(
       {
-        clientID: "e031a2bf8391480b2bcacd962d177b9e",
+        clientID: "33bdb5c8abf403a5a232ef10aa74c722",
         callbackURL: "/auth/kakao/callback"
       },
       (accessToken, refreshToken, profile, done) => {
         var _profile = profile._json;
+        console.log(accessToken);
+        console.log(refreshToken);
         User.findOne({ email: _profile.id })
           .select(
             "username active passport email name profile_image thumbnail_image"
@@ -85,6 +87,7 @@ module.exports = (app, passport) => {
 
             // empty or undefined user
             if (user && user != null) {
+              console.log(user);
               done(null, user);
             } else {
               const newUser = new User({
@@ -109,12 +112,12 @@ module.exports = (app, passport) => {
   // kakao 로그인 연동 콜백
   app.get(
     "/auth/kakao/callback",
-    passport.authenticate("kakao", {
-      //successRedirect: `/kakao/${token}`,
-      failureRedirect: "/login"
-    }),
+    // passport.authenticate("kakao", {
+    //   //successRedirect: `/kakao/${token}`,
+    //   failureRedirect: "/login"
+    // }),
     (req, res) => {
-      res.redirect(`/kakao/${token}`);
+      res.redirect(`/kakao/${req.query.code}`);
     }
   );
 
