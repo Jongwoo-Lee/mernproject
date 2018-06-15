@@ -48,7 +48,7 @@ class Landing extends Component {
                   Login
                 </Link>
                 <br />
-                <a href="http://localhost:5000/auth/kakao" className="btn">
+                <a href="/auth/kakao" className="btn">
                   <img src={kakaoBtn} alt={"kakao_login"} />
                 </a>
               </div>
