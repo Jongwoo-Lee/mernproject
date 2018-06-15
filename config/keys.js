@@ -4,5 +4,6 @@ const crypto = require("crypto")
 
 module.exports = {
   database: "mongodb://localhost:27017/react",
-  secret: "crypto"
+  secret: "crypto",
+  password: "1kakao@Total3Goovoo$"
 };

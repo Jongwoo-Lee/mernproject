@@ -51,15 +51,13 @@ export const loginKakaoUser = userData => dispatch => {
     .then(res => {
       // Save to localStorage
       console.log(res.data);
-      const { token } = res.data;
+      const token = `Bearer ${res.data.access_token}`;
       // Set token to localStorage
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      // Set current user
-      dispatch(setCurrentUser(decoded));
+      localStorage.setItem("kakaoToken", token);
+      // // Decode token to get user data
+      // const decoded = jwt_decode(access_token);
+      // // Set current user
+      // dispatch(setCurrentUser(decoded));
     })
     .catch(err =>
       dispatch({

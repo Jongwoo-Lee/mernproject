@@ -6,6 +6,7 @@ const User = mongoose.model("users");
 const keys = require("../config/keys");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -24,15 +25,11 @@ module.exports = (app, passport) => {
   );
 
   passport.serializeUser((user, done) => {
-    // Google, Facebook, Twitter login also needs to check the active field
     if (user.active) {
       token = jwt.sign(
         {
           username: user.username,
-          email: user.email,
-          name: user.name,
-          thumbnail_image: user.thumbnail_image,
-          profile_image: user.profile_image
+          email: user.email
         },
         keys.secret,
         {
@@ -76,9 +73,7 @@ module.exports = (app, passport) => {
       },
       (accessToken, refreshToken, profile, done) => {
         var _profile = profile._json;
-        console.log(accessToken);
-        console.log(refreshToken);
-        User.findOne({ email: _profile.id })
+        User.findOne({ email: `${_profile.id}@fctotal.com` })
           .select(
             "username active passport email name profile_image thumbnail_image"
           )
@@ -90,17 +85,27 @@ module.exports = (app, passport) => {
               console.log(user);
               done(null, user);
             } else {
-              const newUser = new User({
-                name: _profile.properties.nickname,
-                username: _profile.id,
-                email: _profile.id,
-                profile_image: _profile.properties.profile_image,
-                thumbnail_image: _profile.properties.thumbnail_image
-              });
-              newUser
-                .save()
-                .then(user => done(null, user))
-                .catch(err => done(err));
+              if (_profile && _profile.properties) {
+                const newUser = new User({
+                  name: _profile.properties.nickname,
+                  username: _profile.id,
+                  email: `${_profile.id}@fctotal.com`,
+                  profile_image: _profile.properties.profile_image,
+                  thumbnail_image: _profile.properties.thumbnail_image,
+                  password: keys.password
+                });
+                bcrypt.genSalt(10, (err, salt) => {
+                  bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser
+                      .save()
+                      .then(user => done(null, user))
+                      .catch(rr => done(err));
+                  });
+                });
+              }
+              done(null, false);
             }
           });
       }
@@ -112,14 +117,12 @@ module.exports = (app, passport) => {
   // kakao 로그인 연동 콜백
   app.get(
     "/auth/kakao/callback",
-    // passport.authenticate("kakao", {
-    //   //successRedirect: `/kakao/${token}`,
-    //   failureRedirect: "/login"
-    // }),
+    passport.authenticate("kakao", {
+      failureRedirect: "http://localhost:3000/login"
+    }),
     (req, res) => {
-      res.redirect(`http://localhost:3000/kakao/${req.query.code}`);
+      res.redirect(`http://localhost:3000/kakao/${token}`);
     }
   );
-
   return passport;
 };
