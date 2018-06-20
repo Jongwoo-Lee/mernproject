@@ -5,17 +5,11 @@ import { loginUser } from "../../actions/authActions";
 import jwt_decode from "jwt-decode";
 
 class Kakao extends Component {
-  constructor() {
-    super();
-    this.state.active = {};
-  }
   componentWillMount() {
     if (this.props.match.params.token && !this.props.auth.isAuthenticated) {
       const { token } = this.props.match.params;
-      console.log(token);
 
       if (token === "inactive") {
-        this.setState({ active: false });
       } else {
         const user = jwt_decode(token);
         user.password = "1kakao@Total3Goovoo$";
@@ -40,13 +34,16 @@ class Kakao extends Component {
 
   render() {
     let postContent;
-    if (this.state.active) {
+    if (this.props.auth.user.active) {
       postContent = null;
     } else {
       postContent = (
         <div>
           {" "}
-          <span>정무형 연락</span>{" "}
+          <span>
+            계정이 아직 활성화가 되어있지 않습니다. 정무형이나 FC토탈 카톡
+            단체방에 연락바랍니다.
+          </span>{" "}
         </div>
       );
     }

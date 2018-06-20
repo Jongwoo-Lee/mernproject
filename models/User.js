@@ -31,7 +31,16 @@ const UserSchema = new Schema({
     type: String,
     default: Date.now
   },
-  active: { type: Boolean, required: true, default: false }
+  active: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
+  admin: {
+    type: Boolean,
+    required: true,
+    default: false
+  }
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

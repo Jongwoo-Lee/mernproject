@@ -40,7 +40,7 @@ module.exports = (app, passport) => {
     // The else part is not considered as an error in Passportjs. So add error msg to token
     // ex) for facebook, it will redirect to '/facebook/inactive/error'
     else {
-      token = "inactive/error";
+      token = "inactive";
     }
 
     done(null, user.id);
