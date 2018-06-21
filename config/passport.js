@@ -68,7 +68,7 @@ module.exports = (app, passport) => {
   passport.use(
     new KakaoStrategy(
       {
-        clientID: "33bdb5c8abf403a5a232ef10aa74c722",
+        clientID: "e031a2bf8391480b2bcacd962d177b9e",
         callbackURL: "/auth/kakao/callback"
       },
       (accessToken, refreshToken, profile, done) => {
