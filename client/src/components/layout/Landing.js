@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import logo from "../common/fct_logo_small.png";
-import kakaoBtn from "../common/kakao_btn.png";
+import logo from "../common/images/fct_logo_small.png";
+import kakaoBtn from "../common/images/kakao_btn.png";
 import { Image } from "react-bootstrap";
 // import LandingButtons from "./LandingButtons";
 

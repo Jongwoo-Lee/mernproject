@@ -1,32 +1,59 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { loginKakaoUser } from "../../actions/authActions";
+import { loginUser } from "../../actions/authActions";
+import jwt_decode from "jwt-decode";
 
 class Kakao extends Component {
   componentWillMount() {
-    if (this.props.match.params.code && !this.props.auth.isAuthenticated) {
-      console.log(this.props.match.params.code);
-      this.props.loginKakaoUser({
-        code: this.props.match.params.code,
-        grant_type: "authorization_code",
-        client_id: "33bdb5c8abf403a5a232ef10aa74c722",
-        redirect_uri: "http://localhost:5000/auth/kakao/callback"
-      });
+    if (this.props.match.params.token && !this.props.auth.isAuthenticated) {
+      const { token } = this.props.match.params;
 
-      this.props.history.push("/feed");
+      if (token === "inactive") {
+      } else {
+        const user = jwt_decode(token);
+        user.password = "1kakao@Total3Goovoo$";
+
+        this.props.loginUser(user);
+      }
     } else {
       this.props.history.push("/");
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If some logged in user tries to get into login page, redirect to dashboard
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   render() {
-    return null;
+    let postContent;
+    if (this.props.auth.user.active) {
+      postContent = null;
+    } else {
+      postContent = (
+        <div>
+          {" "}
+          <span>
+            계정이 아직 활성화가 되어있지 않습니다. 정무형이나 FC토탈 카톡
+            단체방에 연락바랍니다.
+          </span>{" "}
+        </div>
+      );
+    }
+
+    return <div>{postContent}</div>;
   }
 }
 
 Kakao.propTypes = {
-  loginKakaoUser: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -36,5 +63,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginKakaoUser }
+  { loginUser }
 )(Kakao);
+
+// this.props.loginKakaoUser({
+//   code: this.props.match.params.code,
+//   grant_type: "authorization_code",
+//   client_id: "33bdb5c8abf403a5a232ef10aa74c722",
+//   redirect_uri: "http://localhost:5000/auth/kakao/callback"
+// });

@@ -13,7 +13,13 @@ class Notices extends Component {
 
   render() {
     const { posts, loading } = this.props.post;
-    let postContent;
+    let postSubmitform, postContent;
+
+    if (this.props.auth.user.admin) {
+      postSubmitform = <PostForm />;
+    } else {
+      postSubmitform = null;
+    }
 
     if (posts === null || loading) {
       postContent = <Spinner />;
@@ -26,7 +32,7 @@ class Notices extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <PostForm />
+              {postSubmitform}
               {postContent}
             </div>
           </div>
@@ -38,10 +44,12 @@ class Notices extends Component {
 
 Notices.propTypes = {
   getPosts: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   post: state.post
 });
 
