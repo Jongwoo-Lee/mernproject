@@ -28,6 +28,7 @@ import Post from "./components/post/Post";
 import Field from "./components/field/Field";
 import Kakao from "./components/auth/Kakao";
 import Notices from "./components/posts/Notices";
+import Rules from "./components/rules/Rules";
 
 import "./App.css";
 
@@ -66,6 +67,9 @@ class App extends Component {
               <Route exact path="/notice" component={Notices} />
               <Route exact path="/profile/:handle" component={Profile} />
               <Route exact path="/kakao/:token" component={Kakao} />
+              <Switch>
+                <PrivateRoute exact path="/rules" component={Rules} />
+              </Switch>
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
               </Switch>

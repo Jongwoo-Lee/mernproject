@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { clearCurrentProfile } from "../../actions/profileActions";
-import logo from "../common/fct_logo_small.png";
+import logo from "../common/images/fct_logo_small.png";
 import { Image } from "react-bootstrap";
 
 class Navbar extends Component {
@@ -21,12 +21,27 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/feed">
-            Post Feed
+            댓글게시판
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/public">
+            공개자료실
           </Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="/dashboard">
-            Dashboard
+            회원자료실
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/schedule">
+            스케쥴
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/results">
+            경기결과
           </Link>
         </li>
         <li className="nav-item">
@@ -64,7 +79,7 @@ class Navbar extends Component {
     );
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div className="container">
           <Link className="navbar-brand" to="/">
             <Image
@@ -89,6 +104,18 @@ class Navbar extends Component {
                 <Link className="nav-link" to="/notice">
                   {" "}
                   공지사항
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/rules">
+                  {" "}
+                  규칙
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/members">
+                  {" "}
+                  멤버
                 </Link>
               </li>
             </ul>
