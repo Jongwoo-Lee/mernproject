@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import PostForm from "./PostForm";
-import PostFeed from "./PostFeed";
+import NoticeForm from "./NoticeForm";
+import NoticeFeed from "./NoticeFeed";
 import Spinner from "../common/spinner";
 import { getPosts } from "../../actions/postActions";
 
@@ -16,7 +16,7 @@ class Notices extends Component {
     let postSubmitform, postContent;
 
     if (this.props.auth.user.admin) {
-      postSubmitform = <PostForm />;
+      postSubmitform = <NoticeForm />;
     } else {
       postSubmitform = null;
     }
@@ -24,7 +24,7 @@ class Notices extends Component {
     if (posts === null || loading) {
       postContent = <Spinner />;
     } else {
-      postContent = <PostFeed posts={posts} />;
+      postContent = <NoticeFeed posts={posts} />;
     }
 
     return (

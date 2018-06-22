@@ -40,9 +40,10 @@ router.post("/register", (req, res) => {
         d: "mm" // Default
       });
       const newUser = new User({
-        name: req.body.name,
+        username: req.body.username,
         email: req.body.email,
-        avatar,
+        thumbnail_image:
+          "https://s3.ap-northeast-2.amazonaws.com/jongwooleetestbucket/default_profile.png",
         password: req.body.password
       });
       bcrypt.genSalt(10, (err, salt) => {

@@ -27,7 +27,7 @@ import Posts from "./components/posts/Posts";
 import Post from "./components/post/Post";
 import Field from "./components/field/Field";
 import Kakao from "./components/auth/Kakao";
-import Notices from "./components/posts/Notices";
+import Notices from "./components/notices/Notices";
 import Rules from "./components/rules/Rules";
 
 import "./App.css";
@@ -64,9 +64,11 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/notice" component={Notices} />
               <Route exact path="/profile/:handle" component={Profile} />
-              <Route exact path="/kakao/:token" component={Kakao} />
+              <Route exact path="/kakao/:token" component={Kakao} />{" "}
+              <Switch>
+                <PrivateRoute exact path="/notice" component={Notices} />
+              </Switch>
               <Switch>
                 <PrivateRoute exact path="/rules" component={Rules} />
               </Switch>

@@ -41,10 +41,9 @@ router.get("/:id", (req, res) => {
 // @access  Private
 router.post(
   "/",
-  passport.authenticate("kakao", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const { errors, isValid } = validatePostInput(req.body);
-    console.log("kakao authenticated");
 
     //Check Validation
     if (!isValid) {
@@ -54,7 +53,7 @@ router.post(
     const newPost = new Post({
       text: req.body.text,
       name: req.body.name,
-      avatar: req.body.avatar,
+      thumbnail_image: req.body.thumbnail_image,
       user: req.user.id
     });
 
