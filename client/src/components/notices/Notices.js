@@ -4,34 +4,62 @@ import { connect } from "react-redux";
 import NoticeForm from "./NoticeForm";
 import NoticeFeed from "./NoticeFeed";
 import Spinner from "../common/spinner";
-import { getPosts } from "../../actions/postActions";
+import { getNotices } from "../../actions/noticeActions";
 
 class Notices extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isPost: false
+    };
+  }
   componentDidMount() {
-    this.props.getPosts();
+    this.props.getNotices();
+  }
+
+  onPostClick() {
+    this.setState({ isPost: !this.state.isPost });
   }
 
   render() {
-    const { posts, loading } = this.props.post;
+    const { notices, loading } = this.props.notice;
+    const { admin } = this.props.auth.user;
     let postSubmitform, postContent;
 
-    if (this.props.auth.user.admin) {
+    if (admin && this.state.isPost) {
       postSubmitform = <NoticeForm />;
     } else {
       postSubmitform = null;
     }
 
-    if (posts === null || loading) {
+    if (notices === null || loading) {
       postContent = <Spinner />;
     } else {
-      postContent = <NoticeFeed posts={posts} />;
+      postContent = <NoticeFeed notices={notices} />;
     }
 
     return (
       <div className="feed">
         <div className="container">
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-10">
+                  <h1 className="mb-4">공지사항</h1>
+                </div>
+                {admin ? (
+                  <div className="col-md-1">
+                    <button
+                      onClick={this.onPostClick.bind(this)}
+                      type="button"
+                      className=" btn btn-lg btn-light mr-1"
+                    >
+                      <i className="fas fa-paste" />
+                      <span className="badge badge-light">글쓰기</span>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
               {postSubmitform}
               {postContent}
             </div>
@@ -43,17 +71,17 @@ class Notices extends Component {
 }
 
 Notices.propTypes = {
-  getPosts: PropTypes.func.isRequired,
+  getNotices: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  post: PropTypes.object.isRequired
+  notice: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  post: state.post
+  notice: state.notice
 });
 
 export default connect(
   mapStateToProps,
-  { getPosts }
+  { getNotices }
 )(Notices);

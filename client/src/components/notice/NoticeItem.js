@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { deleteNotice, addLike, removeLike } from "../../actions/noticeActions";
 
@@ -34,6 +33,7 @@ export class NoticeItem extends Component {
 
   render() {
     const { notice, auth, showActions } = this.props;
+
     const date = new Intl.DateTimeFormat("en-US", {
       month: "long",
       day: "2-digit",
@@ -49,46 +49,39 @@ export class NoticeItem extends Component {
                 {notice.title}
               </h3>
               <small>
-                <b>{notice.name}</b>&nbsp;<i>{date}</i>
+                <i>{date}</i>
               </small>
               <br />
               <br />
-              {/* <p
-              className="lead"
-              onClick={this.onPostClick.bind(this, notice._id)}
-            >
-              {notice.text}
-            </p> */}
+              <p
+                className="lead"
+                onClick={this.onPostClick.bind(this, notice._id)}
+              >
+                {notice.text}
+              </p>
               {showActions ? (
                 <span>
-                  {/* <button
-                  onClick={this.onLikeClick.bind(this, notice._id)}
-                  type="button"
-                  className="btn btn-light mr-1"
-                > */}
-                  <i
-                    className={classnames("fas fa-thumbs-up", {
-                      "text-info": this.findUserLike(notice.likes)
-                    })}
-                  />
-                  <span className="badge badge-light">
-                    {notice.likes.length}
-                  </span>
-                  {/* </button> */}
-                  {/* <button
-                  onClick={this.onUnlikeClick.bind(this, notice._id)}
-                  type="button"
-                  className="btn btn-light mr-1"
-                > */}
-                  {/* <i className="text-secondary fas fa-thumbs-down" />
-                </button> */}
-                  &nbsp;
-                  {/* <Link
-                  to={`/notice/${notice._id}`}
-                  className="btn btn-info mr-1"
-                >
-                  댓글
-                </Link> */}
+                  <button
+                    onClick={this.onLikeClick.bind(this, notice._id)}
+                    type="button"
+                    className="btn btn-light mr-1"
+                  >
+                    <i
+                      className={classnames("fas fa-thumbs-up", {
+                        "text-info": this.findUserLike(notice.likes)
+                      })}
+                    />
+                    <span className="badge badge-light">
+                      {notice.likes.length}
+                    </span>
+                  </button>{" "}
+                  <button
+                    onClick={this.onUnlikeClick.bind(this, notice._id)}
+                    type="button"
+                    className="btn btn-light mr-1"
+                  >
+                    <i className="text-secondary fas fa-thumbs-down" />
+                  </button>
                   {notice.user === auth.user.id ? (
                     <button
                       onClick={this.onDeleteClick.bind(this, notice._id)}
@@ -100,6 +93,19 @@ export class NoticeItem extends Component {
                   ) : null}
                 </span>
               ) : null}
+            </div>
+            <div className="col-md-2">
+              <a href="profile.html">
+                <img
+                  className="rounded-circle d-none d-md-block"
+                  src={notice.thumbnail_image}
+                  alt=""
+                />
+              </a>
+              <br />
+              <p className="text-center">
+                by <b>{notice.name}</b>
+              </p>
             </div>
           </div>
         </div>

@@ -2,10 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-const FieldSchema = new Schema({
+const NoticeSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "users"
+  },
+  title: {
+    type: String,
+    required: true
   },
   text: {
     type: String,
@@ -53,4 +57,4 @@ const FieldSchema = new Schema({
   }
 });
 
-module.exports = Field = mongoose.model("field", FieldSchema);
+module.exports = Notice = mongoose.model("notice", NoticeSchema);

@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import shallowCompare from "react-addons-shallow-compare";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 
 export class PostItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likeByUser: false
+    };
+  }
   onDeleteClick(id) {
     this.props.deletePost(id);
   }
@@ -21,7 +28,22 @@ export class PostItem extends Component {
   findUserLike(likes) {
     const { auth } = this.props;
     if (likes.filter(like => like.user === auth.user.id).length > 0) {
-      return true;
+      this.setState({ likeByUser: true }, function() {
+        console.log(this.state.likeByuser);
+        return true;
+      });
+    } else {
+      this.setState({ likeByUser: false }, function() {
+        return true;
+      });
+    }
+  }
+
+  async shouldComponentUpdate(nextProps, nextState) {
+    if (shallowCompare(this, nextProps, nextState)) {
+      const compare = await this.findUserLike(nextProps.post.likes);
+      console.log(compare);
+      return compare;
     } else {
       return false;
     }
@@ -55,7 +77,7 @@ export class PostItem extends Component {
                 >
                   <i
                     className={classnames("fas fa-thumbs-up", {
-                      "text-info": this.findUserLike(post.likes)
+                      "text-info": this.state.likeByUser
                     })}
                   />
                   <span className="badge badge-light">{post.likes.length}</span>
@@ -67,8 +89,8 @@ export class PostItem extends Component {
                 >
                   <i className="text-secondary fas fa-thumbs-down" />
                 </button>
-                <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
-                  Comments
+                <Link to={`/post/${post._id}`} className="btn btn-warning mr-1">
+                  대댓글
                 </Link>
                 {post.user === auth.user.id ? (
                   <button
