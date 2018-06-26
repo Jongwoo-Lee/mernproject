@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
+import kakaoBtn from "../common/images/kakao_btn_wide.png";
 
 class Login extends Component {
   constructor() {
@@ -19,14 +20,14 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/feed");
     }
   }
 
   componentWillReceiveProps(nextProps) {
     // If some logged in user tries to get into login page, redirect to dashboard
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/feed");
     }
 
     if (nextProps.errors) {
@@ -57,9 +58,9 @@ class Login extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Log In</h1>
+              <h1 className="display-4 text-center">로그인</h1>
               <p className="lead text-center">
-                Sign in to your DevConnector account
+                토탈FC 커뮤티니 사이트에 접속하세요
               </p>
               <form noValidate onSubmit={this.onSubmit}>
                 <TextFieldGroup
@@ -80,8 +81,30 @@ class Login extends Component {
                   error={errors.password}
                 />
 
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input
+                  type="submit"
+                  value="로그인"
+                  className="btn btn-success btn-block mt-4"
+                />
               </form>
+              <br />
+              <a
+                href="http://localhost:5000/auth/kakao"
+                className="btn"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <img
+                  src={kakaoBtn}
+                  alt={"kakao_login"}
+                  style={{
+                    width: "250px"
+                  }}
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -101,4 +124,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

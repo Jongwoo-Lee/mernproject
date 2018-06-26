@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import { addPost } from "../../actions/postActions";
+import { addNotice } from "../../actions/noticeActions";
 
 class NoticeForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      title: "",
       text: "",
       errors: {}
     };
@@ -28,13 +30,14 @@ class NoticeForm extends Component {
     const { user } = this.props.auth;
 
     const newPost = {
+      title: this.state.title,
       text: this.state.text,
       name: user.name,
       thumbnail_image: user.thumbnail_image
     };
 
-    this.props.addPost(newPost);
-    this.setState({ text: "" });
+    this.props.addNotice(newPost);
+    this.setState({ title: "", text: "" });
   }
 
   onChange(e) {
@@ -46,10 +49,17 @@ class NoticeForm extends Component {
     return (
       <div className="post-form mb-3">
         <div className="card card-info">
-          <div className="card-header bg-info text-white">Say Somthing...</div>
+          <div className="card-header bg-success text-white">공지사항 작성</div>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
+                <TextFieldGroup
+                  placeholder="*제목"
+                  name="title"
+                  value={this.state.title}
+                  onChange={this.onChange}
+                  error={errors.title}
+                />
                 <TextAreaFieldGroup
                   placeholder="Create a post"
                   name="text"
@@ -70,7 +80,7 @@ class NoticeForm extends Component {
 }
 
 NoticeForm.propTypes = {
-  addPost: PropTypes.func.isRequired,
+  addNotice: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -82,5 +92,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addPost }
+  { addNotice }
 )(NoticeForm);

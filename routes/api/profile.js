@@ -28,7 +28,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name", "avatar"])
+      .populate("user", ["name", "thumbnail_image"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -46,7 +46,7 @@ router.get(
 router.get("/all", (req, res) => {
   const errors = {};
   Profile.find()
-    .populate("user", ["name", "avatar"])
+    .populate("user", ["name", "thumbnail_image"])
     .then(profiles => {
       if (!profiles) {
         errors.noprofile = "There are no profiles";
@@ -64,7 +64,7 @@ router.get("/all", (req, res) => {
 router.get("/handle/:handle", (req, res) => {
   const errors = {};
   Profile.findOne({ handle: req.params.handle })
-    .populate("user", ["name", "avatar"])
+    .populate("user", ["name", "thumbnail_image"])
     .then(profile => {
       if (!profile) {
         errors.noprofile = "There is no profile for this user";
@@ -82,7 +82,7 @@ router.get("/handle/:handle", (req, res) => {
 router.get("/user/:user_id", (req, res) => {
   const errors = {};
   Profile.findOne({ user: req.params.user_id })
-    .populate("user", ["name", "avatar"])
+    .populate("user", ["name", "thumbnail_image"])
     .then(profile => {
       if (!profile) {
         errors.noprofile = "There is no profile for this user";

@@ -6,6 +6,17 @@ import { Link } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 
 export class PostItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likeByUser: false
+    };
+  }
+
+  componentDidMount() {
+    this.findUserLike(this.props.post.likes);
+  }
+
   onDeleteClick(id) {
     this.props.deletePost(id);
   }
@@ -20,15 +31,47 @@ export class PostItem extends Component {
 
   findUserLike(likes) {
     const { auth } = this.props;
+
     if (likes.filter(like => like.user === auth.user.id).length > 0) {
-      return true;
+      this.setState({ likeByUser: true });
     } else {
-      return false;
+      this.setState({ likeByUser: false });
     }
+  }
+
+  async shouldComponentUpdate(nextProps) {
+    if (
+      nextProps.post &&
+      nextProps.post.likes.length !== this.props.post.likes.length
+    ) {
+      await this.findUserLike(nextProps.post.likes);
+      return true;
+    }
+    return false;
   }
 
   render() {
     const { post, auth, showActions } = this.props;
+
+    const { likeByUser } = this.state;
+    let likeContent;
+    if (likeByUser) {
+      likeContent = (
+        <i
+          className={classnames("fas fa-thumbs-up", {
+            "text-info": true
+          })}
+        />
+      );
+    } else {
+      likeContent = (
+        <i
+          className={classnames("fas fa-thumbs-up", {
+            "text-info": false
+          })}
+        />
+      );
+    }
 
     return (
       <div className="card card-body mb-3">
@@ -42,7 +85,9 @@ export class PostItem extends Component {
               />
             </a>
             <br />
-            <p className="text-center">{post.name}</p>
+            <p className="text-center">
+              <b>{post.name}</b>
+            </p>
           </div>
           <div className="col-md-10">
             <p className="lead">{post.text}</p>
@@ -53,11 +98,7 @@ export class PostItem extends Component {
                   type="button"
                   className="btn btn-light mr-1"
                 >
-                  <i
-                    className={classnames("fas fa-thumbs-up", {
-                      "text-info": this.findUserLike(post.likes)
-                    })}
-                  />
+                  {likeContent}
                   <span className="badge badge-light">{post.likes.length}</span>
                 </button>
                 <button
@@ -67,19 +108,19 @@ export class PostItem extends Component {
                 >
                   <i className="text-secondary fas fa-thumbs-down" />
                 </button>
-                <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
-                  Comments
+                <Link to={`/post/${post._id}`} className="btn btn-dark mr-1">
+                  댓글
                 </Link>
-                {post.user === auth.user.id ? (
-                  <button
-                    onClick={this.onDeleteClick.bind(this, post._id)}
-                    type="button"
-                    className="btn btn-danger mr-1"
-                  >
-                    <i className="fas fa-times" />
-                  </button>
-                ) : null}
               </span>
+            ) : null}
+            {post.user === auth.user.id ? (
+              <button
+                onClick={this.onDeleteClick.bind(this, post._id)}
+                type="button"
+                className=" float-right align-top btn btn-light mr-1"
+              >
+                <i className="fas fa-times" />
+              </button>
             ) : null}
           </div>
         </div>

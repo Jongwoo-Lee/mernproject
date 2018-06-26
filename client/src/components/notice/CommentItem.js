@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { deleteComment } from "../../actions/postActions";
+import { deleteComment } from "../../actions/noticeActions";
 
 class CommentItem extends Component {
   onDeleteClick(postID, commentID) {
@@ -27,7 +27,9 @@ class CommentItem extends Component {
                 className="rounded-circle d-none d-md-block"
                 src={comment.thumbnail_image}
                 alt=""
-                style={{ width: "70px" }}
+                style={{
+                  width: "70px"
+                }}
               />
             </a>
             <br />
@@ -36,7 +38,7 @@ class CommentItem extends Component {
             </p>
           </div>
           <div className="col-md-10">
-            <p className="lead">{comment.text}</p>
+            <p className="lead">{comment.text}</p>{" "}
             {comment.user === auth.user.id ? (
               <button
                 onClick={this.onDeleteClick.bind(this, postID, comment._id)}

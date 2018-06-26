@@ -1,24 +1,23 @@
 import axios from "axios";
 
 import {
-  ADD_POST,
+  ADD_NOTICE,
   GET_ERRORS,
   CLEAR_ERRORS,
-  GET_POSTS,
-  GET_POST,
-  UPDATE_POST,
-  POST_LOADING,
-  DELETE_POST
+  GET_NOTICES,
+  GET_NOTICE,
+  NOTICE_LOADING,
+  DELETE_NOTICE
 } from "./types";
 
 // Add Post
-export const addPost = postData => dispatch => {
+export const addNotice = postData => dispatch => {
   dispatch(clearErrors());
   axios
-    .post("/api/posts", postData)
+    .post("/api/notice", postData)
     .then(res =>
       dispatch({
-        type: ADD_POST,
+        type: ADD_NOTICE,
         payload: res.data
       })
     )
@@ -31,68 +30,68 @@ export const addPost = postData => dispatch => {
 };
 
 // Get Post
-export const getPosts = () => dispatch => {
-  dispatch(setPostLoading());
+export const getNotices = () => dispatch => {
+  dispatch(setNoticeLoading());
   axios
-    .get("/api/posts")
+    .get("/api/notice")
     .then(res =>
       dispatch({
-        type: GET_POSTS,
+        type: GET_NOTICES,
         payload: res.data
       })
     )
     .catch(err =>
       dispatch({
-        type: GET_POSTS,
+        type: GET_NOTICES,
         payload: null
       })
     );
 };
 
-// Get Post
-export const getPost = id => dispatch => {
-  dispatch(setPostLoading());
+// Get Notice
+export const getNotice = id => dispatch => {
+  dispatch(setNoticeLoading());
   axios
-    .get(`/api/posts/${id}`)
+    .get(`/api/notice/${id}`)
     .then(res =>
       dispatch({
-        type: GET_POST,
+        type: GET_NOTICE,
         payload: res.data
       })
     )
     .catch(err =>
       dispatch({
-        type: GET_POST,
+        type: GET_NOTICE,
         payload: null
       })
     );
 };
 
-// Get Post
-export const updatePost = id => dispatch => {
+// Update Notice
+export const updateNotice = id => dispatch => {
   axios
-    .get(`/api/posts/${id}`)
+    .get(`/api/notice/${id}`)
     .then(res => {
       dispatch({
-        type: UPDATE_POST,
+        type: GET_NOTICE,
         payload: res.data
       });
     })
     .catch(err =>
       dispatch({
-        type: UPDATE_POST,
+        type: GET_NOTICE,
         payload: null
       })
     );
 };
 
 // Delete Post
-export const deletePost = id => dispatch => {
+export const deleteNotice = id => dispatch => {
   axios
-    .delete(`/api/posts/${id}`)
+    .delete(`/api/notice/${id}`)
     .then(res =>
       dispatch({
-        type: DELETE_POST,
+        type: DELETE_NOTICE,
         payload: id
       })
     )
@@ -107,8 +106,8 @@ export const deletePost = id => dispatch => {
 // Add like
 export const addLike = id => dispatch => {
   axios
-    .post(`/api/posts/like/${id}`)
-    .then(res => dispatch(updatePost(id)))
+    .post(`/api/notice/like/${id}`)
+    .then(res => dispatch(updateNotice(id)))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -120,8 +119,8 @@ export const addLike = id => dispatch => {
 // Rmove like
 export const removeLike = id => dispatch => {
   axios
-    .post(`/api/posts/unlike/${id}`)
-    .then(res => dispatch(updatePost(id)))
+    .post(`/api/notice/unlike/${id}`)
+    .then(res => dispatch(updateNotice(id)))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -134,10 +133,10 @@ export const removeLike = id => dispatch => {
 export const addComment = (postID, commentData) => dispatch => {
   dispatch(clearErrors());
   axios
-    .post(`/api/posts/comment/${postID}`, commentData)
+    .post(`/api/notice/comment/${postID}`, commentData)
     .then(res =>
       dispatch({
-        type: GET_POST,
+        type: GET_NOTICE,
         payload: res.data
       })
     )
@@ -152,10 +151,10 @@ export const addComment = (postID, commentData) => dispatch => {
 // Delete Comment
 export const deleteComment = (postID, commentID) => dispatch => {
   axios
-    .delete(`/api/posts/comment/${postID}/${commentID}`)
+    .delete(`/api/notice/comment/${postID}/${commentID}`)
     .then(res =>
       dispatch({
-        type: GET_POST,
+        type: GET_NOTICE,
         payload: res.data
       })
     )
@@ -168,9 +167,9 @@ export const deleteComment = (postID, commentID) => dispatch => {
 };
 
 // Set loading state
-export const setPostLoading = () => {
+export const setNoticeLoading = () => {
   return {
-    type: POST_LOADING
+    type: NOTICE_LOADING
   };
 };
 

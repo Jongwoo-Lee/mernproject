@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const users = require("./routes/api/users");
 const posts = require("./routes/api/posts");
+const notice = require("./routes/api/notice");
 const profile = require("./routes/api/profile");
 
 const app = express();
@@ -45,6 +46,7 @@ mongoose
 // Use Routes
 app.use("/api/users", users);
 app.use("/api/posts", posts);
+app.use("/api/notice", notice);
 app.use("/api/profile", profile);
 
 // Server static assets if in production

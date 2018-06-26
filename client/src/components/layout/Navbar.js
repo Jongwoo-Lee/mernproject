@@ -21,7 +21,7 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/feed">
-            댓글게시판
+            회원게시판
           </Link>
         </li>
         <li className="nav-item">
@@ -101,7 +101,7 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/notice">
+                <Link className="nav-link" to="/notices">
                   {" "}
                   공지사항
                 </Link>

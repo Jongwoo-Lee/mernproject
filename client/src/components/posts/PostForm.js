@@ -30,7 +30,7 @@ class PostForm extends Component {
     const newPost = {
       text: this.state.text,
       name: user.name,
-      avatar: user.avatar
+      thumbnail_image: user.thumbnail_image
     };
 
     this.props.addPost(newPost);
@@ -46,12 +46,14 @@ class PostForm extends Component {
     return (
       <div className="post-form mb-3">
         <div className="card card-info">
-          <div className="card-header bg-info text-white">Say Somthing...</div>
+          <div className="card-header bg-success text-white">
+            회원게시판입니다
+          </div>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <TextAreaFieldGroup
-                  placeholder="Create a post"
+                  placeholder="글을 작성해주세요"
                   name="text"
                   value={this.state.text}
                   onChange={this.onChange}
@@ -80,4 +82,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { addPost })(PostForm);
+export default connect(
+  mapStateToProps,
+  { addPost }
+)(PostForm);

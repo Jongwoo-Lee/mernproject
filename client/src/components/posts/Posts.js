@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import shallowCompare from "react-addons-shallow-compare";
 import PostForm from "./PostForm";
 import PostFeed from "./PostFeed";
 import Spinner from "../common/spinner";
@@ -9,6 +10,10 @@ import { getPosts } from "../../actions/postActions";
 class Posts extends Component {
   componentDidMount() {
     this.props.getPosts();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   render() {
@@ -45,4 +50,7 @@ const mapStateToProps = state => ({
   post: state.post
 });
 
-export default connect(mapStateToProps, { getPosts })(Posts);
+export default connect(
+  mapStateToProps,
+  { getPosts }
+)(Posts);
