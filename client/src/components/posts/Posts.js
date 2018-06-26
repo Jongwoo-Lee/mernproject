@@ -13,22 +13,6 @@ class Posts extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // console.log(this.props.post.posts.length);
-    // console.log(this.props.post.posts.likes.length);
-    // if (
-    //   this.props.post.posts &&
-    //   this.props.post.posts.length !== nextProps.post.posts.length
-    // ) {
-    //   console.log(this.props.post.posts.length);
-    //   return true;
-    // }
-    // if (
-    //   this.props.post.posts
-    // ) {
-    //   return true;
-    // }
-
-    // return false;
     return shallowCompare(this, nextProps, nextState);
   }
 

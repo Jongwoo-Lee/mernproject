@@ -47,12 +47,12 @@ class CommentForm extends Component {
     return (
       <div className="post-form mb-3">
         <div className="card card-info">
-          <div className="card-header bg-info text-white">Make a comment</div>
+          <div className="card-header bg-success text-white">댓글</div>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <TextAreaFieldGroup
-                  placeholder="Reply to post"
+                  placeholder="댓글을 달아주세요"
                   name="text"
                   value={this.state.text}
                   onChange={this.onChange}
@@ -60,7 +60,7 @@ class CommentForm extends Component {
                 />
               </div>
               <button type="submit" className="btn btn-dark">
-                Submit
+                작성
               </button>
             </form>
           </div>

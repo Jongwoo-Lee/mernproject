@@ -52,54 +52,6 @@ export class NoticeItem extends Component {
                 <b>{notice.name}</b>&nbsp;<i>{date}</i>
               </small>
               <br />
-              <br />
-              {/* <p
-              className="lead"
-              onClick={this.onPostClick.bind(this, notice._id)}
-            >
-              {notice.text}
-            </p> */}
-              {showActions ? (
-                <span>
-                  {/* <button
-                  onClick={this.onLikeClick.bind(this, notice._id)}
-                  type="button"
-                  className="btn btn-light mr-1"
-                > */}
-                  <i
-                    className={classnames("fas fa-thumbs-up", {
-                      "text-info": this.findUserLike(notice.likes)
-                    })}
-                  />
-                  <span className="badge badge-light">
-                    {notice.likes.length}
-                  </span>
-                  {/* </button> */}
-                  {/* <button
-                  onClick={this.onUnlikeClick.bind(this, notice._id)}
-                  type="button"
-                  className="btn btn-light mr-1"
-                > */}
-                  {/* <i className="text-secondary fas fa-thumbs-down" />
-                </button> */}
-                  &nbsp;
-                  {/* <Link
-                  to={`/notice/${notice._id}`}
-                  className="btn btn-info mr-1"
-                >
-                  댓글
-                </Link> */}
-                  {notice.user === auth.user.id ? (
-                    <button
-                      onClick={this.onDeleteClick.bind(this, notice._id)}
-                      type="button"
-                      className="btn btn-danger mr-1"
-                    >
-                      <i className="fas fa-times" />
-                    </button>
-                  ) : null}
-                </span>
-              ) : null}
             </div>
           </div>
         </div>

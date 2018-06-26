@@ -47,13 +47,13 @@ class PostForm extends Component {
       <div className="post-form mb-3">
         <div className="card card-info">
           <div className="card-header bg-success text-white">
-            댓글 게시판입니다
+            회원게시판입니다
           </div>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <TextAreaFieldGroup
-                  placeholder="댓글을 작성해주세요"
+                  placeholder="글을 작성해주세요"
                   name="text"
                   value={this.state.text}
                   onChange={this.onChange}

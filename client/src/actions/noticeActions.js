@@ -48,7 +48,7 @@ export const getNotices = () => dispatch => {
     );
 };
 
-// Get Post
+// Get Notice
 export const getNotice = id => dispatch => {
   dispatch(setNoticeLoading());
   axios
@@ -59,6 +59,24 @@ export const getNotice = id => dispatch => {
         payload: res.data
       })
     )
+    .catch(err =>
+      dispatch({
+        type: GET_NOTICE,
+        payload: null
+      })
+    );
+};
+
+// Update Notice
+export const updateNotice = id => dispatch => {
+  axios
+    .get(`/api/notice/${id}`)
+    .then(res => {
+      dispatch({
+        type: GET_NOTICE,
+        payload: res.data
+      });
+    })
     .catch(err =>
       dispatch({
         type: GET_NOTICE,
@@ -89,7 +107,7 @@ export const deleteNotice = id => dispatch => {
 export const addLike = id => dispatch => {
   axios
     .post(`/api/notice/like/${id}`)
-    .then(res => dispatch(getNotices()))
+    .then(res => dispatch(updateNotice(id)))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -102,7 +120,7 @@ export const addLike = id => dispatch => {
 export const removeLike = id => dispatch => {
   axios
     .post(`/api/notice/unlike/${id}`)
-    .then(res => dispatch(getNotices()))
+    .then(res => dispatch(updateNotice(id)))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

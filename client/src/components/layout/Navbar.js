@@ -21,7 +21,7 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/feed">
-            댓글게시판
+            회원게시판
           </Link>
         </li>
         <li className="nav-item">

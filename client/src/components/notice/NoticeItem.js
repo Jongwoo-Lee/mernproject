@@ -86,7 +86,7 @@ export class NoticeItem extends Component {
                     <button
                       onClick={this.onDeleteClick.bind(this, notice._id)}
                       type="button"
-                      className="btn btn-danger mr-1"
+                      className="float-right align-top btn btn-light mr-1"
                     >
                       <i className="fas fa-times" />
                     </button>
