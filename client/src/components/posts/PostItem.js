@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 
 export class PostItem extends Component {
@@ -15,6 +15,10 @@ export class PostItem extends Component {
 
   componentDidMount() {
     this.findUserLike(this.props.post.likes);
+  }
+
+  onPostClick(id) {
+    this.props.history.push(`/post/${id}`);
   }
 
   onDeleteClick(id) {
@@ -90,7 +94,9 @@ export class PostItem extends Component {
             </p>
           </div>
           <div className="col-7 col-sm-8">
-            <p className="lead">{post.text}</p>
+            <p className="lead" onClick={this.onPostClick.bind(this, post._id)}>
+              {post.text}
+            </p>
             {showActions ? (
               <span>
                 <button
@@ -108,9 +114,6 @@ export class PostItem extends Component {
                 >
                   <i className="text-secondary fas fa-thumbs-down" />
                 </button>
-                <Link to={`/post/${post._id}`} className="btn btn-dark mr-1">
-                  댓글
-                </Link>
               </span>
             ) : null}
           </div>
@@ -156,4 +159,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostItem);
+)(withRouter(PostItem));
