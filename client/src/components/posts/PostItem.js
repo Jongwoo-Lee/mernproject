@@ -74,9 +74,9 @@ export class PostItem extends Component {
     }
 
     return (
-      <div className="card card-body mb-3">
+      <div className="card card-body mb-1">
         <div className="row">
-          <div className="col-md-2">
+          <div className="col-3 col-sm-2">
             <a href="profile.html">
               <img
                 className="rounded-circle d-none d-md-block"
@@ -89,7 +89,7 @@ export class PostItem extends Component {
               <b>{post.name}</b>
             </p>
           </div>
-          <div className="col-md-10">
+          <div className="col-7 col-sm-8">
             <p className="lead">{post.text}</p>
             {showActions ? (
               <span>
@@ -113,6 +113,8 @@ export class PostItem extends Component {
                 </Link>
               </span>
             ) : null}
+          </div>
+          <div className="col-2 col-sm-2">
             {post.user === auth.user.id ? (
               <button
                 onClick={this.onDeleteClick.bind(this, post._id)}
