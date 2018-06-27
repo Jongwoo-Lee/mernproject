@@ -106,7 +106,7 @@ export class PostItem extends Component {
           </div>
           <div className="row mb-3">
             <div className="col-3" />
-            <div className="col-3">
+            <div className="col-6">
               {showActions ? (
                 <span>
                   <div style={buttonStyle}>
@@ -115,7 +115,7 @@ export class PostItem extends Component {
                       {post.likes.length}
                     </span>
                     <i
-                      className="text-secondary fas fa-thumbs-down"
+                      className="text-secondary fas fa-thumbs-down ml-3"
                       onClick={this.onUnlikeClick.bind(this, post._id)}
                     />
                   </div>
