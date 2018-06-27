@@ -55,7 +55,10 @@ export class PostItem extends Component {
   }
 
   render() {
-    const { post, auth, showActions } = this.props;
+    const { post, auth, showActions, isMobile } = this.props;
+
+    const commentStyle = { fontSize: "12px" };
+    const buttonStyle = { fontSize: "5px" };
 
     const { likeByUser } = this.state;
     let likeContent;
@@ -65,6 +68,7 @@ export class PostItem extends Component {
           className={classnames("fas fa-thumbs-up", {
             "text-info": true
           })}
+          onClick={this.onLikeClick.bind(this, post._id)}
         />
       );
     } else {
@@ -73,64 +77,115 @@ export class PostItem extends Component {
           className={classnames("fas fa-thumbs-up", {
             "text-info": false
           })}
+          onClick={this.onLikeClick.bind(this, post._id)}
         />
       );
     }
 
-    return (
-      <div className="card card-body mb-1">
-        <div className="row">
-          <div className="col-3 col-sm-2">
-            <a href="profile.html">
-              <img
-                className="rounded-circle d-none d-md-block"
-                src={post.thumbnail_image}
-                alt=""
-              />
-            </a>
-            <br />
-            <p className="text-center">
-              <b>{post.name}</b>
-            </p>
+    if (isMobile) {
+      return (
+        <div>
+          <div className="row">
+            <div className="col-3 col-sm-2">
+              <p className="text-center" style={commentStyle}>
+                <b>{post.name}</b>
+              </p>
+            </div>
+            <div className="col-7 col-sm-8" style={commentStyle}>
+              <p onClick={this.onPostClick.bind(this, post._id)}>{post.text}</p>
+            </div>
+            <div className="col-2 col-sm-2">
+              {post.user === auth.user.id ? (
+                <i
+                  className="fas fa-times"
+                  style={buttonStyle}
+                  onClick={this.onDeleteClick.bind(this, post._id)}
+                />
+              ) : null}
+            </div>
           </div>
-          <div className="col-7 col-sm-8">
-            <p className="lead" onClick={this.onPostClick.bind(this, post._id)}>
-              {post.text}
-            </p>
-            {showActions ? (
-              <span>
-                <button
-                  onClick={this.onLikeClick.bind(this, post._id)}
-                  type="button"
-                  className="btn btn-light mr-1"
-                >
-                  {likeContent}
-                  <span className="badge badge-light">{post.likes.length}</span>
-                </button>
-                <button
-                  onClick={this.onUnlikeClick.bind(this, post._id)}
-                  type="button"
-                  className="btn btn-light mr-1"
-                >
-                  <i className="text-secondary fas fa-thumbs-down" />
-                </button>
-              </span>
-            ) : null}
-          </div>
-          <div className="col-2 col-sm-2">
-            {post.user === auth.user.id ? (
-              <button
-                onClick={this.onDeleteClick.bind(this, post._id)}
-                type="button"
-                className=" float-right align-top btn btn-light mr-1"
-              >
-                <i className="fas fa-times" />
-              </button>
-            ) : null}
+          <div className="row mb-3">
+            <div className="col-3" />
+            <div className="col-3">
+              {showActions ? (
+                <span>
+                  <div style={buttonStyle}>
+                    {likeContent}
+                    <span className="badge badge-light">
+                      {post.likes.length}
+                    </span>
+                    <i
+                      className="text-secondary fas fa-thumbs-down"
+                      onClick={this.onUnlikeClick.bind(this, post._id)}
+                    />
+                  </div>
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="card card-body mb-1">
+          <div className="row">
+            <div className="col-3 col-sm-2">
+              <a href="profile.html">
+                <img
+                  className="rounded-circle d-none d-md-block"
+                  src={post.thumbnail_image}
+                  alt=""
+                />
+              </a>
+              <br />
+              <p className="text-center">
+                <b>{post.name}</b>
+              </p>
+            </div>
+            <div className="col-7 col-sm-8">
+              <p
+                className="lead"
+                onClick={this.onPostClick.bind(this, post._id)}
+              >
+                {post.text}
+              </p>
+              {showActions ? (
+                <span>
+                  <button
+                    onClick={this.onLikeClick.bind(this, post._id)}
+                    type="button"
+                    className="btn btn-light mr-1"
+                  >
+                    {likeContent}
+                    <span className="badge badge-light">
+                      {post.likes.length}
+                    </span>
+                  </button>
+                  <button
+                    onClick={this.onUnlikeClick.bind(this, post._id)}
+                    type="button"
+                    className="btn btn-light mr-1"
+                  >
+                    <i className="text-secondary fas fa-thumbs-down" />
+                  </button>
+                </span>
+              ) : null}
+            </div>
+            <div className="col-2 col-sm-2">
+              {post.user === auth.user.id ? (
+                <button
+                  onClick={this.onDeleteClick.bind(this, post._id)}
+                  type="button"
+                  className=" float-right align-top btn btn-light mr-1"
+                >
+                  <i className="fas fa-times" />
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
@@ -143,7 +198,8 @@ PostItem.propTypes = {
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  isMobile: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({

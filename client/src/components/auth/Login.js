@@ -89,7 +89,7 @@ class Login extends Component {
               </form>
               <br />
               <a
-                href="http://localhost:5000/auth/kakao"
+                href="/auth/kakao"
                 className="btn"
                 style={{
                   display: "flex",

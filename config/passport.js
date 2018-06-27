@@ -118,7 +118,7 @@ module.exports = (app, passport) => {
   app.get(
     "/auth/kakao/callback",
     passport.authenticate("kakao", {
-      failureRedirect: "http://localhost:3000/login"
+      failureRedirect: "/login"
     }),
     (req, res) => {
       res.redirect(`/kakao/${token}`);

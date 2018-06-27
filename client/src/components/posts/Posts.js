@@ -8,6 +8,27 @@ import Spinner from "../common/spinner";
 import { getPosts } from "../../actions/postActions";
 
 class Posts extends Component {
+  constructor() {
+    super();
+    this.state = {
+      width: window.innerWidth
+    };
+  }
+
+  componentWillMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  // make sure to remove the listener
+  // when the component is not mounted anymore
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
   componentDidMount() {
     this.props.getPosts();
   }
@@ -20,10 +41,13 @@ class Posts extends Component {
     const { posts, loading } = this.props.post;
     let postContent;
 
+    const { width } = this.state;
+    const isMobile = width <= 500;
+
     if (posts === null || loading) {
       postContent = <Spinner />;
     } else {
-      postContent = <PostFeed posts={posts} />;
+      postContent = <PostFeed posts={posts} isMobile={isMobile} />;
     }
 
     return (
