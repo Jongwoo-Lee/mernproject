@@ -58,7 +58,7 @@ export class PostItem extends Component {
     const { post, auth, showActions, isMobile } = this.props;
 
     const commentStyle = { fontSize: "12px" };
-    const buttonStyle = { fontSize: "5px" };
+    const buttonStyle = { fontSize: "10px" };
 
     const { likeByUser } = this.state;
     let likeContent;
