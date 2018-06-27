@@ -127,7 +127,7 @@ export class PostItem extends Component {
       );
     } else {
       return (
-        <div className="card card-body mb-1">
+        <div className="card card-body mb-4">
           <div className="row">
             <div className="col-3 col-sm-2">
               <a href="profile.html">

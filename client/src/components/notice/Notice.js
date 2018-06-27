@@ -9,22 +9,52 @@ import Spinner from "../common/spinner";
 import { getNotice } from "../../actions/noticeActions";
 
 class Notice extends Component {
+  constructor() {
+    super();
+    this.state = {
+      width: window.innerWidth
+    };
+  }
+
+  componentWillMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  // make sure to remove the listener
+  // when the component is not mounted anymore
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
   componentDidMount() {
     this.props.getNotice(this.props.match.params.id);
   }
 
   render() {
     const { notice, loading } = this.props.notice;
-    let noticeContent;
+    const { width } = this.state;
+    const isMobile = width <= 500;
 
+    let noticeContent;
     if (notice === null || loading || Object.keys(notice).length === 0) {
       noticeContent = <Spinner />;
     } else {
       noticeContent = (
         <div>
           <NoticeItem notice={notice} />
+          <div className="card card-header bg-dark text-white">
+            댓글 {notice.comments.length}
+          </div>
+          <CommentFeed
+            postID={notice._id}
+            comments={notice.comments}
+            isMobile={isMobile}
+          />
           <CommentForm postID={notice._id} />
-          <CommentFeed postID={notice._id} comments={notice.comments} />
         </div>
       );
     }

@@ -10,46 +10,72 @@ class CommentItem extends Component {
 
   render() {
     const { comment, postID, auth } = this.props;
+    const commentStyle = { fontSize: "12px" };
+    const buttonStyle = { fontSize: "10px" };
 
     return (
-      <div className="card card-body mb-3">
+      <div>
         <div className="row">
-          <div className="col-md-2">
-            <a
-              href="profile.html"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <img
-                className="rounded-circle d-none d-md-block"
-                src={comment.thumbnail_image}
-                alt=""
-                style={{ width: "70px" }}
-              />
-            </a>
-            <br />
-            <p className="text-center">
+          <div className="col-3 col-sm-2">
+            <p className="text-center" style={commentStyle}>
               <b>{comment.name}</b>
             </p>
           </div>
-          <div className="col-md-10">
-            <p className="lead">{comment.text}</p>
+          <div className="col-7 col-sm-8" style={commentStyle}>
+            <p>{comment.text}</p>
+          </div>
+          <div className="col-2 col-sm-2">
             {comment.user === auth.user.id ? (
-              <button
+              <i
+                className="fas fa-times"
+                style={buttonStyle}
                 onClick={this.onDeleteClick.bind(this, postID, comment._id)}
-                type="button"
-                className="float-right align-top btn btn-light mr-1"
-              >
-                <i className="fas fa-times" />
-              </button>
+              />
             ) : null}
           </div>
         </div>
       </div>
     );
+    // return (
+    //   <div className="card card-body mb-3">
+    //     <div className="row">
+    //       <div className="col-md-2">
+    //         <a
+    //           href="profile.html"
+    //           style={{
+    //             display: "flex",
+    //             justifyContent: "center",
+    //             alignItems: "center"
+    //           }}
+    //         >
+    //           <img
+    //             className="rounded-circle d-none d-md-block"
+    //             src={comment.thumbnail_image}
+    //             alt=""
+    //             style={{ width: "70px" }}
+    //           />
+    //         </a>
+    //         <br />
+    //         <p className="text-center">
+    //           <b>{comment.name}</b>
+    //         </p>
+    //       </div>
+    //       <div className="col-md-10">
+    //         <p className="lead">{comment.text}</p>
+    //         {comment.user === auth.user.id ? (
+    //           <button
+    //             onClick={this.onDeleteClick.bind(this, postID, comment._id)}
+    //             type="button"
+    //             className="float-right align-top btn btn-light mr-1"
+    //           >
+    //             <i className="fas fa-times" />
+    //           </button>
+    //         ) : null}
+    //       </div>
+    //     </div>
+    //   </div>
+    // );
+    //}
   }
 }
 

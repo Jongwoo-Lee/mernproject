@@ -45,7 +45,7 @@ class CommentForm extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="post-form mb-3">
+      <div className="post-form mt-3">
         <div className="card card-info">
           <div className="card-header bg-success text-white">댓글 쓰기</div>
           <div className="card-body">

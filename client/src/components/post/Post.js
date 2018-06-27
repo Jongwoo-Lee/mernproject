@@ -16,15 +16,14 @@ class Post extends Component {
   render() {
     const { post, loading } = this.props.post;
     let postContent;
-
     if (post === null || loading || Object.keys(post).length === 0) {
       postContent = <Spinner />;
     } else {
       postContent = (
         <div>
-          <PostItem post={post} showActions={false} />
-          <CommentForm postID={post._id} />
+          <PostItem post={post} showActions={false} isMobile={false} />
           <CommentFeed postID={post._id} comments={post.comments} />
+          <CommentForm postID={post._id} />
         </div>
       );
     }
@@ -35,7 +34,7 @@ class Post extends Component {
           <div className="row">
             <div className="col-md-12">
               <Link to="/feed" className="btn btn-light mb-3">
-                Back to Feed
+                돌아가기
               </Link>
               {postContent}
             </div>
@@ -57,4 +56,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { getPost };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Post);

@@ -3,10 +3,6 @@ import PropTypes from "prop-types";
 import PostItem from "./PostItem";
 
 export class PostFeed extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { posts, isMobile } = this.props;
     return posts.map(post => (
