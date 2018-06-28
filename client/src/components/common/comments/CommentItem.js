@@ -9,8 +9,14 @@ class CommentItem extends Component {
 
   render() {
     const { comment, postID, auth, isMobile } = this.props;
-    const commentStyle = { fontSize: "12px" };
+    const commentStyle = { fontSize: "15px" };
     const buttonStyle = { fontSize: "10px" };
+
+    const date = new Intl.DateTimeFormat("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      hour: "numeric"
+    }).format(new Date(comment.date));
 
     if (isMobile) {
       return (
@@ -25,6 +31,7 @@ class CommentItem extends Component {
               <p>{comment.text}</p>
             </div>
             <div className="col-2 col-sm-2">
+              <small>{date}</small>&nbsp;
               {comment.user === auth.user.id ? (
                 <i
                   className="fas fa-times"
