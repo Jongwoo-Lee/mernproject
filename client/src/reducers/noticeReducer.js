@@ -9,6 +9,8 @@ import {
 const initialState = {
   notices: [],
   notice: {},
+  current: 1,
+  pages: 1,
   loading: false
 };
 
