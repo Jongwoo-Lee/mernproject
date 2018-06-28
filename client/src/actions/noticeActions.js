@@ -29,11 +29,30 @@ export const addNotice = postData => dispatch => {
     );
 };
 
+// // Get Post
+// export const getNotices = () => dispatch => {
+//   dispatch(setNoticeLoading());
+//   axios
+//     .get("/api/notice")
+//     .then(res =>
+//       dispatch({
+//         type: GET_NOTICES,
+//         payload: res.data
+//       })
+//     )
+//     .catch(err =>
+//       dispatch({
+//         type: GET_NOTICES,
+//         payload: null
+//       })
+//     );
+// };
+
 // Get Post
-export const getNotices = () => dispatch => {
+export const getNotices = pagenum => dispatch => {
   dispatch(setNoticeLoading());
   axios
-    .get("/api/notice")
+    .get(`/api/notice/page/${pagenum}`)
     .then(res =>
       dispatch({
         type: GET_NOTICES,

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CommentItem from "../common/comments/CommentItem";
+import CommentItem from "./CommentItem";
 
 class CommentFeed extends Component {
   render() {
@@ -11,6 +11,7 @@ class CommentFeed extends Component {
         comment={comment}
         postID={postID}
         isMobile={isMobile}
+        deleteComment={this.props.deleteComment}
       />
     ));
   }
@@ -18,6 +19,7 @@ class CommentFeed extends Component {
 
 CommentFeed.propTypes = {
   comments: PropTypes.array.isRequired,
+  deleteComment: PropTypes.func.isRequired,
   postID: PropTypes.string.isRequired,
   isMobile: PropTypes.bool.isRequired
 };

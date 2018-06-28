@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { deleteComment } from "../../../actions/noticeActions";
 
 class CommentItem extends Component {
   onDeleteClick(postID, commentID) {
@@ -95,9 +94,7 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-const mapDispatchToProps = {
-  deleteComment
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,

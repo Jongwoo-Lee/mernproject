@@ -25,6 +25,26 @@ router.get("/", (req, res) => {
     .catch(err => res.status(404).json({ nopost: "No post is uploaded yet" }));
 });
 
+router.get("/page/:pagenum", (req, res) => {
+  const perPage = 10;
+  const { pagenum } = req.params;
+  Post.find()
+    .sort({ date: -1 })
+    .skip(perPage * pagenum - perPage)
+    .limit(perPage)
+    .exec(function(err, posts) {
+      Post.count().exec(function(err, count) {
+        if (err) return next(err);
+        res.json({
+          posts: posts,
+          current: pagenum,
+          pages: Math.ceil(count / perPage)
+        });
+      });
+    });
+  //.catch(err => res.status(404).json({ nopost: "No post is uploaded yet" }));
+});
+
 // @route   GET api/posts/:id
 // @desc    Get Post by id
 // @access  Public

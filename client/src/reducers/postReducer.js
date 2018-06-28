@@ -10,6 +10,8 @@ import {
 const initialState = {
   posts: [],
   post: {},
+  current: 1,
+  pages: 1,
   loading: false
 };
 
@@ -23,7 +25,9 @@ export default function(state = initialState, action) {
     case GET_POSTS:
       return {
         ...state,
-        posts: action.payload,
+        posts: action.payload.posts,
+        current: action.payload.current,
+        pages: action.payload.pages,
         loading: false
       };
     case GET_POST:
@@ -33,6 +37,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case ADD_POST:
+      state.posts.pop();
       return {
         ...state,
         posts: [action.payload, ...state.posts]

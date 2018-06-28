@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { deleteNotice, addLike, removeLike } from "../../actions/noticeActions";
 
@@ -33,7 +31,7 @@ export class NoticeItem extends Component {
   }
 
   render() {
-    const { notice, auth, showActions } = this.props;
+    const { notice } = this.props;
     const date = new Intl.DateTimeFormat("en-US", {
       month: "long",
       day: "2-digit",
@@ -59,10 +57,6 @@ export class NoticeItem extends Component {
     );
   }
 }
-
-NoticeItem.defaultProps = {
-  showActions: true
-};
 
 NoticeItem.propTypes = {
   deleteNotice: PropTypes.func.isRequired,

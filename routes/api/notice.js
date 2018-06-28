@@ -23,6 +23,29 @@ router.get("/", (req, res) => {
     );
 });
 
+// @route   GET api/posts/notice/page/:pagenum
+// @desc    Get Notices per page
+// @access  Public
+router.get("/page/:pagenum", (req, res) => {
+  const perPage = 10;
+  const { pagenum } = req.params;
+  Notice.find()
+    .sort({ date: -1 })
+    .skip(perPage * pagenum - perPage)
+    .limit(perPage)
+    .exec(function(err, notices) {
+      Notice.count().exec(function(err, count) {
+        if (err) return next(err);
+        res.json({
+          notices: notices,
+          current: pagenum,
+          pages: Math.ceil(count / perPage)
+        });
+      });
+    });
+  //.catch(err => res.status(404).json({ nopost: "No post is uploaded yet" }));
+});
+
 // @route   GET api/posts/notice/:id
 // @desc    Get Notice by id
 // @access  Public

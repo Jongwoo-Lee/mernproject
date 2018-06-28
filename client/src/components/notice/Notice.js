@@ -3,10 +3,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import NoticeItem from "./NoticeItem";
-import CommentForm from "./CommentForm";
-import CommentFeed from "./CommentFeed";
+import CommentForm from "../common/comments/CommentForm";
+import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
-import { getNotice } from "../../actions/noticeActions";
+import {
+  getNotice,
+  addComment,
+  deleteComment
+} from "../../actions/noticeActions";
 
 class Notice extends Component {
   constructor() {
@@ -53,8 +57,9 @@ class Notice extends Component {
             postID={notice._id}
             comments={notice.comments}
             isMobile={isMobile}
+            deleteComment={this.props.deleteComment}
           />
-          <CommentForm postID={notice._id} />
+          <CommentForm postID={notice._id} addComment={this.props.addComment} />
         </div>
       );
     }
@@ -78,6 +83,8 @@ class Notice extends Component {
 
 Notice.propTypes = {
   getNotice: PropTypes.func.isRequired,
+  deleteComment: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
   notice: PropTypes.object.isRequired
 };
 
@@ -85,7 +92,7 @@ const mapStateToProps = state => ({
   notice: state.notice
 });
 
-const mapDispatchToProps = { getNotice };
+const mapDispatchToProps = { getNotice, addComment, deleteComment };
 
 export default connect(
   mapStateToProps,

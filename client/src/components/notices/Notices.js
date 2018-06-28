@@ -5,16 +5,39 @@ import NoticeForm from "./NoticeForm";
 import NoticeFeed from "./NoticeFeed";
 import Spinner from "../common/spinner";
 import { getNotices } from "../../actions/noticeActions";
+import Pagination from "../common/Pagination";
 
 class Notices extends Component {
   constructor() {
     super();
     this.state = {
-      isPost: false
+      isPost: false,
+      width: window.innerWidth
     };
+
+    this.onChangePage = this.onChangePage.bind(this);
   }
+
+  componentWillMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  // make sure to remove the listener
+  // when the component is not mounted anymore
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
   componentDidMount() {
-    this.props.getNotices();
+    this.props.getNotices(1);
+  }
+
+  onChangePage(page) {
+    this.props.getNotices(page);
   }
 
   onPostClick() {
@@ -22,9 +45,12 @@ class Notices extends Component {
   }
 
   render() {
-    const { notices, loading } = this.props.notice;
+    const { notices, loading, pages, current } = this.props.notice;
     const { admin } = this.props.auth.user;
     let postSubmitform, postContent;
+
+    const { width } = this.state;
+    const isMobile = width <= 500;
 
     if (admin && this.state.isPost) {
       postSubmitform = <NoticeForm />;
@@ -62,6 +88,12 @@ class Notices extends Component {
               </div>
               {postSubmitform}
               {postContent}
+              <Pagination
+                maxPage={pages}
+                currentPage={Number(current)}
+                onChangePage={this.onChangePage}
+                isMobile={isMobile}
+              />
             </div>
           </div>
         </div>

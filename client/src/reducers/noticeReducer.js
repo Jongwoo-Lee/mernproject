@@ -22,7 +22,9 @@ export default function(state = initialState, action) {
     case GET_NOTICES:
       return {
         ...state,
-        notices: action.payload,
+        notices: action.payload.notices,
+        current: action.payload.current,
+        pages: action.payload.pages,
         loading: false
       };
     case GET_NOTICE:

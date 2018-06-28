@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import { addComment } from "../../actions/postActions";
+import TextAreaFieldGroup from "../TextAreaFieldGroup";
 
 class CommentForm extends Component {
   constructor(props) {
@@ -47,12 +46,12 @@ class CommentForm extends Component {
     return (
       <div className="post-form mt-3">
         <div className="card card-info">
-          <div className="card-header bg-success text-white">댓글</div>
+          <div className="card-header bg-success text-white">댓글 쓰기</div>
           <div className="card-body">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <TextAreaFieldGroup
-                  placeholder="댓글을 달아주세요"
+                  placeholder="댓글을 작성해주세요"
                   name="text"
                   value={this.state.text}
                   onChange={this.onChange}
@@ -82,7 +81,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { addComment }
-)(CommentForm);
+export default connect(mapStateToProps)(CommentForm);

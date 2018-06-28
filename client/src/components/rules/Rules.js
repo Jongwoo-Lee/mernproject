@@ -55,7 +55,7 @@ class Rules extends Component {
       <div className="post">
         <div className="container">
           <div className="row">
-            <div className="col-md-8">{postContent}</div>
+            <div className="col-md-8 mb-3">{postContent}</div>
           </div>
         </div>
       </div>

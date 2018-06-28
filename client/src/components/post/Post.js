@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PostItem from "../posts/PostItem";
-import CommentForm from "./CommentForm";
-import CommentFeed from "./CommentFeed";
+import CommentForm from "../common/comments/CommentForm";
+import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
-import { getPost } from "../../actions/postActions";
+import { getPost, addComment, deleteComment } from "../../actions/postActions";
 
 class Post extends Component {
   componentDidMount() {
@@ -22,8 +22,13 @@ class Post extends Component {
       postContent = (
         <div>
           <PostItem post={post} showActions={false} isMobile={false} />
-          <CommentFeed postID={post._id} comments={post.comments} />
-          <CommentForm postID={post._id} />
+          <CommentFeed
+            postID={post._id}
+            comments={post.comments}
+            isMobile={true}
+            deleteComment={this.props.deleteComment}
+          />
+          <CommentForm postID={post._id} addComment={this.props.addComment} />
         </div>
       );
     }
@@ -47,6 +52,8 @@ class Post extends Component {
 
 Post.propTypes = {
   getPost: PropTypes.func.isRequired,
+  deleteComment: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired
 };
 
@@ -54,7 +61,7 @@ const mapStateToProps = state => ({
   post: state.post
 });
 
-const mapDispatchToProps = { getPost };
+const mapDispatchToProps = { getPost, addComment, deleteComment };
 
 export default connect(
   mapStateToProps,

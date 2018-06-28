@@ -31,10 +31,10 @@ export const addPost = postData => dispatch => {
 };
 
 // Get Post
-export const getPosts = () => dispatch => {
+export const getPosts = pagenum => dispatch => {
   dispatch(setPostLoading());
   axios
-    .get("/api/posts")
+    .get(`/api/posts/page/${pagenum}`)
     .then(res =>
       dispatch({
         type: GET_POSTS,

@@ -6,6 +6,7 @@ import PostForm from "./PostForm";
 import PostFeed from "./PostFeed";
 import Spinner from "../common/spinner";
 import { getPosts } from "../../actions/postActions";
+import Pagination from "../common/Pagination";
 
 class Posts extends Component {
   constructor() {
@@ -13,6 +14,8 @@ class Posts extends Component {
     this.state = {
       width: window.innerWidth
     };
+
+    this.onChangePage = this.onChangePage.bind(this);
   }
 
   componentWillMount() {
@@ -30,7 +33,11 @@ class Posts extends Component {
   };
 
   componentDidMount() {
-    this.props.getPosts();
+    this.props.getPosts(1);
+  }
+
+  onChangePage(page) {
+    this.props.getPosts(page);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -38,7 +45,7 @@ class Posts extends Component {
   }
 
   render() {
-    const { posts, loading } = this.props.post;
+    const { posts, loading, current, pages } = this.props.post;
     let postContent;
 
     const { width } = this.state;
@@ -57,6 +64,12 @@ class Posts extends Component {
             <div className="col-md-12">
               <PostForm />
               {postContent}
+              <Pagination
+                maxPage={pages}
+                currentPage={Number(current)}
+                onChangePage={this.onChangePage}
+                isMobile={isMobile}
+              />
             </div>
           </div>
         </div>
