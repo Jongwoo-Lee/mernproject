@@ -4,9 +4,11 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import SelectListGroup from "../common/SelectListGroup";
 import InputGroup from "../common/InputGroup";
 import { createProfile } from "../../actions/profileActions";
+
+import Select from "react-select";
+import "react-select/dist/react-select.css";
 
 class CreateProfile extends Component {
   constructor(props) {
@@ -15,23 +17,23 @@ class CreateProfile extends Component {
     this.state = {
       displaySocialInputs: false,
       handle: "",
-      company: "",
-      website: "",
-      location: "",
-      status: "",
-      skills: "",
-      githubusername: "",
+      height: "",
+      weight: "",
+      mainfoot: [],
+      mainposition: [],
+      birthday: "",
       bio: "",
-      twitter: "",
-      facebook: "",
-      linkedin: "",
-      youtube: "",
-      instagram: "",
+      twitter: "https://www.twitter.com/",
+      facebook: "https://www.facebook.com/",
+      linkedin: "https://www.linkedin.com/",
+      youtube: "https://www.youtube.com/",
+      instagram: "https://www.instagram.com/",
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.PositionChange = this.PositionChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,12 +47,12 @@ class CreateProfile extends Component {
 
     const profileData = {
       handle: this.state.handle,
-      company: this.state.company,
-      website: this.state.website,
-      location: this.state.location,
-      status: this.state.status,
-      skills: this.state.skills,
-      githubusername: this.state.githubusername,
+      height: this.state.height,
+      weight: this.state.weight,
+      mainfoot: this.state.mainfoot,
+      mainposition: this.state.mainposition,
+      subposition: this.state.subposition,
+      birthday: this.state.birthday,
       bio: this.state.bio,
       twitter: this.state.twitter,
       facebook: this.state.facebook,
@@ -66,8 +68,12 @@ class CreateProfile extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  PositionChange(value) {
+    this.setState({ mainposition: value });
+  }
+
   render() {
-    const { errors, displaySocialInputs } = this.state;
+    const { errors, displaySocialInputs, mainposition, mainfoot } = this.state;
 
     let socialInputs;
 
@@ -75,7 +81,7 @@ class CreateProfile extends Component {
       socialInputs = (
         <div>
           <InputGroup
-            placeholder="Twitter Profile URL"
+            placeholder="Twitter 주소"
             name="twitter"
             icon="fab fa-twitter"
             value={this.state.twitter}
@@ -84,7 +90,7 @@ class CreateProfile extends Component {
           />
 
           <InputGroup
-            placeholder="Facebook Page URL"
+            placeholder="Facebook 주소"
             name="facebook"
             icon="fab fa-facebook"
             value={this.state.facebook}
@@ -93,7 +99,7 @@ class CreateProfile extends Component {
           />
 
           <InputGroup
-            placeholder="Linkedin Profile URL"
+            placeholder="Linkedin 주소"
             name="linkedin"
             icon="fab fa-linkedin"
             value={this.state.linkedin}
@@ -102,7 +108,7 @@ class CreateProfile extends Component {
           />
 
           <InputGroup
-            placeholder="YouTube Channel URL"
+            placeholder="YouTube Channel 주소"
             name="youtube"
             icon="fab fa-youtube"
             value={this.state.youtube}
@@ -111,7 +117,7 @@ class CreateProfile extends Component {
           />
 
           <InputGroup
-            placeholder="Instagram Page URL"
+            placeholder="Instagram 주소"
             name="instagram"
             icon="fab fa-instagram"
             value={this.state.instagram}
@@ -123,15 +129,14 @@ class CreateProfile extends Component {
     }
     // Select options for status
     const options = [
-      { label: "* Select Professional Status", value: 0 },
-      { label: "Developer", value: "Developer" },
-      { label: "Junior Developer", value: "Junior Developer" },
-      { label: "Senior Developer", value: "Senior Developer" },
-      { label: "Manager", value: "Manager" },
-      { label: "Student or Learning", value: "Student or Learning" },
-      { label: "Instructor or Teacher", value: "Instructor or Teacher" },
-      { label: "Intern", value: "Intern" },
-      { label: "Other", value: "Other" }
+      { label: "골키퍼", value: "GK" },
+      { label: "왼쪽수비수", value: "LB" },
+      { label: "중앙수비수", value: "CB" },
+      { label: "오른쪽수비수", value: "RB" },
+      { label: "왼쪽미드필더", value: "LM" },
+      { label: "중앙미드필더", value: "CM" },
+      { label: "오른쪽미드필더", value: "RM" },
+      { label: "공격수", value: "CF" }
     ];
 
     return (
@@ -139,69 +144,71 @@ class CreateProfile extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Your Profile</h1>
-              <p className="lead text-center">
-                Let's get some information to make your profile stand out
-              </p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">개인 프로필 작성</h1>
+              <small className="d-block pb-3">* = 필수항목</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="* Profile Handle"
+                  placeholder="* 등번호"
                   name="handle"
                   value={this.state.handle}
                   onChange={this.onChange}
                   error={errors.handle}
-                  info="A unique handle for your profile URL. Your name, company name, nickname"
+                  info="유니폼 등번호를 작성해주세요"
                 />
-                <SelectListGroup
-                  placeholder="Status"
-                  name="status"
-                  value={this.state.status}
-                  onChange={this.onChange}
+
+                <Select
+                  name="mainposition"
+                  placeholder={"* 주포지션"}
+                  multi={true}
+                  removeSelected={false}
+                  closeOnSelect={false}
+                  value={mainposition}
+                  onChange={this.PositionChange}
                   options={options}
-                  error={errors.status}
-                  info="Give us an idea or where you are at in your career"
+                />
+                <small className="form-text text-muted mb-3">
+                  주 포지션을 순서대로 선택해주세요
+                </small>
+
+                <TextFieldGroup
+                  placeholder="키"
+                  name="height"
+                  value={this.state.height}
+                  onChange={this.onChange}
+                  error={errors.height}
+                  info="본인의 키를 cm 단위로 작성해주세요"
                 />
                 <TextFieldGroup
-                  placeholder="Company"
-                  name="company"
-                  value={this.state.company}
+                  placeholder="몸무게"
+                  name="weight"
+                  value={this.state.weight}
                   onChange={this.onChange}
-                  error={errors.company}
-                  info="Could be your company or one you work for"
+                  error={errors.weight}
+                  info="본인의 몸무게를 kg 단위로 작성해주세요"
                 />
+                {/* <Select
+                  name="mainfoot"
+                  placeholder={"* 주발"}
+                  multi={true}
+                  removeSelected={false}
+                  closeOnSelect={false}
+                  value={mainfoot}
+                  onChange={this.handleChange}
+                  options={[
+                    { label: "오른발", value: "right" },
+                    { label: "왼발", value: "left" }
+                  ]}
+                /> */}
+                <small className="form-text text-muted mb-3">
+                  본인이 주로 사용하는 발을 선택해주세요
+                </small>
                 <TextFieldGroup
-                  placeholder="Website"
-                  name="website"
-                  value={this.state.website}
+                  placeholder="생일"
+                  name="birthday"
+                  value={this.state.birthday}
                   onChange={this.onChange}
-                  error={errors.website}
-                  info="Could be your own website or a company one"
-                />
-                <TextFieldGroup
-                  placeholder="Location"
-                  name="location"
-                  value={this.state.location}
-                  onChange={this.onChange}
-                  error={errors.location}
-                  info="City or city & state suggested (eg. Boston, MA)"
-                />
-                <TextFieldGroup
-                  placeholder="* Skills"
-                  name="skills"
-                  value={this.state.skills}
-                  onChange={this.onChange}
-                  error={errors.skills}
-                  info="Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP"
-                />
-                <TextFieldGroup
-                  placeholder="Github Username"
-                  name="githubusername"
-                  value={this.state.githubusername}
-                  onChange={this.onChange}
-                  error={errors.githubusername}
-                  info="If you want your latest repos and a Github link, include your username"
+                  error={errors.birthday}
+                  info="본인의 생일을 입력해주세요"
                 />
                 <TextAreaFieldGroup
                   placeholder="Short Bio"
@@ -209,7 +216,7 @@ class CreateProfile extends Component {
                   value={this.state.bio}
                   onChange={this.onChange}
                   error={errors.bio}
-                  info="Tell us a little about yourself"
+                  info="본인에 대해 짧게 소개해주세요"
                 />
 
                 <div className="mb-3">
@@ -222,9 +229,9 @@ class CreateProfile extends Component {
                     }}
                     className="btn btn-light"
                   >
-                    Add Social Network Links
+                    SNS 링크 추가하기
                   </button>
-                  <span className="text-muted">Optional</span>
+                  <span className="text-muted">(선택)</span>
                 </div>
                 {socialInputs}
                 <input
@@ -251,6 +258,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { createProfile })(
-  withRouter(CreateProfile)
-);
+export default connect(
+  mapStateToProps,
+  { createProfile }
+)(withRouter(CreateProfile));

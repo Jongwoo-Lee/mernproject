@@ -57,6 +57,13 @@ export class PostItem extends Component {
   render() {
     const { post, auth, showActions, isMobile } = this.props;
 
+    const date = new Intl.DateTimeFormat("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      hour: "numeric",
+      minute: "numeric"
+    }).format(new Date(post.date));
+
     const commentStyle = { fontSize: "12px" };
     const buttonStyle = { fontSize: "10px" };
 
@@ -106,10 +113,15 @@ export class PostItem extends Component {
           </div>
           <div className="row mb-3">
             <div className="col-3" />
-            <div className="col-6">
+            <div className="col-8">
               {showActions ? (
                 <span>
+                  {" "}
                   <div style={buttonStyle}>
+                    <small>
+                      <i>{date}</i>
+                    </small>{" "}
+                    &nbsp;&nbsp;&nbsp;
                     {likeContent}
                     <span className="badge badge-light">
                       {post.likes.length}
@@ -118,6 +130,7 @@ export class PostItem extends Component {
                       className="text-secondary fas fa-thumbs-down ml-3"
                       onClick={this.onUnlikeClick.bind(this, post._id)}
                     />
+                    &nbsp;&nbsp;&nbsp;댓글 {post.comments.length}
                   </div>
                 </span>
               ) : null}
@@ -132,7 +145,7 @@ export class PostItem extends Component {
             <div className="col-3 col-sm-2">
               <a href="profile.html">
                 <img
-                  className="rounded-circle d-none d-md-block"
+                  className="rounded-circle d-block"
                   src={post.thumbnail_image}
                   alt=""
                 />
@@ -151,6 +164,10 @@ export class PostItem extends Component {
               </p>
               {showActions ? (
                 <span>
+                  <small>
+                    <i>{date}</i>
+                  </small>{" "}
+                  &nbsp;
                   <button
                     onClick={this.onLikeClick.bind(this, post._id)}
                     type="button"
@@ -169,7 +186,10 @@ export class PostItem extends Component {
                     <i className="text-secondary fas fa-thumbs-down" />
                   </button>
                 </span>
-              ) : null}
+              ) : null}{" "}
+              <span onClick={this.onPostClick.bind(this, post._id)}>
+                댓글 {post.comments.length}
+              </span>
             </div>
             <div className="col-2 col-sm-2">
               {post.user === auth.user.id ? (

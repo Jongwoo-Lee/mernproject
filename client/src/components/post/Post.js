@@ -21,7 +21,10 @@ class Post extends Component {
     } else {
       postContent = (
         <div>
-          <PostItem post={post} showActions={false} isMobile={false} />
+          <PostItem post={post} showActions={true} isMobile={false} />
+          <div className="card card-header bg-dark text-white">
+            댓글 {post.comments.length}
+          </div>
           <CommentFeed
             postID={post._id}
             comments={post.comments}

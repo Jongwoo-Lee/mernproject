@@ -10,30 +10,30 @@ const ProfileSchema = new Schema({
   handle: {
     type: String,
     required: true,
-    max: 40
+    max: 10
   },
-  company: {
+  height: {
     type: String
   },
-  website: {
+  weight: {
     type: String
   },
-  location: {
-    type: String
-  },
-  status: {
-    type: String,
-    required: true
-  },
-  skills: {
+  mainfoot: {
     type: [String],
     required: true
+  },
+  mainposition: {
+    type: [String],
+    required: true
+  },
+  subposition: {
+    type: [String]
   },
   bio: {
     type: String
   },
-  githubusername: {
-    type: String
+  birthday: {
+    type: Date
   },
   experience: [
     {
