@@ -35,6 +35,7 @@ router.post("/register", (req, res) => {
     } else {
       const newUser = new User({
         username: req.body.username,
+        name: req.body.username,
         email: req.body.email,
         thumbnail_image:
           "https://s3.ap-northeast-2.amazonaws.com/jongwooleetestbucket/default_profile.png",

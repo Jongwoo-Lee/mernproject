@@ -19,15 +19,12 @@ const ProfileSchema = new Schema({
     type: String
   },
   mainfoot: {
-    type: [String],
+    type: [{ label: String, value: String, num: Number }],
     required: true
   },
   mainposition: {
-    type: [String],
+    type: [{ label: String, value: String, num: Number }],
     required: true
-  },
-  subposition: {
-    type: [String]
   },
   bio: {
     type: String

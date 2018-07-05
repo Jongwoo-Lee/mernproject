@@ -93,12 +93,12 @@ export class PostItem extends Component {
       return (
         <div>
           <div className="row">
-            <div className="col-3 col-sm-2">
+            <div className="col-2 col-sm-2">
               <p className="text-center" style={commentStyle}>
                 <b>{post.name}</b>
               </p>
             </div>
-            <div className="col-7 col-sm-8" style={commentStyle}>
+            <div className="col-7 col-sm-7" style={commentStyle}>
               <p onClick={this.onPostClick.bind(this, post._id)}>{post.text}</p>
             </div>
             <div className="col-2 col-sm-2">

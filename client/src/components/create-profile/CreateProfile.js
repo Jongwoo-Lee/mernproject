@@ -10,6 +10,10 @@ import { createProfile } from "../../actions/profileActions";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +25,7 @@ class CreateProfile extends Component {
       weight: "",
       mainfoot: [],
       mainposition: [],
-      birthday: "",
+      birthday: moment(),
       bio: "",
       twitter: "https://www.twitter.com/",
       facebook: "https://www.facebook.com/",
@@ -34,6 +38,8 @@ class CreateProfile extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.PositionChange = this.PositionChange.bind(this);
+    this.MainfootChange = this.MainfootChange.bind(this);
+    this.DateChange = this.DateChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,13 +51,27 @@ class CreateProfile extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    // Main Position 순서 정하기
+    let num = 0;
+    let mainposition = this.state.mainposition.map(pos => {
+      let newPos = { ...pos, num: num++ };
+      return newPos;
+    });
+
+    num = 0;
+    let mainfoot = this.state.mainfoot.map(pos => {
+      let newPos = {};
+      newPos.label = pos.label;
+      newPos.value = num++;
+      return newPos;
+    });
+
     const profileData = {
       handle: this.state.handle,
       height: this.state.height,
       weight: this.state.weight,
-      mainfoot: this.state.mainfoot,
-      mainposition: this.state.mainposition,
-      subposition: this.state.subposition,
+      mainfoot: mainfoot,
+      mainposition: mainposition,
       birthday: this.state.birthday,
       bio: this.state.bio,
       twitter: this.state.twitter,
@@ -72,8 +92,21 @@ class CreateProfile extends Component {
     this.setState({ mainposition: value });
   }
 
+  MainfootChange(value) {
+    this.setState({ mainfoot: value });
+  }
+
+  DateChange(date) {
+    this.setState({ birthday: date });
+  }
   render() {
-    const { errors, displaySocialInputs, mainposition, mainfoot } = this.state;
+    const {
+      errors,
+      displaySocialInputs,
+      mainposition,
+      mainfoot,
+      birthday
+    } = this.state;
 
     let socialInputs;
 
@@ -155,7 +188,6 @@ class CreateProfile extends Component {
                   error={errors.handle}
                   info="유니폼 등번호를 작성해주세요"
                 />
-
                 <Select
                   name="mainposition"
                   placeholder={"* 주포지션"}
@@ -169,7 +201,6 @@ class CreateProfile extends Component {
                 <small className="form-text text-muted mb-3">
                   주 포지션을 순서대로 선택해주세요
                 </small>
-
                 <TextFieldGroup
                   placeholder="키"
                   name="height"
@@ -186,30 +217,36 @@ class CreateProfile extends Component {
                   error={errors.weight}
                   info="본인의 몸무게를 kg 단위로 작성해주세요"
                 />
-                {/* <Select
+                <Select
                   name="mainfoot"
                   placeholder={"* 주발"}
                   multi={true}
                   removeSelected={false}
                   closeOnSelect={false}
                   value={mainfoot}
-                  onChange={this.handleChange}
+                  onChange={this.MainfootChange}
                   options={[
                     { label: "오른발", value: "right" },
                     { label: "왼발", value: "left" }
                   ]}
-                /> */}
+                />
                 <small className="form-text text-muted mb-3">
                   본인이 주로 사용하는 발을 선택해주세요
                 </small>
-                <TextFieldGroup
+                {/* <TextFieldGroup
                   placeholder="생일"
                   name="birthday"
                   value={this.state.birthday}
                   onChange={this.onChange}
                   error={errors.birthday}
                   info="본인의 생일을 입력해주세요"
-                />
+                /> */}{" "}
+                <div className="form-group">
+                  <DatePicker selected={birthday} onChange={this.DateChange} />
+                  <small className="form-text text-muted mb-3">
+                    본인의 생일을 입력해주세요
+                  </small>
+                </div>
                 <TextAreaFieldGroup
                   placeholder="Short Bio"
                   name="bio"
@@ -218,7 +255,6 @@ class CreateProfile extends Component {
                   error={errors.bio}
                   info="본인에 대해 짧게 소개해주세요"
                 />
-
                 <div className="mb-3">
                   <button
                     type="button"
