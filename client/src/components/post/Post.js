@@ -7,14 +7,20 @@ import CommentForm from "../common/comments/CommentForm";
 import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
 import { getPost, addComment, deleteComment } from "../../actions/postActions";
+import shallowCompare from "react-addons-shallow-compare";
 
 class Post extends Component {
   componentDidMount() {
     this.props.getPost(this.props.match.params.id);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   render() {
     const { post, loading } = this.props.post;
+    console.log(post);
     let postContent;
     if (post === null || loading || Object.keys(post).length === 0) {
       postContent = <Spinner />;
