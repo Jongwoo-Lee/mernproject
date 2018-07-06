@@ -14,9 +14,12 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+//import DatePicker from "react-bootstrap-date-picker";
+
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
+    const startDate = new Date(1990, 1, 1);
 
     this.state = {
       displaySocialInputs: false,
@@ -25,7 +28,8 @@ class CreateProfile extends Component {
       weight: "",
       mainfoot: [],
       mainposition: [],
-      birthday: moment(),
+      birthday: moment(startDate),
+      //new Date().toISOString()
       bio: "",
       twitter: "https://www.twitter.com/",
       facebook: "https://www.facebook.com/",
@@ -48,7 +52,7 @@ class CreateProfile extends Component {
     }
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault();
 
     // Main Position 순서 정하기
@@ -65,6 +69,17 @@ class CreateProfile extends Component {
       newPos.value = num++;
       return newPos;
     });
+
+    if (this.state.twitter === "https://www.twitter.com/")
+      await this.setState({ twitter: null });
+    if (this.state.facebook === "https://www.facebook.com/")
+      await this.setState({ facebook: null });
+    if (this.state.linkedin === "https://www.linkedin.com/")
+      await this.setState({ linkedin: null });
+    if (this.state.youtube === "https://www.youtube.com/")
+      await this.setState({ youtube: null });
+    if (this.state.instagram === "https://www.instagram.com/")
+      await this.setState({ instagram: null });
 
     const profileData = {
       handle: this.state.handle,
@@ -233,20 +248,16 @@ class CreateProfile extends Component {
                 <small className="form-text text-muted mb-3">
                   본인이 주로 사용하는 발을 선택해주세요
                 </small>
-                {/* <TextFieldGroup
-                  placeholder="생일"
-                  name="birthday"
-                  value={this.state.birthday}
-                  onChange={this.onChange}
-                  error={errors.birthday}
-                  info="본인의 생일을 입력해주세요"
-                /> */}{" "}
-                <div className="form-group">
-                  <DatePicker selected={birthday} onChange={this.DateChange} />
-                  <small className="form-text text-muted mb-3">
-                    본인의 생일을 입력해주세요
-                  </small>
-                </div>
+                <DatePicker
+                  className="form-control form-control-md"
+                  dateFormat="MM-DD-YYYY"
+                  selected={birthday}
+                  onChange={this.DateChange}
+                  showYearDropdown={true}
+                />
+                <small className="form-text text-muted mb-3">
+                  본인의 생일을 입력해주세요
+                </small>
                 <TextAreaFieldGroup
                   placeholder="Short Bio"
                   name="bio"
