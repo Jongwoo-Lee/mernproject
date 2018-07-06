@@ -142,7 +142,7 @@ export class PostItem extends Component {
       return (
         <div className="card card-body mb-4">
           <div className="row">
-            <div className="col-3 col-sm-2">
+            <div className="col-3 col-sm-3">
               <a href="profile.html">
                 <img
                   className="rounded-circle d-block"
@@ -155,7 +155,7 @@ export class PostItem extends Component {
                 <b>{post.name}</b>
               </p>
             </div>
-            <div className="col-7 col-sm-8">
+            <div className="col-7 col-sm-7">
               <p
                 className="lead"
                 onClick={this.onPostClick.bind(this, post._id)}
