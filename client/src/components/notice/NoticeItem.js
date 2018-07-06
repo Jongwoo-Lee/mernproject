@@ -95,7 +95,7 @@ export class NoticeItem extends Component {
               ) : null}
             </div>
             <div className="col-md-2">
-              <a href="profile.html">
+              <a href="/profile">
                 <img
                   className="rounded-circle d-none d-md-block"
                   src={notice.thumbnail_image}
@@ -104,7 +104,7 @@ export class NoticeItem extends Component {
               </a>
               <br />
               <p className="text-center">
-                by <b>{notice.name}</b>
+                <b>{notice.name}</b>
               </p>
             </div>
           </div>

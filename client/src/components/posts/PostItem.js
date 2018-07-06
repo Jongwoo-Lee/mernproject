@@ -142,7 +142,7 @@ export class PostItem extends Component {
       return (
         <div className="card card-body mb-4">
           <div className="row">
-            <div className="col-3 col-sm-3">
+            <div className="col-3 col-sm-2">
               <a href="profile.html">
                 <img
                   className="rounded-circle d-block"
@@ -151,9 +151,7 @@ export class PostItem extends Component {
                 />
               </a>
               <br />
-              <p className="text-center">
-                <b>{post.name}</b>
-              </p>
+              <p className="text-center">{post.name}</p>
             </div>
             <div className="col-7 col-sm-7">
               <p
@@ -187,6 +185,7 @@ export class PostItem extends Component {
                   </button>
                 </span>
               ) : null}{" "}
+              <br />
               <span onClick={this.onPostClick.bind(this, post._id)}>
                 댓글 {post.comments.length}
               </span>

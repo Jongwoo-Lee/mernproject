@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PostItem from "../posts/PostItem";
+import NoticeItem from "../notice/NoticeItem";
 import CommentForm from "../common/comments/CommentForm";
 import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
@@ -26,7 +27,7 @@ class Post extends Component {
     } else {
       postContent = (
         <div>
-          <PostItem post={post} showActions={true} isMobile={false} />
+          <NoticeItem notice={post} />
           <div className="card card-header bg-dark text-white">
             댓글 {post.comments.length}
           </div>

@@ -2,20 +2,6 @@ import React from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-const POSITION = [
-  { label: "GK", value: "GK" },
-  { label: "수비수", value: "defender", disabled: true },
-  { label: "CB", value: "CB, SW" },
-  { label: "LB", value: "LB, LWB" },
-  { label: "RB", value: "RB, RWB" },
-  { label: "미드필더", value: "midfielder", disabled: true },
-  { label: "LM", value: "LM, LW" },
-  { label: "CM", value: "CM, DM, AM" },
-  { label: "RM", value: "RM, RW" },
-  { label: "공격수", value: "forward", disabled: true },
-  { label: "CF", value: "CF" }
-];
-
 const SelectListGroup = ({ name, value, error, info, onChange, options }) => {
   const selectOptions = options.map(option => (
     <option key={option.label} value={option.value}>
