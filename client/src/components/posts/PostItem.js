@@ -93,7 +93,7 @@ export class PostItem extends Component {
       return (
         <div className="border-bottom mt-3">
           <div className="row">
-            <div className="col-2 col-sm-2">
+            <div className="col-3 col-sm-3">
               <p className="text-center" style={commentStyle}>
                 <b>{post.name}</b>
               </p>
@@ -101,7 +101,7 @@ export class PostItem extends Component {
             <div className="col-7 col-sm-7" style={commentStyle}>
               <p onClick={this.onPostClick.bind(this, post._id)}>{post.text}</p>
             </div>
-            <div className="col-2 col-sm-2">
+            <div className="col-1 col-sm-1">
               {post.user === auth.user.id ? (
                 <i
                   className="fas fa-times"
@@ -112,7 +112,7 @@ export class PostItem extends Component {
             </div>
           </div>
           <div className="row mb-3">
-            <div className="col-2" />
+            <div className="col-3" />
             <div className="col-8">
               {showActions ? (
                 <span>
