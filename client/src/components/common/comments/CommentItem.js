@@ -21,20 +21,20 @@ class CommentItem extends Component {
 
     if (isMobile) {
       return (
-        <div>
+        <div className="border-bottom">
           <div className="row mt-3">
             <div className="col-3 col-sm-2">
               <p className="text-center" style={commentStyle}>
                 <b>{comment.name}</b>
               </p>
             </div>
-            <div className="col-8 col-sm-9" style={commentStyle}>
+            <div className="col-7 col-sm-8" style={commentStyle}>
               <p>{comment.text}</p>
               <small>
                 <i>{date}</i>
               </small>
             </div>
-            <div className="col-1 col-sm-1">
+            <div className="col-2 col-sm-2">
               {comment.user === auth.user.id ? (
                 <i
                   className="fas fa-times"

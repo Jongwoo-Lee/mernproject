@@ -91,7 +91,7 @@ export class PostItem extends Component {
 
     if (isMobile) {
       return (
-        <div>
+        <div className="border-bottom mt-3">
           <div className="row">
             <div className="col-2 col-sm-2">
               <p className="text-center" style={commentStyle}>
@@ -112,7 +112,7 @@ export class PostItem extends Component {
             </div>
           </div>
           <div className="row mb-3">
-            <div className="col-3" />
+            <div className="col-2" />
             <div className="col-8">
               {showActions ? (
                 <span>
