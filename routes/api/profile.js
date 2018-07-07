@@ -133,7 +133,13 @@ router.post(
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
-
+    // Check if handle exists
+    Profile.findOne({ handle: profileFields.handle }).then(profile => {
+      if (profile) {
+        errors.handle = "이미 등록되어있는 등번호입니다";
+        res.status(400).json(errors);
+      }
+    });
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         // update
@@ -145,16 +151,8 @@ router.post(
       } else {
         // Create
 
-        // Check if handle exists
-        Profile.findOne({ handle: profileFields.handle }).then(profile => {
-          if (profile) {
-            errors.handle = "That handle already exists";
-            res.status(400).json(errors);
-          }
-
-          // Save Profile
-          new Profile(profileFields).save().then(profile => res.json(profile));
-        });
+        // Save Profile
+        new Profile(profileFields).save().then(profile => res.json(profile));
       }
     });
   }

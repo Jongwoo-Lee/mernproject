@@ -6,6 +6,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import InputGroup from "../common/InputGroup";
 import { createProfile } from "../../actions/profileActions";
+import { changeName } from "../../actions/authActions";
 
 import Select from "react-select";
 import "react-select/dist/react-select.css";
@@ -20,8 +21,8 @@ class CreateProfile extends Component {
     const startDate = new Date(1990, 1, 1);
 
     this.state = {
-      width: window.innerWidth,
       displaySocialInputs: false,
+      name: this.props.auth.user.name,
       handle: "",
       height: "",
       weight: "",
@@ -44,21 +45,6 @@ class CreateProfile extends Component {
     this.MainfootChange = this.MainfootChange.bind(this);
     this.DateChange = this.DateChange.bind(this);
   }
-
-  componentWillMount() {
-    window.addEventListener("resize", this.handleWindowSizeChange);
-  }
-
-  // make sure to remove the listener
-  // when the component is not mounted anymore
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.handleWindowSizeChange);
-  }
-
-  handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth });
-  };
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -109,6 +95,15 @@ class CreateProfile extends Component {
       instagram: this.state.instagram
     };
 
+    if (this.state.handle && this.state.name) {
+      const nameData = {
+        id: this.props.auth.user.id,
+        name: this.state.name,
+        handle: this.state.handle
+      };
+      await this.props.changeName(nameData);
+    }
+
     this.props.createProfile(profileData, this.props.history);
   }
 
@@ -133,11 +128,8 @@ class CreateProfile extends Component {
       displaySocialInputs,
       mainposition,
       mainfoot,
-      birthday,
-      width
+      birthday
     } = this.state;
-
-    const isMobile = width <= 500;
 
     let socialInputs;
 
@@ -212,6 +204,14 @@ class CreateProfile extends Component {
               <small className="d-block pb-3">* = 필수항목</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
+                  placeholder="* 이름"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.onChange}
+                  error={errors.name}
+                  info="이름을 작성해주세요"
+                />
+                <TextFieldGroup
                   placeholder="* 등번호"
                   name="handle"
                   value={this.state.handle}
@@ -223,6 +223,7 @@ class CreateProfile extends Component {
                   name="mainposition"
                   placeholder={"* 주포지션"}
                   multi={true}
+                  searchable={false}
                   removeSelected={false}
                   closeOnSelect={false}
                   value={mainposition}
@@ -252,6 +253,7 @@ class CreateProfile extends Component {
                   name="mainfoot"
                   placeholder={"* 주발"}
                   multi={true}
+                  searchable={false}
                   removeSelected={false}
                   closeOnSelect={false}
                   value={mainfoot}
@@ -271,6 +273,7 @@ class CreateProfile extends Component {
                   onChange={this.DateChange}
                   showYearDropdown={true}
                   readOnly={true}
+                  scrollableYearDropdown={true}
                 />
                 <small className="form-text text-muted mb-3">
                   본인의 생일을 입력해주세요
@@ -313,16 +316,20 @@ class CreateProfile extends Component {
 }
 
 CreateProfile.propTypes = {
+  createProfile: PropTypes.func.isRequired,
+  changeName: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   profile: state.profile,
+  auth: state.auth,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createProfile }
+  { createProfile, changeName }
 )(withRouter(CreateProfile));

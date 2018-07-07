@@ -19,13 +19,25 @@ class Profile extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile.profile === null && this.props.profile.loading) {
-      this.props.history.push("/notfound");
+      this.props.history.push("/create-profile");
     }
   }
 
   render() {
     const { profile, loading } = this.props.profile;
-    let profileContent;
+    let profileContent, editButton;
+
+    const userId = this.props.auth.user.id;
+
+    if (profile && profile.user && profile.user._id === userId) {
+      editButton = (
+        <Link to="/edit-profile" className="btn btn-light mb-3 float-right">
+          프로필 수정
+        </Link>
+      );
+    } else {
+      editButton = null;
+    }
 
     if (profile === null || loading) {
       profileContent = <Spinner />;
@@ -35,10 +47,10 @@ class Profile extends Component {
           <div className="row">
             <div className="col-md-6">
               <Link to="/members" className="btn btn-light mb-3 float-left">
-                Back To Profiles
+                전체 명단
               </Link>
             </div>
-            <div className="col-md-6" />
+            <div className="col-md-6">{editButton}</div>
           </div>
           <ProfileHeader profile={profile} />
           <ProfileAbout profile={profile} />
@@ -67,11 +79,13 @@ class Profile extends Component {
 
 Profile.propTypes = {
   getProfileByHandle: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile
+  profile: state.profile,
+  auth: state.auth
 });
 
 export default connect(

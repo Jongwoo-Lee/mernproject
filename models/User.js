@@ -12,6 +12,10 @@ const UserSchema = new Schema({
     lowercase: true,
     required: true
   },
+  handle: {
+    type: String,
+    default: "noprofile"
+  },
   password: {
     type: String,
     required: true

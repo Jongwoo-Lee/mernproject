@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
@@ -11,7 +11,7 @@ class Navbar extends Component {
   onLogoutClick(e) {
     e.preventDefault();
     this.props.clearCurrentProfile();
-    this.props.logoutUser();
+    this.props.logoutUser(this.props.history);
   }
 
   render() {
@@ -20,21 +20,39 @@ class Navbar extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
+          <Link className="nav-link" to="/notices">
+            {" "}
+            공지사항
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/rules">
+            {" "}
+            규칙
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/members">
+            {" "}
+            멤버
+          </Link>
+        </li>
+        <li className="nav-item">
           <Link className="nav-link" to="/feed">
             회원게시판
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" to="/public">
             공개자료실
           </Link>
-        </li>
+        </li> */}
         <li className="nav-item">
-          <Link className="nav-link" to="/dashboard">
-            회원자료실
+          <Link className="nav-link" to={`/profile/${user.handle}`}>
+            프로필
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link className="nav-link" to="/schedule">
             스케쥴
           </Link>
@@ -43,7 +61,7 @@ class Navbar extends Component {
           <Link className="nav-link" to="/results">
             경기결과
           </Link>
-        </li>
+        </li> */}
         <li className="nav-item">
           <a
             href=""
@@ -105,7 +123,7 @@ class Navbar extends Component {
             data-target=".navbar-collapse.show"
           >
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className="nav-link" to="/notices">
                   {" "}
                   공지사항
@@ -122,7 +140,7 @@ class Navbar extends Component {
                   {" "}
                   멤버
                 </Link>
-              </li>
+              </li> */}
             </ul>
             {isAuthenticated ? authLinks : guestLinks}
           </div>
@@ -133,6 +151,7 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
+  clearCurrentProfile: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -144,4 +163,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser, clearCurrentProfile }
-)(Navbar);
+)(withRouter(Navbar));

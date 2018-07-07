@@ -6,22 +6,28 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import InputGroup from "../common/InputGroup";
 import { createProfile, getCurrentProfile } from "../../actions/profileActions";
+import { changeName } from "../../actions/authActions";
 import isEmpty from "../../validation/is-empty";
 
 import Select from "react-select";
 import "react-select/dist/react-select.css";
+
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       displaySocialInputs: false,
+      name: this.props.auth.user.name,
       handle: "",
       height: "",
       weight: "",
       mainfoot: [],
       mainposition: [],
-      birthday: "",
+      birthday: moment(),
       bio: "",
       twitter: "",
       facebook: "",
@@ -35,6 +41,7 @@ class CreateProfile extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.PositionChange = this.PositionChange.bind(this);
     this.MainfootChange = this.MainfootChange.bind(this);
+    this.DateChange = this.DateChange.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +64,9 @@ class CreateProfile extends Component {
       profile.handle = !isEmpty(profile.handle) ? profile.handle : "";
       profile.height = !isEmpty(profile.height) ? profile.height : "";
       profile.weight = !isEmpty(profile.weight) ? profile.weight : "";
-      profile.birthday = !isEmpty(profile.birthday) ? profile.birthday : "";
+      profile.birthday = !isEmpty(profile.birthday)
+        ? moment(profile.birthday)
+        : "";
       profile.bio = !isEmpty(profile.bio) ? profile.bio : "";
       profile.social = !isEmpty(profile.social) ? profile.social : {};
       profile.twitter = !isEmpty(profile.social.twitter)
@@ -100,8 +109,38 @@ class CreateProfile extends Component {
     this.setState({ mainfoot: value });
   }
 
-  onSubmit(e) {
+  DateChange(date) {
+    this.setState({ birthday: date });
+  }
+
+  async onSubmit(e) {
     e.preventDefault();
+
+    // Main Position 순서 정하기
+    let num = 0;
+    let mainposition = this.state.mainposition.map(pos => {
+      let newPos = { ...pos, num: num++ };
+      return newPos;
+    });
+
+    num = 0;
+    let mainfoot = this.state.mainfoot.map(pos => {
+      let newPos = {};
+      newPos.label = pos.label;
+      newPos.value = num++;
+      return newPos;
+    });
+
+    if (this.state.twitter === "https://www.twitter.com/")
+      await this.setState({ twitter: null });
+    if (this.state.facebook === "https://www.facebook.com/")
+      await this.setState({ facebook: null });
+    if (this.state.linkedin === "https://www.linkedin.com/")
+      await this.setState({ linkedin: null });
+    if (this.state.youtube === "https://www.youtube.com/")
+      await this.setState({ youtube: null });
+    if (this.state.instagram === "https://www.instagram.com/")
+      await this.setState({ instagram: null });
 
     const profileData = {
       handle: this.state.handle,
@@ -118,6 +157,15 @@ class CreateProfile extends Component {
       instagram: this.state.instagram
     };
 
+    if (this.state.handle && this.state.name) {
+      const nameData = {
+        id: this.props.auth.user.id,
+        name: this.state.name,
+        handle: this.state.handle
+      };
+      await this.props.changeName(nameData);
+    }
+
     this.props.createProfile(profileData, this.props.history);
   }
 
@@ -128,6 +176,10 @@ class CreateProfile extends Component {
   render() {
     const { errors, displaySocialInputs, mainposition, mainfoot } = this.state;
 
+    let handle;
+    if (this.props.profile && this.props.profile.profile) {
+      handle = this.props.profile.profile.handle;
+    }
     let socialInputs;
 
     if (displaySocialInputs) {
@@ -197,12 +249,20 @@ class CreateProfile extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <Link to="/dashboard" className="btn btn-light">
+              <Link to={`/profile/${handle}`} className="btn btn-light">
                 Go Back
               </Link>
               <h1 className="display-4 text-center">개인 프로필 수정</h1>
               <small className="d-block pb-3">* = 필수항목</small>
               <form onSubmit={this.onSubmit}>
+                <TextFieldGroup
+                  placeholder="* 이름"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.onChange}
+                  error={errors.name}
+                  info="이름을 작성해주세요"
+                />
                 <TextFieldGroup
                   placeholder="* 등번호"
                   name="handle"
@@ -216,6 +276,7 @@ class CreateProfile extends Component {
                   placeholder={"* 주포지션"}
                   multi={true}
                   removeSelected={false}
+                  searchable={false}
                   closeOnSelect={false}
                   value={mainposition}
                   onChange={this.PositionChange}
@@ -245,6 +306,7 @@ class CreateProfile extends Component {
                   name="mainfoot"
                   placeholder={"* 주발"}
                   multi={true}
+                  searchable={false}
                   removeSelected={false}
                   closeOnSelect={false}
                   value={mainfoot}
@@ -257,14 +319,26 @@ class CreateProfile extends Component {
                 <small className="form-text text-muted mb-3">
                   본인이 주로 사용하는 발을 선택해주세요
                 </small>
-                <TextFieldGroup
+                {/* <TextFieldGroup
                   placeholder="생일"
                   name="birthday"
                   value={this.state.birthday}
                   onChange={this.onChange}
                   error={errors.birthday}
                   info="본인의 생일을 입력해주세요"
+                /> */}
+                <DatePicker
+                  className="form-control form-control-md"
+                  dateFormat="MM-DD-YYYY"
+                  selected={this.state.birthday}
+                  onChange={this.DateChange}
+                  showYearDropdown={true}
+                  readOnly={true}
+                  scrollableYearDropdown={true}
                 />
+                <small className="form-text text-muted mb-3">
+                  본인의 생일을 입력해주세요
+                </small>
                 <TextAreaFieldGroup
                   placeholder="Short Bio"
                   name="bio"
@@ -306,16 +380,19 @@ class CreateProfile extends Component {
 CreateProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
+  changeName: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   profile: state.profile,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createProfile, getCurrentProfile }
+  { createProfile, getCurrentProfile, changeName }
 )(withRouter(CreateProfile));

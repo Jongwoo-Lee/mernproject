@@ -55,6 +55,55 @@ router.post("/register", (req, res) => {
   });
 });
 
+router.put(
+  "/name",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const id = req.body.id;
+    const name = req.body.name;
+    const handle = req.body.handle;
+    // Find user by email
+    User.findById(id).then(user => {
+      // Check for user
+      if (!user) {
+        errors.email = "User not found";
+        return res.status(404).json(errors);
+      } else {
+        user.name = name;
+        user.handle = handle;
+        user
+          .save()
+          .then((
+            user // User Matched
+          ) => {
+            const payload = {
+              id: user.id,
+              name: user.name,
+              handle: user.handle,
+              thumbnail_image: user.thumbnail_image,
+              active: user.active,
+              admin: user.admin
+            }; // Create JWT payload
+
+            // Sign Token
+            jwt.sign(
+              payload,
+              keys.secret,
+              { expiresIn: "2h" },
+              (err, token) => {
+                res.json({
+                  success: true,
+                  token: "Bearer " + token
+                });
+              }
+            );
+          })
+          .catch(err => console.log(err));
+      }
+    });
+  }
+);
+
 // @route   POST api/users/login
 // @desc    Login user / Returning JWT Token
 // @access  Public
@@ -84,6 +133,7 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
+          handle: user.handle,
           thumbnail_image: user.thumbnail_image,
           active: user.active,
           admin: user.admin
