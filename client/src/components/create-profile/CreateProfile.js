@@ -14,14 +14,13 @@ import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-//import DatePicker from "react-bootstrap-date-picker";
-
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
     const startDate = new Date(1990, 1, 1);
 
     this.state = {
+      width: window.innerWidth,
       displaySocialInputs: false,
       handle: "",
       height: "",
@@ -45,6 +44,20 @@ class CreateProfile extends Component {
     this.MainfootChange = this.MainfootChange.bind(this);
     this.DateChange = this.DateChange.bind(this);
   }
+
+  componentWillMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  // make sure to remove the listener
+  // when the component is not mounted anymore
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  handleWindowSizeChange = () => {
+    this.setState({ width: window.innerWidth });
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
@@ -120,8 +133,11 @@ class CreateProfile extends Component {
       displaySocialInputs,
       mainposition,
       mainfoot,
-      birthday
+      birthday,
+      width
     } = this.state;
+
+    const isMobile = width <= 500;
 
     let socialInputs;
 
@@ -254,6 +270,7 @@ class CreateProfile extends Component {
                   selected={birthday}
                   onChange={this.DateChange}
                   showYearDropdown={true}
+                  readOnly={true}
                 />
                 <small className="form-text text-muted mb-3">
                   본인의 생일을 입력해주세요

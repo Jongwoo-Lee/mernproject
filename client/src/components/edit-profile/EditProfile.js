@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import SelectListGroup from "../common/SelectListGroup";
 import InputGroup from "../common/InputGroup";
 import { createProfile, getCurrentProfile } from "../../actions/profileActions";
 import isEmpty from "../../validation/is-empty";
