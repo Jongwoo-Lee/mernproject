@@ -6,14 +6,7 @@ import PostItem from "./PostItem";
 import CommentForm from "../common/comments/CommentForm";
 import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
-import {
-  getPost,
-  addComment,
-  deleteComment,
-  deletePost,
-  addLike,
-  removeLike
-} from "../../actions/postActions";
+import { getPost, addComment, deleteComment } from "../../actions/postActions";
 
 import shallowCompare from "react-addons-shallow-compare";
 
