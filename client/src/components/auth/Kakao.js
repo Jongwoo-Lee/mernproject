@@ -24,7 +24,7 @@ class Kakao extends Component {
   componentWillReceiveProps(nextProps) {
     // If some logged in user tries to get into login page, redirect to dashboard
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/feed");
     }
   }
 
