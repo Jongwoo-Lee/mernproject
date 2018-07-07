@@ -18,9 +18,9 @@ export const registerUser = (userData, history) => dispatch => {
 };
 
 // Change User name
-export const changeName = userData => dispatch => {
+export const getProfileAuth = userData => dispatch => {
   axios
-    .put("/api/users/name", userData)
+    .get(`/api/users/name/${userData}`)
     .then(res => {
       // Save to localStorage
       const { token } = res.data;

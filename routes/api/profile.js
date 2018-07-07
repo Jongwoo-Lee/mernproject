@@ -113,7 +113,9 @@ router.post(
 
     // Get fields
     const profileFields = {};
+    let name;
     profileFields.user = req.user.id;
+    if (req.body.name) name = req.body.name;
     if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.height) profileFields.height = req.body.height;
     if (req.body.weight) profileFields.weight = req.body.weight;
@@ -133,13 +135,16 @@ router.post(
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
-    // Check if handle exists
-    Profile.findOne({ handle: profileFields.handle }).then(profile => {
-      if (profile) {
-        errors.handle = "이미 등록되어있는 등번호입니다";
-        res.status(400).json(errors);
-      }
-    });
+
+    if (req.body.handleChange) {
+      Profile.findOne({ handle: profileFields.handle }).then(profile => {
+        if (profile) {
+          errors.handle = "이미 등록되어있는 등번호입니다";
+          res.status(400).json(errors);
+        }
+      });
+    }
+
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         // update
@@ -147,12 +152,30 @@ router.post(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
-        ).then(profile => res.json(profile));
+        ).then(profile => {
+          User.findOneAndUpdate(
+            { _id: req.user.id },
+            { $set: { name, handle: profileFields.handle } }
+          ).then(user => res.json(profile));
+        });
       } else {
         // Create
 
-        // Save Profile
-        new Profile(profileFields).save().then(profile => res.json(profile));
+        // Check if handle exists
+        Profile.findOne({ handle: profileFields.handle }).then(profile => {
+          if (profile) {
+            errors.handle = "이미 등록되어있는 등번호입니다";
+            res.status(400).json(errors);
+          }
+
+          // Save Profile
+          new Profile(profileFields).save().then(profile => {
+            User.findOneAndUpdate(
+              { _id: req.user.id },
+              { $set: { name, handle: profileFields.handle } }
+            ).then(user => res.json(profile));
+          });
+        });
       }
     });
   }

@@ -37,7 +37,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case ADD_POST:
-      state.posts.pop();
+      if (state.posts.length >= 10) state.posts.pop();
       return {
         ...state,
         posts: [action.payload, ...state.posts]

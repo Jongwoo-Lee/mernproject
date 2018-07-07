@@ -6,7 +6,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import InputGroup from "../common/InputGroup";
 import { createProfile } from "../../actions/profileActions";
-import { changeName } from "../../actions/authActions";
+import { getProfileAuth } from "../../actions/authActions";
 
 import Select from "react-select";
 import "react-select/dist/react-select.css";
@@ -80,7 +80,12 @@ class CreateProfile extends Component {
     if (this.state.instagram === "https://www.instagram.com/")
       await this.setState({ instagram: null });
 
+    let handleChange = false;
+    if (this.state.handle !== this.props.auth.user.handle) handleChange = true;
+
     const profileData = {
+      id: this.props.auth.user.id,
+      name: this.state.name,
       handle: this.state.handle,
       height: this.state.height,
       weight: this.state.weight,
@@ -92,17 +97,9 @@ class CreateProfile extends Component {
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
       youtube: this.state.youtube,
-      instagram: this.state.instagram
+      instagram: this.state.instagram,
+      handleChange
     };
-
-    if (this.state.handle && this.state.name) {
-      const nameData = {
-        id: this.props.auth.user.id,
-        name: this.state.name,
-        handle: this.state.handle
-      };
-      await this.props.changeName(nameData);
-    }
 
     this.props.createProfile(profileData, this.props.history);
   }
@@ -317,7 +314,7 @@ class CreateProfile extends Component {
 
 CreateProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
-  changeName: PropTypes.func.isRequired,
+  getProfileAuth: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -331,5 +328,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createProfile, changeName }
+  { createProfile, getProfileAuth }
 )(withRouter(CreateProfile));
