@@ -142,7 +142,8 @@ class CreateProfile extends Component {
       await this.setState({ instagram: null });
 
     let handleChange = false;
-    if (this.state.handle !== this.props.auth.user.handle) handleChange = true;
+    if (this.state.handle !== this.props.profile.profile.user.handle)
+      handleChange = true;
 
     const profileData = {
       id: this.props.auth.user.id,
@@ -151,8 +152,8 @@ class CreateProfile extends Component {
       height: this.state.height,
       weight: this.state.weight,
       birthday: this.state.birthday,
-      mainposition: this.state.mainposition,
-      mainfoot: this.state.mainfoot,
+      mainposition: mainposition,
+      mainfoot: mainfoot,
       bio: this.state.bio,
       twitter: this.state.twitter,
       facebook: this.state.facebook,

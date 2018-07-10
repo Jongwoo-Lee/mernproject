@@ -61,7 +61,6 @@ router.get(
   (req, res) => {
     const { id } = req.params;
 
-    console.log(id);
     // Find user by email
     User.findById(id).then(user => {
       // Check for user

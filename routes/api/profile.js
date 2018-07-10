@@ -28,7 +28,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name", "thumbnail_image"])
+      .populate("user", ["name", "thumbnail_image", "handle"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -46,6 +46,7 @@ router.get(
 router.get("/all", (req, res) => {
   const errors = {};
   Profile.find()
+    .sort({ handle: 1 })
     .populate("user", ["name", "thumbnail_image"])
     .then(profiles => {
       if (!profiles) {
@@ -116,7 +117,7 @@ router.post(
     let name;
     profileFields.user = req.user.id;
     if (req.body.name) name = req.body.name;
-    if (req.body.handle) profileFields.handle = req.body.handle;
+    if (req.body.handle) profileFields.handle = Number(req.body.handle);
     if (req.body.height) profileFields.height = req.body.height;
     if (req.body.weight) profileFields.weight = req.body.weight;
     if (req.body.mainfoot) profileFields.mainfoot = req.body.mainfoot;

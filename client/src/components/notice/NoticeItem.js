@@ -8,6 +8,7 @@ import { deleteNotice, addLike, removeLike } from "../../actions/noticeActions";
 export class NoticeItem extends Component {
   onDeleteClick(id) {
     this.props.deleteNotice(id);
+    window.location.href = "/notices";
   }
 
   onPostClick(id) {

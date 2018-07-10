@@ -8,6 +8,7 @@ import { deletePost, addLike, removeLike } from "../../actions/postActions";
 export class PostItem extends Component {
   onDeleteClick(id) {
     this.props.deletePost(id);
+    window.location.href = "/feed";
   }
 
   onPostClick(id) {

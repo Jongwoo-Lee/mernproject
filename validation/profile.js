@@ -15,6 +15,10 @@ module.exports = function validateProfileInput(data) {
     errors.handle = "Back number is required";
   }
 
+  if (!Validator.isNumeric(data.handle)) {
+    errors.handle = "숫자를 입력해주세요";
+  }
+
   if (!isEmpty(data.youtube)) {
     if (!Validator.isURL(data.youtube)) {
       errors.youtube = "Not a valid URL";
