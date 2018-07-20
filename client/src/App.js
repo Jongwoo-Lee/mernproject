@@ -30,6 +30,7 @@ import Kakao from "./components/auth/Kakao";
 import Notices from "./components/notices/Notices";
 import Notice from "./components/notice/Notice";
 import Rules from "./components/rules/Rules";
+import AddFiles from "./components/files/AddFiles";
 
 import "./App.css";
 
@@ -107,6 +108,9 @@ class App extends Component {
                   path="/add-education"
                   component={AddEducation}
                 />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/upload" component={AddFiles} />
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/feed" component={Posts} />

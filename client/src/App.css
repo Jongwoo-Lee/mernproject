@@ -38,3 +38,13 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.container-root {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 5px;
+}
+
+.hasFocus {
+  border: 1px solid rgb(75, 223, 46);
+}
