@@ -48,3 +48,14 @@ img {
 .hasFocus {
   border: 1px solid rgb(75, 223, 46);
 }
+
+.draft-toolbar img {
+  width: 15px;
+}
+
+.draft-editor {
+  padding: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid black;
+}

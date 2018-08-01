@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import isEmpty from "../../validation/is-empty";
 
 class ProfileItem extends Component {
   onPostClick(id) {

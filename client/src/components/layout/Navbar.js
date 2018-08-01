@@ -7,7 +7,6 @@ import { clearCurrentProfile } from "../../actions/profileActions";
 import logo from "../common/images/fct_logo_small.png";
 import { Image } from "react-bootstrap";
 
-import shallowCompare from "react-addons-shallow-compare";
 class Navbar extends Component {
   onLogoutClick(e) {
     e.preventDefault();

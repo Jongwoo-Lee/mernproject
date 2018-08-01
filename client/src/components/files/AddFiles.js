@@ -11,6 +11,7 @@ class AddFiles extends Component {
   submitFile = event => {
     event.preventDefault();
     const formData = new FormData();
+    console.log(this.state.file[0]);
     formData.append("file", this.state.file[0]);
     axios
       .post(`/api/upload/test-upload`, formData, {
