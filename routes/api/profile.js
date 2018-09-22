@@ -117,7 +117,7 @@ router.post(
     let name;
     profileFields.user = req.user.id;
     if (req.body.name) name = req.body.name;
-    if (req.body.handle) profileFields.handle = Number(req.body.handle);
+    if (req.body.handle) profileFields.handle = req.body.handle;
     if (req.body.height) profileFields.height = req.body.height;
     if (req.body.weight) profileFields.weight = req.body.weight;
     if (req.body.mainfoot) profileFields.mainfoot = req.body.mainfoot;
