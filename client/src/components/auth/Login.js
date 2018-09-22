@@ -2,8 +2,43 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
-import TextFieldGroup from "../common/TextFieldGroup";
 import kakaoBtn from "../common/images/kakao_btn_wide.png";
+
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+
+const styles = theme => ({
+  grid: {
+    marginTop: 10,
+    padding: 20
+  },
+  paper: {
+    padding: 20,
+    [theme.breakpoints.up("md")]: {
+      width: "650px"
+    }
+  },
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  button: {
+    margin: 10,
+    width: 200
+  },
+  FormControl: {
+    width: 400,
+    [theme.breakpoints.down("xs")]: {
+      width: 250
+    }
+  }
+});
 
 class Login extends Component {
   constructor() {
@@ -51,64 +86,86 @@ class Login extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { email, password, errors } = this.state;
+    const { classes } = this.props;
 
     return (
-      <div className="login">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">로그인</h1>
-              <p className="lead text-center">
-                토탈FC 커뮤티니 사이트에 접속하세요
-              </p>
-              <form noValidate onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Email Address"
-                  name="email"
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  error={errors.email}
-                />
-
-                <TextFieldGroup
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                  error={errors.password}
-                />
-
-                <input
-                  type="submit"
-                  value="로그인"
-                  className="btn btn-success btn-block mt-4"
-                />
-              </form>
+      <Grid
+        container
+        className={classes.grid}
+        justify="center"
+        alignItems="center"
+        direction="column"
+      >
+        <Grid item sm>
+          <Typography
+            variant="display3"
+            className={classes.title}
+            align="center"
+          >
+            로그인
+          </Typography>
+          <Typography variant="subheading" align="center">
+            토탈FC 커뮤티니 사이트에 접속하세요
+          </Typography>
+          <br />
+          <Paper className={classes.paper}>
+            <form noValidate style={{ textAlign: "center" }}>
+              <TextField
+                label="이메일"
+                name="email"
+                type="email"
+                value={email}
+                onChange={this.onChange}
+                margin="normal"
+                className={classes.FormControl}
+                error={errors.email}
+                helperText={errors.email}
+              />
               <br />
-              <a
-                href="/auth/kakao"
-                className="btn"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
+              <TextField
+                label="비밀번호"
+                name="password"
+                type="password"
+                value={password}
+                onChange={this.onChange}
+                margin="normal"
+                className={classes.FormControl}
+                error={errors.password}
+                helperText={errors.password}
+              />
+              <br />
+              <Button
+                color="secondary"
+                size="large"
+                variant="raised"
+                onClick={this.onSubmit}
+                className={classes.button}
               >
-                <img
-                  src={kakaoBtn}
-                  alt={"kakao_login"}
-                  style={{
-                    width: "250px"
-                  }}
-                />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+                로그인
+              </Button>
+            </form>
+            <hr />
+            <a
+              href="/auth/kakao"
+              className="btn"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <img
+                src={kakaoBtn}
+                alt={"kakao_login"}
+                style={{
+                  width: "250px"
+                }}
+              />
+            </a>
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -127,4 +184,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { loginUser }
-)(Login);
+)(withStyles(styles)(Login));

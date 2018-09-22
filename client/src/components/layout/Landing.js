@@ -11,7 +11,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
 
 const styles = theme => ({
   root: {
@@ -24,8 +23,24 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit
   },
+  logo: {
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
+  },
   title: {
-    color: "white"
+    color: "white",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "60px"
+    }
+  },
+  explain: {
+    color: "white",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "15px"
+    }
   }
 });
 
@@ -48,23 +63,22 @@ class Landing extends Component {
                 width: 250,
                 height: 250
               }}
-              className={classes.title}
+              alt="background showcase"
+              className={classes.logo}
             />
             <hr />
             <Typography variant="display4" className={classes.title}>
               FC Total
             </Typography>
-            <Hidden only={["sm", "xs"]}>
-              <Typography variant="headline" className={classes.title}>
-                서울 송파구 KFA Division 6 아마추어 축구팀 커뮤니티 사이트
-              </Typography>
-              <Typography variant="subheading" className={classes.title}>
-                The Community Site of KFA Division 6 Amateur Football Team in
-                Songpa-gu, Seoul
-                <br />
-                Since 2007, UIUC.
-              </Typography>
-            </Hidden>
+            <Typography variant="headline" className={classes.explain}>
+              서울 송파구 KFA Division 6 아마추어 축구팀 커뮤니티 사이트
+            </Typography>
+            <Typography variant="subheading" className={classes.explain}>
+              The Community Site of KFA Division 6 Amateur Football Team in
+              Songpa-gu, Seoul
+              <br />
+              Since 2007, UIUC.
+            </Typography>
             <hr />
             <Button
               variant="contained"

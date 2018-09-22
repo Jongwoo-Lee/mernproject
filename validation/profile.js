@@ -7,6 +7,14 @@ module.exports = function validateProfileInput(data) {
   data.handle = !isEmpty(data.handle) ? data.handle : "";
   //data.mainposition = !isEmpty(data.mainposition) ? data.mainposition : "";
 
+  if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
+    errors.name = "Username must be between 2 and 30 characters";
+  }
+
+  if (Validator.isEmpty(data.name)) {
+    errors.name = "이름을 입력해주세요";
+  }
+
   if (!Validator.isLength(data.handle, { min: 1, max: 5 })) {
     errors.handle = "Back number needs to be between 1 and 5 characters";
   }

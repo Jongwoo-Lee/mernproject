@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { clearCurrentProfile } from "../../actions/profileActions";
 import logo from "../common/images/fct_logo_small.png";
-import { Image } from "react-bootstrap";
 
 // Components
 import MenuDrawer from "./MenuDrawer";
@@ -63,7 +62,7 @@ class Navbar extends Component {
   };
 
   render() {
-    const { isAuthenticated, user } = this.props.auth;
+    const { auth } = this.props;
     const { anchorEl, menuOpen } = this.state;
     const { classes } = this.props;
     const open = Boolean(anchorEl);
@@ -80,19 +79,15 @@ class Navbar extends Component {
             >
               <MenuIcon />
             </IconButton>
+            <img src={logo} style={{ width: 30, height: 30 }} />
             <Typography
               variant="title"
               color="inherit"
               className={classes.grow}
             >
-              <Image
-                className="mb-1"
-                src={logo}
-                style={{ width: 30, height: 30 }}
-              />
               &nbsp;&nbsp;FC 토탈
             </Typography>
-            {isAuthenticated && (
+            {auth.isAuthenticated && (
               <div>
                 <IconButton
                   aria-owns={open ? "menu-appbar" : null}
@@ -127,6 +122,7 @@ class Navbar extends Component {
           toggleDrawer={this.toggleDrawer}
           menuOpen={menuOpen}
           onLogoutClick={this.onLogoutClick}
+          auth={auth}
         />
       </div>
     );

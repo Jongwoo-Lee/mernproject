@@ -30,7 +30,7 @@ const ProfileSchema = new Schema({
     type: String
   },
   birthday: {
-    type: Date
+    type: String
   },
   experience: [
     {
