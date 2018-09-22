@@ -11,22 +11,6 @@ const profile = require("./routes/api/profile");
 
 const app = express();
 
-// CORS Middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5000");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH"
-  );
-  res.header("Access-Control-Max-Age", "86400");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Access-Control-Request-Method, Access-Control-Request-Headers"
-  );
-  next();
-});
-
 // Passport Config
 const passport = require("passport");
 const social = require("./config/passport")(app, passport);
@@ -39,7 +23,10 @@ app.use(bodyParser.json());
 const db = require("./config/keys").database;
 // Connect to MongoDB
 mongoose
-  .connect(db)
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -51,12 +38,12 @@ app.use("/api/profile", profile);
 
 // Server static assets if in production
 //if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static("client/build"));
+// Set static folder
+app.use(express.static("client/build"));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
 //}
 
 const port = 5000;
