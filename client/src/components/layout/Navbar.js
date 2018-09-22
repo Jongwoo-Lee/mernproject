@@ -7,127 +7,128 @@ import { clearCurrentProfile } from "../../actions/profileActions";
 import logo from "../common/images/fct_logo_small.png";
 import { Image } from "react-bootstrap";
 
+// Components
+import MenuDrawer from "./MenuDrawer";
+
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  grow: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  }
+};
+
 class Navbar extends Component {
-  onLogoutClick(e) {
+  state = {
+    auth: true,
+    anchorEl: null,
+    menuOpen: false
+  };
+
+  toggleDrawer = (side, open) => () => {
+    this.setState({
+      [side]: open
+    });
+  };
+
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  onLogoutClick = e => {
     e.preventDefault();
+    this.setState({ anchorEl: null });
     this.props.clearCurrentProfile();
     this.props.logoutUser();
-  }
+  };
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-
-    const authLinks = (
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/feed">
-            회원게시판
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/public">
-            공개자료실
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/dashboard">
-            회원자료실
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/schedule">
-            스케쥴
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/results">
-            경기결과
-          </Link>
-        </li>
-        <li className="nav-item">
-          <a
-            href=""
-            onClick={this.onLogoutClick.bind(this)}
-            className="nav-link"
-          >
-            <img
-              className="rounded-circle"
-              src={user.thumbnail_image}
-              alt={user.name}
-              style={{ width: "25px", marginRight: "5px" }}
-              title="img"
-            />{" "}
-            Logout
-          </a>
-        </li>
-      </ul>
-    );
-
-    const guestLinks = (
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/register">
-            Sign Up
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/login">
-            Login
-          </Link>
-        </li>
-      </ul>
-    );
+    const { anchorEl, menuOpen } = this.state;
+    const { classes } = this.props;
+    const open = Boolean(anchorEl);
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div className="container">
-          <Link className="navbar-brand" to="/">
-            <Image
-              className="mb-1"
-              src={logo}
-              style={{ width: 30, height: 30 }}
-            />
-            <b> FC 토탈</b>
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#mobile-nav"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-
-          <div
-            className="collapse navbar-collapse"
-            id="mobile-nav"
-            data-toggle="collapse"
-            data-target=".navbar-collapse.show"
-          >
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/notices">
-                  {" "}
-                  공지사항
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/rules">
-                  {" "}
-                  규칙
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/members">
-                  {" "}
-                  멤버
-                </Link>
-              </li>
-            </ul>
-            {isAuthenticated ? authLinks : guestLinks}
-          </div>
-        </div>
-      </nav>
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+              onClick={this.toggleDrawer("menuOpen", true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.grow}
+            >
+              <Image
+                className="mb-1"
+                src={logo}
+                style={{ width: 30, height: 30 }}
+              />
+              &nbsp;&nbsp;FC 토탈
+            </Typography>
+            {isAuthenticated && (
+              <div>
+                <IconButton
+                  aria-owns={open ? "menu-appbar" : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <MenuItem onClick={this.handleClose}>프로파일</MenuItem>
+                  <MenuItem onClick={this.onLogoutClick}>로그아웃</MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+        <MenuDrawer
+          toggleDrawer={this.toggleDrawer}
+          menuOpen={menuOpen}
+          onLogoutClick={this.onLogoutClick}
+        />
+      </div>
     );
   }
 }
@@ -144,4 +145,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser, clearCurrentProfile }
-)(Navbar);
+)(withStyles(styles)(Navbar));

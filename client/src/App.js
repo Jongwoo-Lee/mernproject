@@ -31,6 +31,10 @@ import Notices from "./components/notices/Notices";
 import Notice from "./components/notice/Notice";
 import Rules from "./components/rules/Rules";
 
+// Material UI
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import Theme from "./utils/Theme";
+
 import "./App.css";
 
 // Check for token for every page request
@@ -59,67 +63,69 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
-            <Navbar />
-            <Route exact path="/" component={Landing} />
-            <div className="container">
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/profile/:handle" component={Profile} />
-              <Route exact path="/kakao/:token" component={Kakao} />{" "}
-              <Switch>
-                <PrivateRoute exact path="/notices" component={Notices} />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/notice/:id" component={Notice} />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/rules" component={Rules} />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/create-profile"
-                  component={CreateProfile}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/edit-profile"
-                  component={EditProfile}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/add-experience"
-                  component={AddExperience}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/add-education"
-                  component={AddEducation}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/feed" component={Posts} />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/post/:id" component={Post} />
-              </Switch>
-              <Switch>
-                <PrivateRoute exact path="/field" component={Field} />
-              </Switch>
-              <Route exact path="/notfound" component={NotFound} />
+          <MuiThemeProvider theme={Theme}>
+            <div className="App">
+              <Navbar />
+              <Route exact path="/" component={Landing} />
+              <div className="container">
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/profile/:handle" component={Profile} />
+                <Route exact path="/kakao/:token" component={Kakao} />{" "}
+                <Switch>
+                  <PrivateRoute exact path="/notices" component={Notices} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/notice/:id" component={Notice} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/rules" component={Rules} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute
+                    exact
+                    path="/create-profile"
+                    component={CreateProfile}
+                  />
+                </Switch>
+                <Switch>
+                  <PrivateRoute
+                    exact
+                    path="/edit-profile"
+                    component={EditProfile}
+                  />
+                </Switch>
+                <Switch>
+                  <PrivateRoute
+                    exact
+                    path="/add-experience"
+                    component={AddExperience}
+                  />
+                </Switch>
+                <Switch>
+                  <PrivateRoute
+                    exact
+                    path="/add-education"
+                    component={AddEducation}
+                  />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/feed" component={Posts} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/post/:id" component={Post} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/field" component={Field} />
+                </Switch>
+                <Route exact path="/notfound" component={NotFound} />
+              </div>
+              {/* <Footer /> */}
             </div>
-            {/* <Footer /> */}
-          </div>
+          </MuiThemeProvider>
         </Router>
       </Provider>
     );
