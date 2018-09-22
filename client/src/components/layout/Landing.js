@@ -4,8 +4,30 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import logo from "../common/images/fct_logo_small.png";
 import kakaoBtn from "../common/images/kakao_btn.png";
-import { Image } from "react-bootstrap";
-// import LandingButtons from "./LandingButtons";
+import Background from "../../img/showcase.jpg";
+
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Hidden from "@material-ui/core/Hidden";
+
+const styles = theme => ({
+  root: {
+    backgroundImage: `url(${Background})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    height: "100vh",
+    minHeight: "850px"
+  },
+  button: {
+    margin: theme.spacing.unit
+  },
+  title: {
+    color: "white"
+  }
+});
 
 class Landing extends Component {
   componentDidMount() {
@@ -14,50 +36,62 @@ class Landing extends Component {
     }
   }
 
-  success(response) {
-    console.log(response);
-  }
-
-  failure(error) {
-    console.log(error);
-  }
-
   render() {
+    const { classes } = this.props;
     return (
-      <div className="landing">
-        <div className="dark-overlay landing-inner text-light">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12 text-center">
-                <Image src={logo} style={{ width: 250, height: 250 }} />
-                <hr />
-                <h1 className="display-2 mb-4">
-                  <b>FC Total</b>
-                </h1>
-                <p className="lead">
-                  {" "}
-                  서울 송파구 KFA Division 6 아마추어 축구팀 커뮤니티 사이트
-                  <br />
-                  The Community Site of KFA Division 6 Amateur Football Team in
-                  Songpa-gu, Seoul
-                  <br />Since 2007, UIUC.
-                </p>
-                <hr />
-                <Link to="/register" className="btn btn-lg btn-success mr-3">
-                  Sign Up
-                </Link>
-                <Link to="/login" className="btn btn-lg btn-light">
-                  Login
-                </Link>
+      <div className={classes.root}>
+        <Grid container spacing={12} justify="center">
+          <Grid item xs={9}>
+            <img
+              src={logo}
+              style={{
+                width: 250,
+                height: 250
+              }}
+              className={classes.title}
+            />
+            <hr />
+            <Typography variant="display4" className={classes.title}>
+              FC Total
+            </Typography>
+            <Hidden only={["sm", "xs"]}>
+              <Typography variant="headline" className={classes.title}>
+                서울 송파구 KFA Division 6 아마추어 축구팀 커뮤니티 사이트
+              </Typography>
+              <Typography variant="subheading" className={classes.title}>
+                The Community Site of KFA Division 6 Amateur Football Team in
+                Songpa-gu, Seoul
                 <br />
-                <a href="/auth/kakao" className="btn">
-                  <img src={kakaoBtn} alt={"kakao_login"} />
-                </a>
-              </div>
-            </div>
-          </div>
-          {/* <LandingButtons /> */}
-        </div>
+                Since 2007, UIUC.
+              </Typography>
+            </Hidden>
+            <hr />
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              className={classes.button}
+              component={Link}
+              to="/register"
+            >
+              회원 가입
+            </Button>
+            <Button
+              variant="contained"
+              color="default"
+              size="large"
+              className={classes.button}
+              component={Link}
+              to="/login"
+            >
+              로그인
+            </Button>
+            <br />
+            <Button component="a" href="/auth/kakao">
+              <img src={kakaoBtn} alt={"kakao_login"} />
+            </Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -71,4 +105,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(Landing);
+export default connect(mapStateToProps)(withStyles(styles)(Landing));

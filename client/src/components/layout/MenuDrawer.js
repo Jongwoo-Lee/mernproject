@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // Material UI
 import { withStyles } from "@material-ui/core/styles";
@@ -29,25 +30,25 @@ class MenuDrawer extends Component {
     const sideList = (
       <div className={classes.list}>
         <List>
-          <ListItem button component="a" href="/feed">
+          <ListItem button component={Link} to="/feed">
             <ListItemIcon>
               <FeedIcon />
             </ListItemIcon>
             <ListItemText primary="게시판" />
           </ListItem>
-          <ListItem button component="a" href="/dashboard">
+          <ListItem button component={Link} to="/dashboard">
             <ListItemIcon>
               <CollectionIcon />
             </ListItemIcon>
             <ListItemText primary="자료실" />
           </ListItem>
-          <ListItem button component="a" href="/schedule">
+          <ListItem button component={Link} to="/schedule">
             <ListItemIcon>
               <CalendarIcon />
             </ListItemIcon>
             <ListItemText primary="스케쥴" />
           </ListItem>
-          <ListItem button component="a" href="/results">
+          <ListItem button component={Link} to="/results">
             <ListItemIcon>
               <ResultIcon />
             </ListItemIcon>
@@ -56,7 +57,7 @@ class MenuDrawer extends Component {
         </List>
         <Divider />
         <List>
-          <ListItem button component="a" href="/profile">
+          <ListItem button component={Link} to="/profile">
             <ListItemIcon>
               <FaceIcon />
             </ListItemIcon>
