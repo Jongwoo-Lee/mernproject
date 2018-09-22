@@ -8,7 +8,7 @@ img {
   background-size: cover;
   background-position: center;
   height: 100vh;
-  min-height: 800px;
+  min-height: 850px;
   margin-top: -24px;
   margin-bottom: -50px;
 }
@@ -37,4 +37,25 @@ img {
 
 .form-control::placeholder {
   color: #bbb !important;
+}
+
+.container-root {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 5px;
+}
+
+.hasFocus {
+  border: 1px solid rgb(75, 223, 46);
+}
+
+.draft-toolbar img {
+  width: 15px;
+}
+
+.draft-editor {
+  padding: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid black;
 }

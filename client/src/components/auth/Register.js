@@ -22,7 +22,7 @@ class Register extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/feed");
     }
   }
 
@@ -64,7 +64,7 @@ class Register extends Component {
               </p>
               <form noValidate onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="Username"
+                  placeholder="이름"
                   name="username"
                   value={this.state.username}
                   onChange={this.onChange}

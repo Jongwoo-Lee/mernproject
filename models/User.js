@@ -4,12 +4,17 @@ const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
   name: {
-    type: String
+    type: String,
+    default: "no name"
   },
   username: {
     type: String,
     lowercase: true,
     required: true
+  },
+  handle: {
+    type: String,
+    default: "noprofile"
   },
   password: {
     type: String,

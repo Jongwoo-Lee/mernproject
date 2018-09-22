@@ -1,50 +1,62 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import isEmpty from "../../validation/is-empty";
+import { withRouter } from "react-router-dom";
 
 class ProfileItem extends Component {
+  onPostClick(id) {
+    this.props.history.push(`/profile/${id}`);
+  }
+
   render() {
     const { profile } = this.props;
 
     return (
-      <div className="card card-body bg-light mb-3">
-        <div className="row">
-          <div className="col-2">
-            <img
-              src={profile.user.thumbnail_image}
-              alt=""
-              className="rounded-circle"
-            />
-          </div>
-          <div className="col-lg-6 col-md-4 col-8">
-            <h3>{profile.user.name}</h3>
-            <p>
-              {profile.status}{" "}
-              {isEmpty(profile.company) ? null : (
-                <span>at {profile.company}</span>
-              )}
-            </p>
-            <p>
-              {isEmpty(profile.location) ? null : (
-                <span>{profile.location}</span>
-              )}
-            </p>
-            <Link to={`/profile/${profile.handle}`} className="btn btn-info">
-              View Profile
-            </Link>
-          </div>
-          <div className="col-md-4 d-none d-md-block">
-            <h4>Skill Set</h4>
-            <ul className="list-group">
-              {profile.skills.slice(0, 4).map((skill, index) => (
-                <li key={index} className="list-group-item">
-                  <i className="fa fa-check pr-1" />
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
+      // <div className="col-md-12 col-lg-5 card card-body bg-secondary text-white m-1 mb-3">
+      //   <div
+      //     className="row"
+      //     onClick={this.onPostClick.bind(this, profile.handle)}
+      //   >
+      //     <div className="col-4">
+      //       <img
+      //         src={profile.user.thumbnail_image}
+      //         alt=""
+      //         className="rounded"
+      //       />
+      //     </div>
+      //     <div className="col-5">
+      //       <h3>{profile.user.name}</h3>
+      //       <p>
+      //         {isEmpty(profile.mainposition) ? null : (
+      //           <span>{profile.mainposition[0].label}</span>
+      //         )}
+      //       </p>
+      //     </div>
+      //     <div className="col-3">
+      //       <h1 className="display-6 text-right">{profile.handle}</h1>
+      //     </div>
+      //   </div>{" "}
+      // </div>
+      <div
+        className="card col-6 col-md-4 col-lg-2"
+        style={{
+          paddingLeft: "0",
+          paddingRight: "0",
+          position: "relative"
+        }}
+      >
+        <img
+          className="card-img-top"
+          src={profile.user.thumbnail_image}
+          alt="player"
+          onClick={this.onPostClick.bind(this, profile.handle)}
+        />
+        <div style={{ position: "absolute", right: "6px", fontSize: "2em" }}>
+          <b>{profile.handle}</b>
+        </div>
+        <div className="card-footer">
+          <p className="card-text">
+            <b>{profile.user.name}</b>
+          </p>
         </div>
       </div>
     );
@@ -55,4 +67,4 @@ ProfileItem.propTypes = {
   profile: PropTypes.object.isRequired
 };
 
-export default ProfileItem;
+export default withRouter(ProfileItem);

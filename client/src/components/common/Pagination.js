@@ -124,7 +124,7 @@ class Pagination extends React.Component {
     }
 
     return (
-      <ul className="pagination">
+      <ul className="pagination justify-content-center">
         <li
           className={
             pager.currentPage === 1 ? "disabled page-item" : "page-item"

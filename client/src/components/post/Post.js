@@ -2,15 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import PostItem from "../posts/PostItem";
+import PostItem from "./PostItem";
 import CommentForm from "../common/comments/CommentForm";
 import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
 import { getPost, addComment, deleteComment } from "../../actions/postActions";
 
+import shallowCompare from "react-addons-shallow-compare";
+
 class Post extends Component {
   componentDidMount() {
     this.props.getPost(this.props.match.params.id);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   render() {
@@ -21,7 +27,10 @@ class Post extends Component {
     } else {
       postContent = (
         <div>
-          <PostItem post={post} showActions={false} isMobile={false} />
+          <PostItem post={post} />
+          <div className="card card-header bg-dark text-white">
+            댓글 {post.comments.length}
+          </div>
           <CommentFeed
             postID={post._id}
             comments={post.comments}

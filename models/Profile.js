@@ -8,32 +8,29 @@ const ProfileSchema = new Schema({
     ref: "users"
   },
   handle: {
-    type: String,
+    type: Number,
     required: true,
-    max: 40
+    max: 10
   },
-  company: {
+  height: {
     type: String
   },
-  website: {
+  weight: {
     type: String
   },
-  location: {
-    type: String
-  },
-  status: {
-    type: String,
+  mainfoot: {
+    type: [{ label: String, value: String, num: Number }],
     required: true
   },
-  skills: {
-    type: [String],
+  mainposition: {
+    type: [{ label: String, value: String, num: Number }],
     required: true
   },
   bio: {
     type: String
   },
-  githubusername: {
-    type: String
+  birthday: {
+    type: Date
   },
   experience: [
     {

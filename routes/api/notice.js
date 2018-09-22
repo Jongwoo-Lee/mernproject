@@ -34,7 +34,7 @@ router.get("/page/:pagenum", (req, res) => {
     .skip(perPage * pagenum - perPage)
     .limit(perPage)
     .exec(function(err, notices) {
-      Notice.count().exec(function(err, count) {
+      Notice.countDocuments().exec(function(err, count) {
         if (err) return next(err);
         res.json({
           notices: notices,

@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
-import { deleteNotice, addLike, removeLike } from "../../actions/noticeActions";
+import { deletePost, addLike, removeLike } from "../../actions/postActions";
 
-export class NoticeItem extends Component {
+export class PostItem extends Component {
   onDeleteClick(id) {
-    this.props.deleteNotice(id);
-    window.location.href = "/notices";
+    this.props.deletePost(id);
+    window.location.href = "/feed";
   }
 
   onPostClick(id) {
-    this.props.history.push(`/notice/${id}`);
+    this.props.history.push(`/post/${id}`);
   }
 
   onLikeClick(id) {
@@ -33,21 +33,21 @@ export class NoticeItem extends Component {
   }
 
   render() {
-    const { notice, auth, showActions } = this.props;
+    const { post, auth, showActions } = this.props;
 
     const date = new Intl.DateTimeFormat("en-US", {
       month: "long",
       day: "2-digit",
       year: "numeric"
-    }).format(new Date(notice.date));
+    }).format(new Date(post.date));
 
     return (
-      <div className="notice">
+      <div className="post">
         <div className="card card-body mb-3">
           <div className="row">
             <div className="col-md-10">
-              <h3 onClick={this.onPostClick.bind(this, notice._id)}>
-                {notice.title}
+              <h3 onClick={this.onPostClick.bind(this, post._id)}>
+                {post.title}
               </h3>
               <small>
                 <i>{date}</i>
@@ -56,36 +56,36 @@ export class NoticeItem extends Component {
               <br />
               <p
                 className="lead"
-                onClick={this.onPostClick.bind(this, notice._id)}
+                onClick={this.onPostClick.bind(this, post._id)}
               >
-                {notice.text}
+                {post.text}
               </p>
               {showActions ? (
                 <span>
                   <button
-                    onClick={this.onLikeClick.bind(this, notice._id)}
+                    onClick={this.onLikeClick.bind(this, post._id)}
                     type="button"
                     className="btn btn-light mr-1"
                   >
                     <i
                       className={classnames("fas fa-thumbs-up", {
-                        "text-info": this.findUserLike(notice.likes)
+                        "text-info": this.findUserLike(post.likes)
                       })}
                     />
                     <span className="badge badge-light">
-                      {notice.likes.length}
+                      {post.likes.length}
                     </span>
                   </button>{" "}
                   <button
-                    onClick={this.onUnlikeClick.bind(this, notice._id)}
+                    onClick={this.onUnlikeClick.bind(this, post._id)}
                     type="button"
                     className="btn btn-light mr-1"
                   >
                     <i className="text-secondary fas fa-thumbs-down" />
                   </button>
-                  {notice.user === auth.user.id ? (
+                  {post.user === auth.user.id ? (
                     <button
-                      onClick={this.onDeleteClick.bind(this, notice._id)}
+                      onClick={this.onDeleteClick.bind(this, post._id)}
                       type="button"
                       className="float-right align-top btn btn-light mr-1"
                     >
@@ -99,13 +99,13 @@ export class NoticeItem extends Component {
               <a href="/profile">
                 <img
                   className="rounded-circle d-none d-md-block"
-                  src={notice.thumbnail_image}
+                  src={post.thumbnail_image}
                   alt=""
                 />
               </a>
               <br />
               <p className="text-center">
-                <b>{notice.name}</b>
+                <b>{post.name}</b>
               </p>
             </div>
           </div>
@@ -115,15 +115,15 @@ export class NoticeItem extends Component {
   }
 }
 
-NoticeItem.defaultProps = {
+PostItem.defaultProps = {
   showActions: true
 };
 
-NoticeItem.propTypes = {
-  deleteNotice: PropTypes.func.isRequired,
+PostItem.propTypes = {
+  deletePost: PropTypes.func.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
-  notice: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -132,7 +132,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  deleteNotice,
+  deletePost,
   addLike,
   removeLike
 };
@@ -140,4 +140,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(NoticeItem));
+)(withRouter(PostItem));

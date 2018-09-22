@@ -9,13 +9,20 @@ class CommentItem extends Component {
 
   render() {
     const { comment, postID, auth, isMobile } = this.props;
-    const commentStyle = { fontSize: "12px" };
+    const commentStyle = { fontSize: "15px" };
     const buttonStyle = { fontSize: "10px" };
+
+    const date = new Intl.DateTimeFormat("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      hour: "numeric",
+      minute: "numeric"
+    }).format(new Date(comment.date));
 
     if (isMobile) {
       return (
-        <div>
-          <div className="row mt-2">
+        <div className="border-bottom">
+          <div className="row mt-3">
             <div className="col-3 col-sm-2">
               <p className="text-center" style={commentStyle}>
                 <b>{comment.name}</b>
@@ -23,6 +30,9 @@ class CommentItem extends Component {
             </div>
             <div className="col-7 col-sm-8" style={commentStyle}>
               <p>{comment.text}</p>
+              <small>
+                <i>{date}</i>
+              </small>
             </div>
             <div className="col-2 col-sm-2">
               {comment.user === auth.user.id ? (
@@ -53,9 +63,6 @@ class CommentItem extends Component {
                   className="rounded-circle d-none d-md-block"
                   src={comment.thumbnail_image}
                   alt=""
-                  style={{
-                    width: "70px"
-                  }}
                 />
               </a>
               <br />
@@ -64,7 +71,6 @@ class CommentItem extends Component {
               </p>
             </div>
             <div className="col-10">
-              <p className="lead">{comment.text}</p>{" "}
               {comment.user === auth.user.id ? (
                 <button
                   onClick={this.onDeleteClick.bind(this, postID, comment._id)}
@@ -73,7 +79,11 @@ class CommentItem extends Component {
                 >
                   <i className="fas fa-times" />
                 </button>
-              ) : null}
+              ) : null}{" "}
+              <p className="lead">{comment.text}</p>{" "}
+              <small>
+                <i>{date}</i>
+              </small>
             </div>
           </div>
         </div>

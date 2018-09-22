@@ -37,7 +37,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case ADD_POST:
-      state.posts.pop();
+      if (state.posts.length >= 10) state.posts.pop();
       return {
         ...state,
         posts: [action.payload, ...state.posts]
@@ -45,6 +45,7 @@ export default function(state = initialState, action) {
     case UPDATE_POST:
       return {
         ...state,
+        post: action.payload,
         posts: state.posts.map(post => {
           if (post._id !== action.payload._id) {
             return post;
