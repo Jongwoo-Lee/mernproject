@@ -5,5 +5,8 @@ const crypto = require("crypto")
 module.exports = {
   database: "mongodb://localhost:27017/react",
   secret: "crypto",
-  password: "1kakao@Total3Goovoo$"
+  password: "1kakao@Total3Goovoo$",
+  S3_BUCKET: "fctotalbucket",
+  AWS_ACCESS_KEY_ID: "AKIAIBYQQYVZ3IN2T32Q",
+  AWS_SECRET_ACCESS_KEY: "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"
 };

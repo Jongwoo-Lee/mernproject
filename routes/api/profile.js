@@ -28,7 +28,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name", "thumbnail_image"])
+      .populate("user", ["name", "thumbnail_image", "handle"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -46,6 +46,7 @@ router.get(
 router.get("/all", (req, res) => {
   const errors = {};
   Profile.find()
+    .sort({ handle: 1 })
     .populate("user", ["name", "thumbnail_image"])
     .then(profiles => {
       if (!profiles) {
@@ -113,15 +114,17 @@ router.post(
 
     // Get fields
     const profileFields = {};
+    let name;
     profileFields.user = req.user.id;
+    if (req.body.name) name = req.body.name;
     if (req.body.handle) profileFields.handle = req.body.handle;
-    if (req.body.company) profileFields.company = req.body.company;
-    if (req.body.website) profileFields.website = req.body.website;
-    if (req.body.location) profileFields.location = req.body.location;
+    if (req.body.height) profileFields.height = req.body.height;
+    if (req.body.weight) profileFields.weight = req.body.weight;
+    if (req.body.mainfoot) profileFields.mainfoot = req.body.mainfoot;
     if (req.body.bio) profileFields.bio = req.body.bio;
-    if (req.body.status) profileFields.status = req.body.status;
-    if (req.body.githubusername)
-      profileFields.githubusername = req.body.githubusername;
+    if (req.body.mainposition)
+      profileFields.mainposition = req.body.mainposition;
+    if (req.body.birthday) profileFields.birthday = req.body.birthday;
     // skills - split into array
     if (typeof req.body.skills !== "undefined") {
       profileFields.skills = req.body.skills.split(",");
@@ -134,6 +137,15 @@ router.post(
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
 
+    if (req.body.handleChange) {
+      Profile.findOne({ handle: profileFields.handle }).then(profile => {
+        if (profile) {
+          errors.handle = "이미 등록되어있는 등번호입니다";
+          res.status(400).json(errors);
+        }
+      });
+    }
+
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         // update
@@ -141,19 +153,29 @@ router.post(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
-        ).then(profile => res.json(profile));
+        ).then(profile => {
+          User.findOneAndUpdate(
+            { _id: req.user.id },
+            { $set: { name, handle: profileFields.handle } }
+          ).then(user => res.json(profile));
+        });
       } else {
         // Create
 
         // Check if handle exists
         Profile.findOne({ handle: profileFields.handle }).then(profile => {
           if (profile) {
-            errors.handle = "That handle already exists";
+            errors.handle = "이미 등록되어있는 등번호입니다";
             res.status(400).json(errors);
           }
 
           // Save Profile
-          new Profile(profileFields).save().then(profile => res.json(profile));
+          new Profile(profileFields).save().then(profile => {
+            User.findOneAndUpdate(
+              { _id: req.user.id },
+              { $set: { name, handle: profileFields.handle } }
+            ).then(user => res.json(profile));
+          });
         });
       }
     });

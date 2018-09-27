@@ -33,7 +33,7 @@ router.get("/page/:pagenum", (req, res) => {
     .skip(perPage * pagenum - perPage)
     .limit(perPage)
     .exec(function(err, posts) {
-      Post.count().exec(function(err, count) {
+      Post.countDocuments().exec(function(err, count) {
         if (err) return next(err);
         res.json({
           posts: posts,

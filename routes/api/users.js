@@ -35,6 +35,7 @@ router.post("/register", (req, res) => {
     } else {
       const newUser = new User({
         username: req.body.username,
+        name: req.body.username,
         email: req.body.email,
         thumbnail_image:
           "https://s3.ap-northeast-2.amazonaws.com/jongwooleetestbucket/default_profile.png",
@@ -53,6 +54,39 @@ router.post("/register", (req, res) => {
     }
   });
 });
+
+router.get(
+  "/name/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.params;
+
+    // Find user by email
+    User.findById(id).then(user => {
+      // Check for user
+      if (!user) {
+        errors.email = "User not found";
+        return res.status(404).json(errors);
+      } else {
+        const payload = {
+          id: user.id,
+          name: user.name,
+          handle: user.handle,
+          thumbnail_image: user.thumbnail_image,
+          active: user.active,
+          admin: user.admin
+        }; // Create JWT payload
+        // Sign Token
+        jwt.sign(payload, keys.secret, { expiresIn: "2h" }, (err, token) => {
+          res.json({
+            success: true,
+            token: "Bearer " + token
+          });
+        });
+      }
+    });
+  }
+);
 
 // @route   POST api/users/login
 // @desc    Login user / Returning JWT Token
@@ -83,6 +117,7 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
+          handle: user.handle,
           thumbnail_image: user.thumbnail_image,
           active: user.active,
           admin: user.admin

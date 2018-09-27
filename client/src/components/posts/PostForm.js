@@ -61,7 +61,7 @@ class PostForm extends Component {
                 />
               </div>
               <button type="submit" className="btn btn-dark">
-                Submit
+                올리기
               </button>
             </form>
           </div>
