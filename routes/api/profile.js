@@ -146,6 +146,8 @@ router.post(
       });
     }
 
+    console.log(profileFields.mainposition);
+
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
         // update

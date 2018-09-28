@@ -5,6 +5,69 @@ import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import ThumbUpIcon from "@material-ui/icons/ThumbUpRounded";
+import ThumbDownIcon from "@material-ui/icons/ThumbDownRounded";
+import amber from "@material-ui/core/colors/amber";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Icon from "@material-ui/core/Icon";
+
+const styles = theme => ({
+  icon: {
+    margin: theme.spacing.unit * 2
+  },
+  iconHover: {
+    margin: theme.spacing.unit * 2,
+    "&:hover": {
+      color: amber[800]
+    }
+  },
+  card: {
+    display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      width: "350px"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "450px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "650px"
+    }
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  button: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  content: {
+    flex: "1 0 auto"
+  },
+  cover: {
+    width: 100,
+    height: 100
+  },
+  controls: {
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
+  },
+  playIcon: {
+    height: 38,
+    width: 38
+  }
+});
+
 export class PostItem extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +118,7 @@ export class PostItem extends Component {
   }
 
   render() {
-    const { post, auth, showActions, isMobile } = this.props;
+    const { post, auth, showActions, isMobile, classes } = this.props;
 
     const date = new Intl.DateTimeFormat("en-US", {
       month: "2-digit",
@@ -71,19 +134,16 @@ export class PostItem extends Component {
     let likeContent;
     if (likeByUser) {
       likeContent = (
-        <i
-          className={classnames("fas fa-thumbs-up", {
-            "text-info": true
-          })}
+        <ThumbUpIcon
+          color="secondary"
+          fontSize="small"
           onClick={this.onLikeClick.bind(this, post._id)}
         />
       );
     } else {
       likeContent = (
-        <i
-          className={classnames("fas fa-thumbs-up", {
-            "text-info": false
-          })}
+        <ThumbUpIcon
+          fontSize="small"
           onClick={this.onLikeClick.bind(this, post._id)}
         />
       );
@@ -140,69 +200,111 @@ export class PostItem extends Component {
       );
     } else {
       return (
-        <div className="card card-body mb-4">
-          <div className="row">
-            <div className="col-3 col-sm-2">
-              <a href="profile.html">
-                <img
-                  className="rounded-circle d-block"
-                  src={post.thumbnail_image}
-                  alt=""
-                />
-              </a>
-              <br />
-              <p className="text-center">{post.name}</p>
-            </div>
-            <div className="col-7 col-sm-7">
-              <p
-                className="lead"
-                onClick={this.onPostClick.bind(this, post._id)}
-              >
+        <Card className={classes.card}>
+          <CardMedia
+            className={classes.cover}
+            image={post.thumbnail_image}
+            title="Live from space album cover"
+          />
+          <div className={classes.details}>
+            <CardContent className={classes.content}>
+              <Typography variant="subheading">
+                {post.name}
+                &nbsp;&nbsp;&nbsp;
+                <small color="grey">
+                  <i>{date}</i>
+                </small>
+              </Typography>
+
+              <Typography variant="body1" color="textSecondary">
                 {post.text}
-              </p>
-              {showActions ? (
-                <span>
-                  <small>
-                    <i>{date}</i>
-                  </small>{" "}
-                  &nbsp;
-                  <button
-                    onClick={this.onLikeClick.bind(this, post._id)}
-                    type="button"
-                    className="btn btn-light mr-1"
-                  >
-                    {likeContent}
-                    <span className="badge badge-light">
-                      {post.likes.length}
-                    </span>
-                  </button>
-                  <button
-                    onClick={this.onUnlikeClick.bind(this, post._id)}
-                    type="button"
-                    className="btn btn-light mr-1"
-                  >
-                    <i className="text-secondary fas fa-thumbs-down" />
-                  </button>
-                </span>
-              ) : null}{" "}
-              <br />
-              <span onClick={this.onPostClick.bind(this, post._id)}>
-                댓글 {post.comments.length}
-              </span>
-            </div>
-            <div className="col-2 col-sm-2">
-              {post.user === auth.user.id ? (
-                <button
-                  onClick={this.onDeleteClick.bind(this, post._id)}
-                  type="button"
-                  className=" float-right align-top btn btn-light mr-1"
+              </Typography>
+
+              <div className={classes.button}>
+                <Button
+                  size="small"
+                  className={classes.controls}
+                  aria-label="Like"
                 >
-                  <i className="fas fa-times" />
-                </button>
-              ) : null}
-            </div>
+                  {likeContent}
+                  &nbsp;
+                  <span>{post.likes.length}</span>
+                </Button>
+                <Button
+                  size="small"
+                  className={classes.controls}
+                  aria-label="Dislike"
+                  onClick={this.onUnlikeClick.bind(this, post._id)}
+                >
+                  <ThumbDownIcon fontSize="small" />
+                </Button>
+              </div>
+            </CardContent>
           </div>
-        </div>
+        </Card>
+        // <div className="card card-body mb-4">
+        //   <div className="row">
+        //     <div className="col-3 col-sm-2">
+        //       <a href="profile.html">
+        //         <img
+        //           className="rounded-circle d-block"
+        //           src={post.thumbnail_image}
+        //           alt=""
+        //         />
+        //       </a>
+        //       <br />
+        //       <p className="text-center">{post.name}</p>
+        //     </div>
+        //     <div className="col-7 col-sm-7">
+        //       <p
+        //         className="lead"
+        //         onClick={this.onPostClick.bind(this, post._id)}
+        //       >
+        //         {post.text}
+        //       </p>
+        //       {showActions ? (
+        //         <span>
+        //           <small>
+        //             <i>{date}</i>
+        //           </small>{" "}
+        //           &nbsp;
+        //           <button
+        //             onClick={this.onLikeClick.bind(this, post._id)}
+        //             type="button"
+        //             className="btn btn-light mr-1"
+        //           >
+        //             {likeContent}
+        //             <span className="badge badge-light">
+        //               {post.likes.length}
+        //             </span>
+        //           </button>
+        //           <button
+        //             onClick={this.onUnlikeClick.bind(this, post._id)}
+        //             type="button"
+        //             className="btn btn-light mr-1"
+        //           >
+        //             <i className="text-secondary fas fa-thumbs-down" />
+        //           </button>
+        //         </span>
+        //       ) : null}{" "}
+        //       <br />
+        //       <span onClick={this.onPostClick.bind(this, post._id)}>
+        //         댓글 {post.comments.length}
+        //       </span>
+        //     </div>
+        //     <div className="col-2 col-sm-2">
+        //       {post.user === auth.user.id ? (
+        //         <button
+        //           onClick={this.onDeleteClick.bind(this, post._id)}
+        //           type="button"
+        //           className=" float-right align-top btn btn-light mr-1"
+        //         >
+        //           <i className="fas fa-times" />
+        //         </button>
+        //       ) : null}
+        //     </div>
+        //   </div>
+        // </div>
       );
     }
   }
@@ -234,4 +336,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(PostItem));
+)(withRouter(withStyles(styles)(PostItem)));

@@ -105,6 +105,13 @@ class EditProfile extends Component {
         ? profile.social.instagram
         : "";
 
+      profile.mainposition = profile.mainposition.map(pos => {
+        return pos.value;
+      });
+      profile.mainfoot = profile.mainfoot.map(foot => {
+        return foot.value;
+      });
+
       this.setState({
         handle: profile.handle,
         height: profile.height,
@@ -133,15 +140,15 @@ class EditProfile extends Component {
     // Main Position 순서 정하기
     let num = 0;
     let mainposition = this.state.mainposition.map(pos => {
-      let newPos = { ...pos, num: num++ };
+      let newPos = { value: pos, num: num++ };
       return newPos;
     });
 
     num = 0;
     let mainfoot = this.state.mainfoot.map(pos => {
       let newPos = {};
-      newPos.label = pos.label;
-      newPos.value = num++;
+      newPos.value = pos;
+      newPos.num = num++;
       return newPos;
     });
 

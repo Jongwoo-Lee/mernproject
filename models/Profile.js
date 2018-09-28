@@ -18,11 +18,11 @@ const ProfileSchema = new Schema({
     type: String
   },
   mainfoot: {
-    type: [{ label: String, value: String, num: Number }],
+    type: [{ value: String, num: Number }],
     required: true
   },
   mainposition: {
-    type: [{ label: String, value: String, num: Number }],
+    type: [{ value: String, num: Number }],
     required: true
   },
   bio: {

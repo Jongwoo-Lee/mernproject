@@ -78,15 +78,15 @@ class CreateProfile extends Component {
     // Main Position 순서 정하기
     let num = 0;
     let mainposition = this.state.mainposition.map(pos => {
-      let newPos = { ...pos, num: num++ };
+      let newPos = { value: pos, num: num++ };
       return newPos;
     });
 
     num = 0;
     let mainfoot = this.state.mainfoot.map(pos => {
       let newPos = {};
-      newPos.label = pos.label;
-      newPos.value = num++;
+      newPos.value = pos;
+      newPos.num = num++;
       return newPos;
     });
 

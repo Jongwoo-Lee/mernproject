@@ -8,6 +8,33 @@ import Spinner from "../common/spinner";
 import { getPosts } from "../../actions/postActions";
 import Pagination from "../common/Pagination";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+
+const styles = theme => ({
+  grid: {
+    marginTop: 10,
+    padding: 20
+  },
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  button: {
+    margin: 10,
+    width: 200
+  },
+  FormControl: {
+    width: 400,
+    [theme.breakpoints.down("xs")]: {
+      width: 250
+    }
+  }
+});
+
 class Posts extends Component {
   constructor() {
     super();
@@ -45,6 +72,7 @@ class Posts extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { posts, loading, current, pages } = this.props.post;
     let postContent;
 
@@ -58,22 +86,33 @@ class Posts extends Component {
     }
 
     return (
-      <div className="feed">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <PostForm />
-              {postContent}
-              <Pagination
-                maxPage={pages}
-                currentPage={Number(current)}
-                onChangePage={this.onChangePage}
-                isMobile={isMobile}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <Grid
+        container
+        className={classes.grid}
+        justify="center"
+        alignItems="center"
+        direction="column"
+      >
+        <Grid item sm>
+          <Typography
+            variant="display3"
+            className={classes.title}
+            align="center"
+          >
+            회원게시판
+          </Typography>
+          <PostForm />
+        </Grid>
+        <Grid item sm>
+          {postContent}
+          <Pagination
+            maxPage={pages}
+            currentPage={Number(current)}
+            onChangePage={this.onChangePage}
+            isMobile={isMobile}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -90,4 +129,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getPosts }
-)(Posts);
+)(withStyles(styles)(Posts));

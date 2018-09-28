@@ -79,7 +79,7 @@ class Navbar extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <img src={logo} style={{ width: 30, height: 30 }} />
+            <img src={logo} alt="totallogo" style={{ width: 30, height: 30 }} />
             <Typography
               variant="title"
               color="inherit"

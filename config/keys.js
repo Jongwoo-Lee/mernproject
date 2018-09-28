@@ -3,7 +3,8 @@ const crypto = require("crypto")
   .toString("hex"); // Provides cryptographic functionality (OpenSSL's hash, HMAC, cipher, decipher, sign and verify functions)
 
 module.exports = {
-  database: "mongodb://localhost:27017/react",
+  database:
+    "mongodb+srv://jongwoo:dbrCK200!@fctotal-qbkml.mongodb.net/test?retryWrites=true",
   secret: "crypto",
   password: "1kakao@Total3Goovoo$",
   S3_BUCKET: "fctotalbucket",

@@ -38,7 +38,7 @@ router.post("/register", (req, res) => {
         name: req.body.username,
         email: req.body.email,
         thumbnail_image:
-          "https://s3.ap-northeast-2.amazonaws.com/jongwooleetestbucket/default_profile.png",
+          "https://s3.ap-northeast-2.amazonaws.com/jongwooleetestbucket/kakoprofile.jpg",
         password: req.body.password
       });
       bcrypt.genSalt(10, (err, salt) => {

@@ -4,6 +4,48 @@ import { connect } from "react-redux";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addPost } from "../../actions/postActions";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+
+const styles = theme => ({
+  grid: {
+    marginTop: 10,
+    padding: 20
+  },
+  paper: {
+    padding: 15,
+    [theme.breakpoints.down("sm")]: {
+      width: "350px"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "450px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "650px"
+    }
+  },
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  button: {
+    margin: 10,
+    width: 200,
+    [theme.breakpoints.down("xs")]: {
+      width: "100px"
+    }
+  },
+  FormControl: {
+    width: "100%"
+  }
+});
+
 class PostForm extends Component {
   constructor(props) {
     super(props);
@@ -42,31 +84,39 @@ class PostForm extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { classes } = this.props;
+    const { text, errors } = this.state;
     return (
-      <div className="post-form mb-3">
-        <div className="card card-info">
-          <div className="card-header bg-success text-white">
-            회원게시판입니다
-          </div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <TextAreaFieldGroup
-                  placeholder="글을 작성해주세요"
-                  name="text"
-                  value={this.state.text}
-                  onChange={this.onChange}
-                  error={errors.text}
-                />
-              </div>
-              <button type="submit" className="btn btn-dark">
-                올리기
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <Paper className={classes.paper}>
+        <form noValidate>
+          <TextField
+            label="글을 작성해주세요"
+            name="text"
+            value={text}
+            onChange={this.onChange}
+            multiline
+            rows="2"
+            margin="normal"
+            variant="filled"
+            className={classes.FormControl}
+            error={errors.text}
+            helperText={errors.text}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <br />
+          <Button
+            color="primary"
+            size="large"
+            variant="raised"
+            onClick={this.onSubmit}
+            className={classes.button}
+          >
+            올리기
+          </Button>
+        </form>
+      </Paper>
     );
   }
 }
@@ -85,4 +135,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { addPost }
-)(PostForm);
+)(withStyles(styles)(PostForm));

@@ -7,7 +7,7 @@ export default createMuiTheme({
     },
     secondary: {
       contrastText: "#FAFAFA",
-      main: "#4CAF50" // Indigo is probably a good match with pink
+      main: "#4CAF50"
     }
   }
 });
