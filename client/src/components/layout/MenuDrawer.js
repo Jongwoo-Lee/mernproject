@@ -48,7 +48,7 @@ const MenuDrawer = props => {
           <ListItemIcon>
             <CollectionIcon />
           </ListItemIcon>
-          <ListItemText primary="자료실" />
+          <ListItemText primary="선수단" />
         </ListItem>
         <ListItem button component={Link} to="/schedule">
           <ListItemIcon>

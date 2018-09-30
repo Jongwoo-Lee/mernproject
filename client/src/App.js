@@ -71,6 +71,7 @@ class App extends Component {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/profile/:handle" component={Profile} />
+                <Route exact path="/members" component={Profiles} />
                 <Route exact path="/kakao/:token" component={Kakao} />
                 <Switch>
                   <PrivateRoute exact path="/notices" component={Notices} />
