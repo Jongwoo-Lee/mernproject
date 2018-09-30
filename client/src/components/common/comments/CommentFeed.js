@@ -4,13 +4,12 @@ import CommentItem from "./CommentItem";
 
 class CommentFeed extends Component {
   render() {
-    const { comments, postID, isMobile } = this.props;
+    const { comments, postID } = this.props;
     return comments.map(comment => (
       <CommentItem
         key={comment._id}
         comment={comment}
         postID={postID}
-        isMobile={isMobile}
         deleteComment={this.props.deleteComment}
       />
     ));
@@ -20,8 +19,7 @@ class CommentFeed extends Component {
 CommentFeed.propTypes = {
   comments: PropTypes.array.isRequired,
   deleteComment: PropTypes.func.isRequired,
-  postID: PropTypes.string.isRequired,
-  isMobile: PropTypes.bool.isRequired
+  postID: PropTypes.string.isRequired
 };
 
 export default CommentFeed;

@@ -2,15 +2,31 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Avatar from "@material-ui/core/Avatar";
+import Grid from "@material-ui/core/Grid";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 2
+  },
+  avatar: {
+    margin: 10
+  }
+});
+
 class CommentItem extends Component {
   onDeleteClick(postID, commentID) {
     this.props.deleteComment(postID, commentID);
   }
 
   render() {
-    const { comment, postID, auth, isMobile } = this.props;
-    const commentStyle = { fontSize: "15px" };
-    const buttonStyle = { fontSize: "10px" };
+    const { comment, postID, auth, classes } = this.props;
 
     const date = new Intl.DateTimeFormat("en-US", {
       month: "2-digit",
@@ -19,76 +35,38 @@ class CommentItem extends Component {
       minute: "numeric"
     }).format(new Date(comment.date));
 
-    if (isMobile) {
-      return (
-        <div className="border-bottom">
-          <div className="row mt-3">
-            <div className="col-3 col-sm-2">
-              <p className="text-center" style={commentStyle}>
-                <b>{comment.name}</b>
-              </p>
-            </div>
-            <div className="col-7 col-sm-8" style={commentStyle}>
-              <p>{comment.text}</p>
-              <small>
-                <i>{date}</i>
-              </small>
-            </div>
-            <div className="col-2 col-sm-2">
-              {comment.user === auth.user.id ? (
-                <i
-                  className="fas fa-times"
-                  style={buttonStyle}
+    return (
+      <Paper className={classes.root} elevation={1}>
+        <Grid container direction="row" spacing={8}>
+          <Grid item sm={2} xs={3}>
+            <Avatar
+              alt="Remy Sharp"
+              src={comment.thumbnail_image}
+              className={classes.avatar}
+            />
+          </Grid>
+          <Grid item sm={10} xs={9} sm container>
+            <Grid item xs container direction="column" spacing={16}>
+              <Grid item xs>
+                <Typography gutterBottom variant="subheading">
+                  {comment.name}
+                </Typography>
+                <Typography gutterBottom>{comment.text}</Typography>
+                <Typography color="textSecondary">{date}</Typography>
+              </Grid>
+            </Grid>
+            {comment.user === auth.user.id ? (
+              <Grid item>
+                <DeleteIcon
+                  style={{ cursor: "pointer" }}
                   onClick={this.onDeleteClick.bind(this, postID, comment._id)}
                 />
-              ) : null}
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="card card-body">
-          <div className="row">
-            <div className="col-2">
-              <a
-                href="profile.html"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <img
-                  className="rounded-circle d-none d-md-block"
-                  src={comment.thumbnail_image}
-                  alt=""
-                />
-              </a>
-              <br />
-              <p className="text-center">
-                <b>{comment.name}</b>
-              </p>
-            </div>
-            <div className="col-10">
-              {comment.user === auth.user.id ? (
-                <button
-                  onClick={this.onDeleteClick.bind(this, postID, comment._id)}
-                  type="button"
-                  className="float-right align-top btn btn-light mr-1"
-                >
-                  <i className="fas fa-times" />
-                </button>
-              ) : null}{" "}
-              <p className="lead">{comment.text}</p>{" "}
-              <small>
-                <i>{date}</i>
-              </small>
-            </div>
-          </div>
-        </div>
-      );
-    }
+              </Grid>
+            ) : null}
+          </Grid>
+        </Grid>
+      </Paper>
+    );
   }
 }
 
@@ -96,8 +74,7 @@ CommentItem.propTypes = {
   deleteComment: PropTypes.func.isRequired,
   comment: PropTypes.object.isRequired,
   postID: PropTypes.string.isRequired,
-  auth: PropTypes.object.isRequired,
-  isMobile: PropTypes.bool.isRequired
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -109,4 +86,4 @@ const mapDispatchToProps = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CommentItem);
+)(withStyles(styles)(CommentItem));

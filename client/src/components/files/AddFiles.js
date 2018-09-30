@@ -34,19 +34,7 @@ class AddFiles extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <form onSubmit={this.submitFile}>
-          <input
-            label="upload file"
-            type="file"
-            onChange={this.handleFileUpload}
-          />
-          <button type="submit">Send</button>
-        </form>
-        <MyEditor />
-      </div>
-    );
+    return <MyEditor />;
   }
 }
 

@@ -10,6 +10,36 @@ import { getPost, addComment, deleteComment } from "../../actions/postActions";
 
 import shallowCompare from "react-addons-shallow-compare";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+
+const styles = theme => ({
+  grid: {
+    marginTop: 10,
+    padding: 20
+  },
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  button: {
+    margin: 10,
+    width: 100
+  },
+  FormControl: {
+    width: 400,
+    [theme.breakpoints.down("xs")]: {
+      width: 250
+    }
+  }
+});
+
 class Post extends Component {
   componentDidMount() {
     this.props.getPost(this.props.match.params.id);
@@ -20,6 +50,7 @@ class Post extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { post, loading } = this.props.post;
     let postContent;
     if (post === null || loading || Object.keys(post).length === 0) {
@@ -28,33 +59,50 @@ class Post extends Component {
       postContent = (
         <div>
           <PostItem post={post} />
-          <div className="card card-header bg-dark text-white">
-            댓글 {post.comments.length}
-          </div>
+          <AppBar position="static" color="default">
+            <Toolbar variant="dense">
+              <Typography color="inherit">
+                댓글 {post.comments.length}
+              </Typography>
+            </Toolbar>
+          </AppBar>
           <CommentFeed
             postID={post._id}
             comments={post.comments}
-            isMobile={true}
             deleteComment={this.props.deleteComment}
           />
+          <br />
+          <AppBar position="static" color="primary">
+            <Toolbar variant="dense">
+              <Typography color="inherit">댓글 쓰기</Typography>
+            </Toolbar>
+          </AppBar>
           <CommentForm postID={post._id} addComment={this.props.addComment} />
         </div>
       );
     }
 
     return (
-      <div className="post">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <Link to="/feed" className="btn btn-light mb-3">
-                돌아가기
-              </Link>
-              {postContent}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Grid
+        container
+        className={classes.grid}
+        justify="center"
+        alignItems="center"
+        direction="column"
+      >
+        <Grid item sm>
+          <Button
+            variant="contained"
+            size="large"
+            className={classes.button}
+            component={Link}
+            to="/feed"
+          >
+            돌아가기
+          </Button>
+          {postContent}
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -75,4 +123,4 @@ const mapDispatchToProps = { getPost, addComment, deleteComment };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Post);
+)(withStyles(styles)(Post));

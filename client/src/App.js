@@ -30,7 +30,6 @@ import Kakao from "./components/auth/Kakao";
 import Notices from "./components/notices/Notices";
 import Notice from "./components/notice/Notice";
 import Rules from "./components/rules/Rules";
-import AddFiles from "./components/files/AddFiles";
 
 // Material UI
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -72,7 +71,7 @@ class App extends Component {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/profile/:handle" component={Profile} />
-                <Route exact path="/kakao/:token" component={Kakao} />{" "}
+                <Route exact path="/kakao/:token" component={Kakao} />
                 <Switch>
                   <PrivateRoute exact path="/notices" component={Notices} />
                 </Switch>

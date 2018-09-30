@@ -16,6 +16,7 @@ import Grid from "@material-ui/core/Grid";
 const styles = theme => ({
   grid: {
     marginTop: 10,
+    marginBottom: 10,
     padding: 20
   },
   title: {
@@ -36,36 +37,13 @@ const styles = theme => ({
 });
 
 class Posts extends Component {
-  constructor() {
-    super();
-    this.state = {
-      width: window.innerWidth
-    };
-
-    this.onChangePage = this.onChangePage.bind(this);
-  }
-
-  componentWillMount() {
-    window.addEventListener("resize", this.handleWindowSizeChange);
-  }
-
-  // make sure to remove the listener
-  // when the component is not mounted anymore
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.handleWindowSizeChange);
-  }
-
-  handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth });
-  };
-
   componentDidMount() {
     this.props.getPosts(1);
   }
 
-  onChangePage(page) {
+  onChangePage = page => {
     this.props.getPosts(page);
-  }
+  };
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
@@ -76,13 +54,10 @@ class Posts extends Component {
     const { posts, loading, current, pages } = this.props.post;
     let postContent;
 
-    const { width } = this.state;
-    const isMobile = width <= 500;
-
     if (posts === null || loading) {
       postContent = <Spinner />;
     } else {
-      postContent = <PostFeed posts={posts} isMobile={isMobile} />;
+      postContent = <PostFeed posts={posts} />;
     }
 
     return (
@@ -92,6 +67,7 @@ class Posts extends Component {
         justify="center"
         alignItems="center"
         direction="column"
+        spacing={0}
       >
         <Grid item sm>
           <Typography
@@ -102,14 +78,16 @@ class Posts extends Component {
             회원게시판
           </Typography>
           <PostForm />
+          <br />
         </Grid>
         <Grid item sm>
           {postContent}
+          <br />
           <Pagination
             maxPage={pages}
             currentPage={Number(current)}
             onChangePage={this.onChangePage}
-            isMobile={isMobile}
+            isMobile={false}
           />
         </Grid>
       </Grid>

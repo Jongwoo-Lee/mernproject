@@ -1,122 +1,167 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 
+import PostPaper from "./PostPaper";
+import PostCard from "./PostCard";
+
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 2
+  },
+  image: {
+    width: 128,
+    height: 128
+  },
+  img: {
+    margin: "auto",
+    display: "block",
+    maxWidth: "100%",
+    maxHeight: "100%"
+  },
+  card: {
+    display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "450px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "650px"
+    }
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  button: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  content: {
+    flex: "1 0 auto"
+  },
+  cover: {
+    width: 100,
+    height: 100
+  },
+  controls: {
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
+  }
+});
+
 export class PostItem extends Component {
-  onDeleteClick(id) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likeByUser: false,
+      isUserPost: false
+    };
+
+    this.onDeleteClick = this.onDeleteClick.bind(this);
+    this.onPostClick = this.onPostClick.bind(this);
+    this.onLikeClick = this.onLikeClick.bind(this);
+    this.onUnlikeClick = this.onUnlikeClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.findUserLike(this.props.post.likes);
+    this.findUserPost(this.props.post.user);
+  }
+
+  onDeleteClick = id => e => {
     this.props.deletePost(id);
     window.location.href = "/feed";
-  }
+  };
 
-  onPostClick(id) {
+  onPostClick = id => e => {
     this.props.history.push(`/post/${id}`);
-  }
+  };
 
-  onLikeClick(id) {
+  onLikeClick = id => e => {
     this.props.addLike(id);
-  }
+  };
 
-  onUnlikeClick(id) {
+  onUnlikeClick = id => e => {
     this.props.removeLike(id);
-  }
+  };
 
   findUserLike(likes) {
     const { auth } = this.props;
+
     if (likes.filter(like => like.user === auth.user.id).length > 0) {
-      return true;
+      this.setState({ likeByUser: true });
     } else {
-      return false;
+      this.setState({ likeByUser: false });
     }
   }
 
-  render() {
-    const { post, auth, showActions } = this.props;
+  findUserPost(user) {
+    const { auth } = this.props;
+    if (user === auth.user.id) {
+      this.setState({ isUserPost: true });
+    } else {
+      this.setState({ isUserPost: false });
+    }
+  }
 
-    const date = new Intl.DateTimeFormat("en-US", {
-      month: "long",
-      day: "2-digit",
-      year: "numeric"
-    }).format(new Date(post.date));
+  async shouldComponentUpdate(nextProps) {
+    if (
+      nextProps.post &&
+      nextProps.post.likes.length !== this.props.post.likes.length
+    ) {
+      await this.findUserLike(nextProps.post.likes);
+      return true;
+    }
+    return false;
+  }
+
+  render() {
+    const { post, classes, isCard } = this.props;
+    const { likeByUser, isUserPost } = this.state;
 
     return (
-      <div className="post">
-        <div className="card card-body mb-3">
-          <div className="row">
-            <div className="col-md-10">
-              <h3 onClick={this.onPostClick.bind(this, post._id)}>
-                {post.title}
-              </h3>
-              <small>
-                <i>{date}</i>
-              </small>
-              <br />
-              <br />
-              <p
-                className="lead"
-                onClick={this.onPostClick.bind(this, post._id)}
-              >
-                {post.text}
-              </p>
-              {showActions ? (
-                <span>
-                  <button
-                    onClick={this.onLikeClick.bind(this, post._id)}
-                    type="button"
-                    className="btn btn-light mr-1"
-                  >
-                    <i
-                      className={classnames("fas fa-thumbs-up", {
-                        "text-info": this.findUserLike(post.likes)
-                      })}
-                    />
-                    <span className="badge badge-light">
-                      {post.likes.length}
-                    </span>
-                  </button>{" "}
-                  <button
-                    onClick={this.onUnlikeClick.bind(this, post._id)}
-                    type="button"
-                    className="btn btn-light mr-1"
-                  >
-                    <i className="text-secondary fas fa-thumbs-down" />
-                  </button>
-                  {post.user === auth.user.id ? (
-                    <button
-                      onClick={this.onDeleteClick.bind(this, post._id)}
-                      type="button"
-                      className="float-right align-top btn btn-light mr-1"
-                    >
-                      <i className="fas fa-times" />
-                    </button>
-                  ) : null}
-                </span>
-              ) : null}
-            </div>
-            <div className="col-md-2">
-              <a href="/profile">
-                <img
-                  className="rounded-circle d-none d-md-block"
-                  src={post.thumbnail_image}
-                  alt=""
-                />
-              </a>
-              <br />
-              <p className="text-center">
-                <b>{post.name}</b>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Fragment>
+        {isCard ? (
+          <PostCard
+            post={post}
+            classes={classes}
+            likeByUser={likeByUser}
+            isUserPost={isUserPost}
+            onLikeClick={this.onLikeClick}
+            onUnlikeClick={this.onUnlikeClick}
+            onDeleteClick={this.onDeleteClick}
+            onPostClick={this.onPostClick}
+          />
+        ) : (
+          <PostPaper
+            post={post}
+            classes={classes}
+            likeByUser={likeByUser}
+            isUserPost={isUserPost}
+            onLikeClick={this.onLikeClick}
+            onUnlikeClick={this.onUnlikeClick}
+            onDeleteClick={this.onDeleteClick}
+            onPostClick={this.onPostClick}
+          />
+        )}
+      </Fragment>
     );
   }
 }
 
 PostItem.defaultProps = {
-  showActions: true
+  isCard: false
 };
 
 PostItem.propTypes = {
@@ -140,4 +185,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(PostItem));
+)(withRouter(withStyles(styles)(PostItem)));

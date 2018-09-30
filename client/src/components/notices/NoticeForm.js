@@ -5,6 +5,8 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addNotice } from "../../actions/noticeActions";
 
+import MyEditor from "../common/editor/MyEditor";
+
 class NoticeForm extends Component {
   constructor(props) {
     super(props);
@@ -60,13 +62,7 @@ class NoticeForm extends Component {
                   onChange={this.onChange}
                   error={errors.title}
                 />
-                <TextAreaFieldGroup
-                  placeholder="Create a post"
-                  name="text"
-                  value={this.state.text}
-                  onChange={this.onChange}
-                  error={errors.text}
-                />
+                <MyEditor />
               </div>
               <button type="submit" className="btn btn-dark">
                 Submit

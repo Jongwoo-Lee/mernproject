@@ -18,6 +18,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import RegisterIcon from "@material-ui/icons/PersonAddOutlined";
 import LoginIcon from "@material-ui/icons/ToggleOn";
 import LogoutIcon from "@material-ui/icons/ToggleOff";
+import NoticeIcon from "@material-ui/icons/NotificationsOutlined";
 
 const styles = {
   list: {
@@ -31,6 +32,12 @@ const MenuDrawer = props => {
   const sideList = auth.isAuthenticated ? (
     <div className={classes.list}>
       <List>
+        <ListItem button component={Link} to="/notices">
+          <ListItemIcon>
+            <NoticeIcon />
+          </ListItemIcon>
+          <ListItemText primary="공지사항" />
+        </ListItem>
         <ListItem button component={Link} to="/feed">
           <ListItemIcon>
             <FeedIcon />

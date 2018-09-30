@@ -1,7 +1,37 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import TextAreaFieldGroup from "../TextAreaFieldGroup";
+
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+
+const styles = theme => ({
+  paper: {
+    padding: 15,
+    [theme.breakpoints.down("sm")]: {
+      width: "324px"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "450px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "650px"
+    }
+  },
+  button: {
+    margin: 10,
+    width: 200,
+    [theme.breakpoints.down("xs")]: {
+      width: "100px"
+    }
+  },
+  FormControl: {
+    width: "100%"
+  }
+});
 
 class CommentForm extends Component {
   constructor(props) {
@@ -42,29 +72,39 @@ class CommentForm extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { text, errors } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="post-form mt-3">
-        <div className="card card-info">
-          <div className="card-header bg-success text-white">댓글 쓰기</div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <TextAreaFieldGroup
-                  placeholder="댓글을 작성해주세요"
-                  name="text"
-                  value={this.state.text}
-                  onChange={this.onChange}
-                  error={errors.text}
-                />
-              </div>
-              <button type="submit" className="btn btn-dark">
-                작성
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <Paper className={classes.paper}>
+        <form noValidate>
+          <TextField
+            label="댓글을 작성해주세요"
+            name="text"
+            value={text}
+            onChange={this.onChange}
+            multiline
+            rows="2"
+            margin="normal"
+            variant="filled"
+            className={classes.FormControl}
+            error={errors.text}
+            helperText={errors.text}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <br />
+          <Button
+            color="secondary"
+            size="large"
+            variant="raised"
+            onClick={this.onSubmit}
+            className={classes.button}
+          >
+            작성
+          </Button>
+        </form>
+      </Paper>
     );
   }
 }
@@ -81,4 +121,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(CommentForm);
+export default connect(mapStateToProps)(withStyles(styles)(CommentForm));

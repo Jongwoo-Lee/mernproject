@@ -1,37 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addPost } from "../../actions/postActions";
 
 // Material UI
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
-  grid: {
-    marginTop: 10,
-    padding: 20
-  },
   paper: {
     padding: 15,
     [theme.breakpoints.down("sm")]: {
-      width: "350px"
+      width: "324px"
     },
     [theme.breakpoints.up("sm")]: {
       width: "450px"
     },
     [theme.breakpoints.up("md")]: {
       width: "650px"
-    }
-  },
-  title: {
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "40px"
     }
   },
   button: {

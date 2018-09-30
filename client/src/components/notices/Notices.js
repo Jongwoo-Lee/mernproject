@@ -7,6 +7,29 @@ import Spinner from "../common/spinner";
 import { getNotices } from "../../actions/noticeActions";
 import Pagination from "../common/Pagination";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import UploadIcon from "@material-ui/icons/FileCopyOutlined";
+
+const styles = theme => ({
+  grid: {
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 20
+  },
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  button: {
+    margin: 10
+  }
+});
+
 class Notices extends Component {
   constructor() {
     super();
@@ -45,8 +68,10 @@ class Notices extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { notices, loading, pages, current } = this.props.notice;
-    const { admin } = this.props.auth.user;
+    //const { admin } = this.props.auth.user;
+    const admin = true;
     let postSubmitform, postContent;
 
     const { width } = this.state;
@@ -65,39 +90,44 @@ class Notices extends Component {
     }
 
     return (
-      <div className="feed">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8">
-              <div className="row">
-                <div className="col-md-10">
-                  <h1 className="mb-4">공지사항</h1>
-                </div>
-                {admin ? (
-                  <div className="col-md-1">
-                    <button
-                      onClick={this.onPostClick.bind(this)}
-                      type="button"
-                      className=" btn btn-lg btn-light mr-1"
-                    >
-                      <i className="fas fa-paste" />
-                      <span className="badge badge-light">글쓰기</span>
-                    </button>
-                  </div>
-                ) : null}
-              </div>
-              {postSubmitform}
-              {postContent}
-              <Pagination
-                maxPage={pages}
-                currentPage={Number(current)}
-                onChangePage={this.onChangePage}
-                isMobile={isMobile}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <Grid
+        container
+        className={classes.grid}
+        justify="center"
+        alignItems="center"
+        direction="column"
+        spacing={0}
+      >
+        <Grid item sm>
+          <Typography
+            variant="display3"
+            className={classes.title}
+            align="center"
+          >
+            공지사항
+          </Typography>
+
+          {admin ? (
+            <Button
+              size="small"
+              className={classes.button}
+              aria-label="onPost"
+              onClick={this.onPostClick.bind(this)}
+            >
+              <UploadIcon />
+              &nbsp;글쓰기
+            </Button>
+          ) : null}
+          {postSubmitform}
+          {postContent}
+          <Pagination
+            maxPage={pages}
+            currentPage={Number(current)}
+            onChangePage={this.onChangePage}
+            isMobile={isMobile}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -116,4 +146,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getNotices }
-)(Notices);
+)(withStyles(styles)(Notices));

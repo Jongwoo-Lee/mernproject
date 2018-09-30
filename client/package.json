@@ -15,6 +15,7 @@
     "draft-js-richbuttons-plugin": "^2.2.0",
     "draftail": "^0.17.2",
     "fine-uploader": "^5.16.2",
+    "immutable": "^3.8.2",
     "jwt-decode": "^2.2.0",
     "moment": "^2.22.1",
     "react": "^16.3.2",
