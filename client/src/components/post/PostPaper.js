@@ -100,4 +100,8 @@ const PostPaper = props => {
   );
 };
 
+PostPaper.propTypes = {
+  post: PropTypes.object.isRequired
+};
+
 export default PostPaper;

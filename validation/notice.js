@@ -5,7 +5,6 @@ module.exports = function validateNoticeInput(data) {
   let errors = {};
 
   data.title = !isEmpty(data.title) ? data.title : "";
-  data.text = !isEmpty(data.text) ? data.text : "";
 
   if (!Validator.isLength(data.title, { min: 5, max: 40 })) {
     errors.title = "Post must be between 5 and 40 characters";
@@ -13,14 +12,6 @@ module.exports = function validateNoticeInput(data) {
 
   if (Validator.isEmpty(data.title)) {
     errors.title = "Title field is required";
-  }
-
-  if (!Validator.isLength(data.text, { min: 5, max: 3000 })) {
-    errors.text = "Post must be between 5 and 3000 characters";
-  }
-
-  if (Validator.isEmpty(data.text)) {
-    errors.text = "Text field is required";
   }
 
   return {

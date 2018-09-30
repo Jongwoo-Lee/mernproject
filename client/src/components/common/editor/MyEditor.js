@@ -1,38 +1,11 @@
 import React, { Component } from "react";
-import { Editor } from "react-draft-wysiwyg";
+import PropTypes from "prop-types";
 import axios from "axios";
-// import createLinkifyPlugin from "draft-js-linkify-plugin";
-import { EditorState } from "draft-js";
-// import createRichButtonsPlugin from "draft-js-richbuttons-plugin";
 
+import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-// const richButtonsPlugin = createRichButtonsPlugin();
-// const linkifyPlugin = createLinkifyPlugin();
-// const plugins = [linkifyPlugin, richButtonsPlugin];
-
 class MyEditor extends Component {
-  state = {
-    hasFocus: false,
-    editorState: EditorState.createEmpty()
-  };
-
-  onChange = editorState => {
-    this.setState({
-      editorState
-    });
-  };
-
-  onEditorStateChange = editorState => {
-    this.setState({
-      editorState
-    });
-  };
-
-  // _onBoldClick() {
-  //   this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, "BOLD"));
-  // }
-
   uploadImageCallBack(file) {
     // return new Promise((resolve, reject) => {
     //   const xhr = new XMLHttpRequest();
@@ -51,7 +24,6 @@ class MyEditor extends Component {
     //   });
     // });
     const formData = new FormData();
-    console.log(file);
     formData.append("file", file);
     return axios
       .post(`/api/upload/test-upload`, formData, {
@@ -61,7 +33,6 @@ class MyEditor extends Component {
       })
       .then(response => {
         // handle your response;
-        console.log(response);
         // return
         return { data: { link: response.data.Location } };
       })
@@ -73,37 +44,15 @@ class MyEditor extends Component {
   }
 
   render() {
-    // const { BoldButton, ItalicButton } = richButtonsPlugin;
-    const { editorState } = this.state;
+    const { editorState, onEditorStateChange } = this.props;
     return (
-      <div
-        className={`container-root ${this.state.hasFocus ? "hasFocus" : ""}`}
-      >
-        {/* <button onClick={this._onBoldClick.bind(this)}>Bold</button>
-        <div style={{ backgroundColor: "#CCC" }}>
-          &nbsp;
-          <BoldButton onClick={this._onBoldClick.bind(this)}>
-            <span className={`fa fa-bold`} style={{ color: "#000" }} />
-          </BoldButton>&nbsp;
-          <ItalicButton>
-            <span className={`fa fa-italic`} style={{ color: "#000" }} />
-          </ItalicButton>
-        </div> */}
+      <div className="container-root">
         <Editor
-          // customStyleMap={{
-          //   SUBSCRIPT: { fontSize: "0.6em", verticalAlign: "sub" },
-          //   SUPERSCRIPT: { fontSize: "0.6em", verticalAlign: "super" }
-          // }}
-          // onFocus={() => this.setState({ hasFocus: true })}
-          // onBlur={() => this.setState({ hasFocus: false })}
-          // editorState={this.state.editorState}
-          // onChange={this.onChange}
-          // plugins={plugins}
           editorState={editorState}
           wrapperClassName="draft-wrapper"
           editorClassName="draft-editor"
           toolbarClassName="draft-toolbar"
-          onEditorStateChange={this.onEditorStateChange}
+          onEditorStateChange={onEditorStateChange}
           toolbar={{
             inline: {
               inDropdown: true
@@ -122,4 +71,10 @@ class MyEditor extends Component {
     );
   }
 }
+
+MyEditor.propTypes = {
+  editorState: PropTypes.object.isRequired,
+  onEditorStateChange: PropTypes.func.isRequired
+};
+
 export default MyEditor;

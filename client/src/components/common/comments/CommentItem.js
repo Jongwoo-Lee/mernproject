@@ -45,7 +45,7 @@ class CommentItem extends Component {
               className={classes.avatar}
             />
           </Grid>
-          <Grid item sm={10} xs={9} sm container>
+          <Grid item sm={10} xs={9} container>
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs>
                 <Typography gutterBottom variant="subheading">

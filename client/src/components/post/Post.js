@@ -1,22 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PostItem from "./PostItem";
-import CommentForm from "../common/comments/CommentForm";
-import CommentFeed from "../common/comments/CommentFeed";
 import Spinner from "../common/spinner";
-import { getPost, addComment, deleteComment } from "../../actions/postActions";
-
+import { getPost } from "../../actions/postActions";
 import shallowCompare from "react-addons-shallow-compare";
+import { addComment, deleteComment } from "../../actions/postActions";
+
+// Components
+import Comments from "../common/comments/Comments";
 
 // Material UI
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   grid: {
@@ -50,35 +48,21 @@ class Post extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { addComment, deleteComment, classes } = this.props;
     const { post, loading } = this.props.post;
     let postContent;
     if (post === null || loading || Object.keys(post).length === 0) {
       postContent = <Spinner />;
     } else {
       postContent = (
-        <div>
+        <Fragment>
           <PostItem post={post} />
-          <AppBar position="static" color="default">
-            <Toolbar variant="dense">
-              <Typography color="inherit">
-                댓글 {post.comments.length}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <CommentFeed
-            postID={post._id}
-            comments={post.comments}
-            deleteComment={this.props.deleteComment}
+          <Comments
+            post={post}
+            addComment={addComment}
+            deleteComment={deleteComment}
           />
-          <br />
-          <AppBar position="static" color="primary">
-            <Toolbar variant="dense">
-              <Typography color="inherit">댓글 쓰기</Typography>
-            </Toolbar>
-          </AppBar>
-          <CommentForm postID={post._id} addComment={this.props.addComment} />
-        </div>
+        </Fragment>
       );
     }
 
@@ -90,16 +74,16 @@ class Post extends Component {
         alignItems="center"
         direction="column"
       >
+        <Button
+          variant="contained"
+          size="large"
+          className={classes.button}
+          component={Link}
+          to="/feed"
+        >
+          돌아가기
+        </Button>
         <Grid item sm>
-          <Button
-            variant="contained"
-            size="large"
-            className={classes.button}
-            component={Link}
-            to="/feed"
-          >
-            돌아가기
-          </Button>
           {postContent}
         </Grid>
       </Grid>
@@ -109,9 +93,9 @@ class Post extends Component {
 
 Post.propTypes = {
   getPost: PropTypes.func.isRequired,
-  deleteComment: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired,
   addComment: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  deleteComment: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

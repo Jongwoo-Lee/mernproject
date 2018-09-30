@@ -4,14 +4,15 @@ import NoticeItem from "./NoticeItem";
 
 export class NoticeFeed extends Component {
   render() {
-    const { notices } = this.props;
+    const { notices, classes } = this.props;
     return notices.map(notice => (
-      <NoticeItem key={notice._id} notice={notice} />
+      <NoticeItem key={notice._id} notice={notice} classes={classes} />
     ));
   }
 }
 
 NoticeFeed.propTypes = {
-  notices: PropTypes.array.isRequired
+  notices: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired
 };
 export default NoticeFeed;

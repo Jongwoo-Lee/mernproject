@@ -10,16 +10,7 @@ import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
   paper: {
-    padding: 15,
-    [theme.breakpoints.down("sm")]: {
-      width: "324px"
-    },
-    [theme.breakpoints.up("sm")]: {
-      width: "450px"
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "650px"
-    }
+    padding: 15
   },
   button: {
     margin: 10,

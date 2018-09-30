@@ -12,10 +12,13 @@ const NoticeSchema = new Schema({
     required: true
   },
   text: {
-    type: String,
+    type: Object,
     required: true
   },
   name: {
+    type: String
+  },
+  preview: {
     type: String
   },
   thumbnail_image: {

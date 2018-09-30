@@ -13,7 +13,16 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.down("sm")]: {
+      width: "324px"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "450px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "650px"
+    }
   },
   image: {
     width: 128,

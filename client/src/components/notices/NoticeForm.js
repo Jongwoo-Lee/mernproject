@@ -1,11 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import TextFieldGroup from "../common/TextFieldGroup";
-import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addNotice } from "../../actions/noticeActions";
 
+// Components
+import { EditorState, convertToRaw } from "draft-js";
 import MyEditor from "../common/editor/MyEditor";
+import draftToHtml from "draftjs-to-html";
+
+// Material UI
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
 
 class NoticeForm extends Component {
   constructor(props) {
@@ -13,11 +22,15 @@ class NoticeForm extends Component {
     this.state = {
       title: "",
       text: "",
-      errors: {}
+      preview: "",
+      errors: {},
+      editorState: EditorState.createEmpty()
     };
 
-    this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onEditorStateChange = this.onEditorStateChange.bind(this);
+    this.onChange = this.onChange.bind(this);
+    //this.onPreviewChange = this.onPreviewChange.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -30,11 +43,15 @@ class NoticeForm extends Component {
     e.preventDefault();
 
     const { user } = this.props.auth;
+    const text = draftToHtml(
+      convertToRaw(this.state.editorState.getCurrentContent())
+    );
 
     const newPost = {
       title: this.state.title,
-      text: this.state.text,
+      text: text,
       name: user.name,
+      preview: this.state.preview,
       thumbnail_image: user.thumbnail_image
     };
 
@@ -42,35 +59,62 @@ class NoticeForm extends Component {
     this.setState({ title: "", text: "" });
   }
 
+  onEditorStateChange = editorState => {
+    this.setState({
+      editorState
+    });
+  };
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onPreviewChange = preview => {
+    this.setState({
+      preview
+    });
+  };
+
   render() {
-    const { errors } = this.state;
+    const { title, editorState, errors } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="post-form mb-3">
-        <div className="card card-info">
-          <div className="card-header bg-success text-white">공지사항 작성</div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <TextFieldGroup
-                  placeholder="*제목"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.onChange}
-                  error={errors.title}
-                />
-                <MyEditor />
-              </div>
-              <button type="submit" className="btn btn-dark">
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <Fragment>
+        <AppBar position="static" color="secondary">
+          <Toolbar variant="dense">
+            <Typography color="inherit">공지사항 작성</Typography>
+          </Toolbar>
+        </AppBar>
+        <Paper className={classes.paper}>
+          <form noValidate>
+            <TextField
+              label="* 제목"
+              name="title"
+              value={title}
+              onChange={this.onChange}
+              margin="normal"
+              className={classes.FormControl}
+              error={errors.title}
+              helperText={errors.title}
+            />
+            <br />
+            <MyEditor
+              editorState={editorState}
+              onEditorStateChange={this.onEditorStateChange}
+              onPreviewChange={this.onPreviewChange}
+            />
+            <Button
+              color="primary"
+              size="small"
+              variant="raised"
+              onClick={this.onSubmit}
+              className={classes.button}
+            >
+              작성
+            </Button>
+          </form>
+        </Paper>
+      </Fragment>
     );
   }
 }

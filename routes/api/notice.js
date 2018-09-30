@@ -75,6 +75,7 @@ router.post(
       title: req.body.title,
       text: req.body.text,
       name: req.body.name,
+      preview: req.body.preview,
       thumbnail_image: req.body.thumbnail_image,
       user: req.user.id
     });

@@ -72,12 +72,12 @@ export const getNotice = id => dispatch => {
   dispatch(setNoticeLoading());
   axios
     .get(`/api/notice/${id}`)
-    .then(res =>
+    .then(res => {
       dispatch({
         type: GET_NOTICE,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err =>
       dispatch({
         type: GET_NOTICE,

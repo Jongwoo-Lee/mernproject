@@ -15,7 +15,7 @@ import Button from "@material-ui/core/Button";
 import UploadIcon from "@material-ui/icons/FileCopyOutlined";
 
 const styles = theme => ({
-  grid: {
+  root: {
     marginTop: 10,
     marginBottom: 10,
     padding: 20
@@ -27,6 +27,22 @@ const styles = theme => ({
   },
   button: {
     margin: 10
+  },
+  FormControl: {
+    margin: 10,
+    width: "90%"
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.down("sm")]: {
+      width: "324px"
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "450px"
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "850px"
+    }
   }
 });
 
@@ -78,7 +94,7 @@ class Notices extends Component {
     const isMobile = width <= 500;
 
     if (admin && this.state.isPost) {
-      postSubmitform = <NoticeForm />;
+      postSubmitform = <NoticeForm classes={classes} />;
     } else {
       postSubmitform = null;
     }
@@ -86,19 +102,18 @@ class Notices extends Component {
     if (notices === null || loading) {
       postContent = <Spinner />;
     } else {
-      postContent = <NoticeFeed notices={notices} />;
+      postContent = <NoticeFeed notices={notices} classes={classes} />;
     }
 
     return (
       <Grid
         container
-        className={classes.grid}
+        className={classes.root}
         justify="center"
         alignItems="center"
         direction="column"
-        spacing={0}
       >
-        <Grid item sm>
+        <Grid item xs>
           <Typography
             variant="display3"
             className={classes.title}

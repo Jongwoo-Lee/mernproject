@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import NoticeItem from "./NoticeItem";
-import CommentForm from "../common/comments/CommentForm";
-import CommentFeed from "../common/comments/CommentFeed";
+import NoticePaper from "./NoticePaper";
+import Comments from "../common/comments/Comments";
 import Spinner from "../common/spinner";
 import {
   getNotice,
@@ -12,36 +11,55 @@ import {
   deleteComment
 } from "../../actions/noticeActions";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+
+const styles = theme => ({
+  grid: {
+    marginTop: 10,
+    padding: 20
+  },
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  button: {
+    margin: 10,
+    width: 100
+  },
+  FormControl: {
+    width: 400,
+    [theme.breakpoints.down("xs")]: {
+      width: 250
+    }
+  },
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 2
+  },
+  image: {
+    width: 128,
+    height: 128
+  },
+  img: {
+    margin: "auto",
+    display: "block",
+    maxWidth: "100%",
+    maxHeight: "100%"
+  }
+});
+
 class Notice extends Component {
-  constructor() {
-    super();
-    this.state = {
-      width: window.innerWidth
-    };
-  }
-
-  componentWillMount() {
-    window.addEventListener("resize", this.handleWindowSizeChange);
-  }
-
-  // make sure to remove the listener
-  // when the component is not mounted anymore
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.handleWindowSizeChange);
-  }
-
-  handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth });
-  };
-
   componentDidMount() {
     this.props.getNotice(this.props.match.params.id);
   }
 
   render() {
     const { notice, loading } = this.props.notice;
-    const { width } = this.state;
-    const isMobile = width <= 500;
+    const { addComment, deleteComment, classes } = this.props;
 
     let noticeContent;
     if (notice === null || loading || Object.keys(notice).length === 0) {
@@ -49,34 +67,29 @@ class Notice extends Component {
     } else {
       noticeContent = (
         <div>
-          <NoticeItem notice={notice} />
-          <div className="card card-header bg-dark text-white">
-            댓글 {notice.comments.length}
-          </div>
-          <CommentFeed
-            postID={notice._id}
-            comments={notice.comments}
-            isMobile={isMobile}
-            deleteComment={this.props.deleteComment}
+          <NoticePaper notice={notice} classes={classes} />
+          <Comments
+            post={notice}
+            addComment={addComment}
+            deleteComment={deleteComment}
           />
-          <CommentForm postID={notice._id} addComment={this.props.addComment} />
         </div>
       );
     }
 
     return (
-      <div className="notice">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <Link to="/notices" className="btn btn-light mb-3">
-                돌아가기
-              </Link>
-              {noticeContent}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Fragment>
+        <Button
+          variant="contained"
+          size="large"
+          className={classes.button}
+          component={Link}
+          to="/notices"
+        >
+          돌아가기
+        </Button>
+        {noticeContent}
+      </Fragment>
     );
   }
 }
@@ -97,4 +110,4 @@ const mapDispatchToProps = { getNotice, addComment, deleteComment };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Notice);
+)(withStyles(styles)(Notice));
