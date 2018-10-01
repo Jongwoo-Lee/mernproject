@@ -199,6 +199,9 @@ class ProfileForm extends Component {
     return (
       <div>
         <small className="d-block pb-3">* = 필수항목</small>
+        <small className="d-block pb-3">
+          <i>프로필 사진은 운동 나오셨을때 촬영된 사진으로 올라갑니다.</i>
+        </small>
         <form noValidate style={{ textAlign: "center" }}>
           <TextField
             label="* 이름"

@@ -1,9 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../common/spinner";
 import ProfileItem from "./ProfileItem";
 import { getProfiles } from "../../actions/profileActions";
+
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
+const styles = theme => ({
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  card: {
+    maxWidth: 200
+  },
+  media: {
+    // ⚠️ object-fit is not supported by IE11.
+    objectFit: "cover"
+  }
+});
 
 class Profiles extends Component {
   componentDidMount() {
@@ -11,6 +31,7 @@ class Profiles extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { profiles, loading } = this.props.profile;
     // let profileGK = [],
     //   profileDF = [],
@@ -47,7 +68,13 @@ class Profiles extends Component {
         //   }
         // });
         profileItems = profiles.map(profile => (
-          <ProfileItem key={profile._id} profile={profile} />
+          <Grid item md={2} sm={4} xs={6}>
+            <ProfileItem
+              key={profile._id}
+              profile={profile}
+              classes={classes}
+            />
+          </Grid>
         ));
       } else {
         profileItems = <h4>No profiles found ...</h4>;
@@ -58,14 +85,21 @@ class Profiles extends Component {
       }
     }
     return (
-      <div className="profiles">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <h1 className="display-4 text-center">토탈 명단</h1>
-            </div>
-            {profileItems}
-            {/* <div className="col-md-12">
+      <Fragment>
+        <Typography variant="display3" className={classes.title} align="center">
+          토탈 선수단
+        </Typography>
+        <Grid
+          container
+          className={classes.root}
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+          spacing={16}
+        >
+          {profileItems}
+        </Grid>
+        {/* <div className="col-md-12">
               <b>골키퍼</b>
               <hr />
             </div>
@@ -85,9 +119,7 @@ class Profiles extends Component {
               <hr />
             </div>
             {profileCF} */}
-          </div>
-        </div>
-      </div>
+      </Fragment>
     );
   }
 }
@@ -104,4 +136,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getProfiles }
-)(Profiles);
+)(withStyles(styles)(Profiles));

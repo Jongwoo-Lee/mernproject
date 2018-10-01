@@ -2,13 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
+// Material UI
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+
 class ProfileItem extends Component {
   onPostClick(id) {
     this.props.history.push(`/profile/${id}`);
   }
 
   render() {
-    const { profile } = this.props;
+    const { profile, classes } = this.props;
 
     return (
       // <div className="col-md-12 col-lg-5 card card-body bg-secondary text-white m-1 mb-3">
@@ -36,29 +43,25 @@ class ProfileItem extends Component {
       //     </div>
       //   </div>{" "}
       // </div>
-      <div
-        className="card col-6 col-md-4 col-lg-2"
-        style={{
-          paddingLeft: "0",
-          paddingRight: "0",
-          position: "relative"
-        }}
-      >
-        <img
-          className="card-img-top"
-          src={profile.user.thumbnail_image}
-          alt="player"
-          onClick={this.onPostClick.bind(this, profile.handle)}
-        />
-        <div style={{ position: "absolute", right: "6px", fontSize: "2em" }}>
-          <b>{profile.handle}</b>
-        </div>
-        <div className="card-footer">
-          <p className="card-text">
-            <b>{profile.user.name}</b>
-          </p>
-        </div>
-      </div>
+
+      <Card className={classes.card}>
+        <CardActionArea onClick={this.onPostClick.bind(this, profile.handle)}>
+          <CardMedia
+            component="img"
+            alt="Contemplative Reptile"
+            className={classes.media}
+            height="140"
+            image={profile.user.thumbnail_image}
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography variant="title" component="h2">
+              {profile.handle}
+              &nbsp; <small>{profile.user.name}</small>
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     );
   }
 }

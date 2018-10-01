@@ -30,6 +30,7 @@ import Kakao from "./components/auth/Kakao";
 import Notices from "./components/notices/Notices";
 import Notice from "./components/notice/Notice";
 import Rules from "./components/rules/Rules";
+import Schedule from "./components/match/Schedule";
 
 // Material UI
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -84,6 +85,9 @@ class App extends Component {
                 </Switch>
                 <Switch>
                   <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/schedule" component={Schedule} />
                 </Switch>
                 <Switch>
                   <PrivateRoute
