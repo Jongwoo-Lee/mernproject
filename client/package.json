@@ -7,7 +7,6 @@
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
-    "cldr": "^4.11.0",
     "create-react-class": "^15.6.3",
     "date-arithmetic": "^3.1.0",
     "draft-js": "^0.10.5",

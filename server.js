@@ -9,6 +9,7 @@ const posts = require("./routes/api/posts");
 const notice = require("./routes/api/notice");
 const profile = require("./routes/api/profile");
 const upload = require("./routes/api/upload");
+const match = require("./routes/api/match");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/posts", posts);
 app.use("/api/notice", notice);
 app.use("/api/profile", profile);
 app.use("/api/upload", upload);
+app.use("/api/match", match);
 
 // Server static assets if in production
 //if (process.env.NODE_ENV === "production") {
