@@ -49,6 +49,10 @@ class Schedule extends Component {
     });
   };
 
+  handleEventClick = event => {
+    this.props.history.push(`/match/${event._id}`);
+  };
+
   handleFormSubmit = exercise => {
     this.handleToggle();
     this.props.onCreate(exercise);
@@ -82,6 +86,7 @@ class Schedule extends Component {
           showMultiDayTimes
           style={{ height: "600px" }}
           onSelectSlot={this.handleSelect}
+          onSelectEvent={this.handleEventClick}
         />
         <Dialog open={this.state.open} onClose={this.handleToggle}>
           <DialogTitle>스케쥴 생성 {end}</DialogTitle>
