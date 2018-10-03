@@ -4,11 +4,13 @@ import errorReducer from "./errorReducer";
 import profileReducer from "./profileReducer";
 import postReducer from "./postReducer";
 import noticeReducer from "./noticeReducer";
+import matchReducer from "./matchReducer";
 
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
   profile: profileReducer,
   post: postReducer,
-  notice: noticeReducer
+  notice: noticeReducer,
+  match: matchReducer
 });

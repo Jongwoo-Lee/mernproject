@@ -1,22 +1,46 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
-import dates from "./date";
-import events from "./events";
+import { getMatches } from "../../actions/matchActions";
+
+// Components
+import ScheduleForm from "./ScheduleForm";
 
 // Material UI
-import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+const styles = theme => ({
+  title: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "40px"
+    }
+  },
+  FormControl: {
+    width: "90%"
+  },
+  xsFormControl: {
+    width: 250
+  },
+  time: {
+    width: "44%"
+  }
+});
+
 class Schedule extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, events, start: "", end: "" };
+    this.state = { open: false, start: "", end: "" };
+  }
+
+  componentDidMount() {
+    this.props.getMatches();
   }
 
   handleToggle = () => {
@@ -31,40 +55,42 @@ class Schedule extends Component {
   };
 
   handleSelect = ({ start, end }) => {
-    console.log(start);
-    this.setState({ open: true, start: start.toString(), end: end.toString() });
+    var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    this.setState({
+      open: true,
+      start: start, //new Date(start - tzoffset).toISOString().slice(0, 10),
+      end: new Date(end - tzoffset).toISOString().slice(0, 10)
+    });
   };
 
   render() {
     const localizer = BigCalendar.momentLocalizer(moment);
+    const { start, end } = this.state,
+      { match, classes } = this.props;
+
     return (
       <Fragment>
+        <Typography variant="display3" className={classes.title} align="center">
+          스케쥴
+        </Typography>
         <BigCalendar
           selectable
           localizer={localizer}
-          events={this.state.events}
+          events={match.matches}
           views={{ month: true, agenda: true }}
           step={60}
           showMultiDayTimes
-          max={dates.add(
-            dates.endOf(new Date(2015, 17, 1), "day"),
-            -1,
-            "hours"
-          )}
-          defaultDate={new Date().setDate()}
           style={{ height: "600px" }}
           onSelectSlot={this.handleSelect}
         />
         <Dialog open={this.state.open} onClose={this.handleToggle}>
-          <DialogTitle>스케쥴 생성</DialogTitle>
+          <DialogTitle>스케쥴 생성 {end}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Please fill out the form below.
-              <br />
-              {this.state.start}
-              <br />
-              {this.state.end}
-            </DialogContentText>
+            <ScheduleForm
+              date={start}
+              classes={classes}
+              onClose={this.handleToggle}
+            />
           </DialogContent>
         </Dialog>
       </Fragment>
@@ -72,4 +98,11 @@ class Schedule extends Component {
   }
 }
 
-export default Schedule;
+const mapStateToProps = state => ({
+  match: state.match
+});
+
+export default connect(
+  mapStateToProps,
+  { getMatches }
+)(withStyles(styles)(Schedule));

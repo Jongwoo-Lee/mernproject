@@ -9,21 +9,21 @@ const Post = require("../../models/Post");
 // Profile model
 const Profile = require("../../models/Profile");
 // Validation
-const validatePostInput = require("../../validation/post");
+const validateMatchInput = require("../../validation/match");
 
 // @route   GET api/posts/test
 // @desc    Test post route
 // @access  Public
 router.get("/test", (req, res) => res.json({ msg: "Posts Works" }));
 
-// @route   GET api/posts
-// @desc    Get Posts
+// @route   GET api/match
+// @desc    Get Matches
 // @access  Public
 router.get("/", (req, res) => {
-  Post.find()
+  Match.find()
     .sort({ date: -1 })
-    .then(posts => res.json(posts))
-    .catch(err => res.status(404).json({ nopost: "No post is uploaded yet" }));
+    .then(matches => res.json(matches))
+    .catch(err => res.status(404).json({ nopost: "No match is uploaded yet" }));
 });
 
 router.get("/page/:pagenum", (req, res) => {
@@ -64,21 +64,24 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { errors, isValid } = validatePostInput(req.body);
+    const { errors, isValid } = validateMatchInput(req.body);
 
     //Check Validation
     if (!isValid) {
       // If any errors, send 400 with error object
       return res.status(400).json(errors);
     }
-    const newPost = new Post({
+    const newMatch = new Match({
+      type: req.body.type,
       text: req.body.text,
-      name: req.body.name,
-      thumbnail_image: req.body.thumbnail_image,
+      title: req.body.title,
+      start: req.body.start,
+      end: req.body.end,
+      place: req.body.place,
       user: req.user.id
     });
 
-    newPost.save().then(post => res.json(post));
+    newMatch.save().then(match => res.json(match));
   }
 );
 
