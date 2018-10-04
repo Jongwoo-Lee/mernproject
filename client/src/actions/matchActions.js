@@ -4,6 +4,7 @@ import {
   ADD_MATCH,
   GET_MATCHES,
   MATCH_LOADING,
+  GET_MATCH,
   GET_ERRORS,
   CLEAR_ERRORS
 } from "./types";
@@ -41,6 +42,25 @@ export const getMatches = () => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_MATCHES,
+        payload: null
+      })
+    );
+};
+
+// Get Match
+export const getMatch = id => dispatch => {
+  dispatch(setMatchLoading());
+  axios
+    .get(`/api/match/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_MATCH,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_MATCH,
         payload: null
       })
     );

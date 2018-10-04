@@ -28,4 +28,5 @@ export const DELETE_NOTICE = "DELETE_NOTICE";
 // Matches
 export const ADD_MATCH = "ADD_MATCH";
 export const GET_MATCHES = "GET_MATCHES";
+export const GET_MATCH = "GET_MATCH";
 export const MATCH_LOADING = "MATCH_LOADING";

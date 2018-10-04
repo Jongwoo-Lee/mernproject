@@ -55,7 +55,7 @@ class Landing extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Grid container spacing={12} justify="center">
+        <Grid container spacing={16} justify="center">
           <Grid item xs={9}>
             <img
               src={logo}

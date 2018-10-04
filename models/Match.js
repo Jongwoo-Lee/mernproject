@@ -27,7 +27,7 @@ const MatchSchema = new Schema({
   type: {
     type: String
   },
-  results: {
+  result: {
     type: String
   },
   players: [
