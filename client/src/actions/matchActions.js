@@ -66,6 +66,44 @@ export const getMatch = id => dispatch => {
     );
 };
 
+// Add Comment
+export const addComment = (matchID, commentData) => dispatch => {
+  dispatch(clearErrors());
+  console.log(matchID);
+  axios
+    .post(`/api/match/comment/${matchID}`, commentData)
+    .then(res =>
+      dispatch({
+        type: GET_MATCH,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Delete Comment
+export const deleteComment = (matchID, commentID) => dispatch => {
+  axios
+    .delete(`/api/match/comment/${matchID}/${commentID}`)
+    .then(res =>
+      dispatch({
+        type: GET_MATCH,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Set loading state
 export const setMatchLoading = () => {
   return {

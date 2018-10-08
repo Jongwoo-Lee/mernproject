@@ -21,7 +21,6 @@ import Profile from "./components/profile/Profile";
 import NotFound from "./components/not-found/NotFound";
 import Posts from "./components/posts/Posts";
 import Post from "./components/post/Post";
-import Field from "./components/field/Field";
 import Kakao from "./components/auth/Kakao";
 import Notices from "./components/notices/Notices";
 import Notice from "./components/notice/Notice";
@@ -105,9 +104,6 @@ class App extends Component {
                 </Switch>
                 <Switch>
                   <PrivateRoute exact path="/post/:id" component={Post} />
-                </Switch>
-                <Switch>
-                  <PrivateRoute exact path="/field" component={Field} />
                 </Switch>
                 <Route exact path="/notfound" component={NotFound} />
               </div>

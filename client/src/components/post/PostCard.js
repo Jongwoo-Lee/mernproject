@@ -46,7 +46,8 @@ const PostCard = props => {
       <CardMedia
         className={classes.cover}
         image={post.thumbnail_image}
-        title="Live from space album cover"
+        src={post._id}
+        title={post._id}
       />
       <div className={classes.details}>
         <CardContent className={classes.content}>

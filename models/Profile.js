@@ -31,62 +31,31 @@ const ProfileSchema = new Schema({
   birthday: {
     type: String
   },
-  experience: [
+  match: [
     {
-      title: {
-        type: String,
-        required: true
+      type: Schema.Types.ObjectId,
+      ref: "match"
+    }
+  ],
+  goal: [
+    {
+      match: {
+        type: Schema.Types.ObjectId,
+        ref: "match"
       },
-      company: {
-        type: String,
-        required: true
-      },
-      location: {
-        type: String
-      },
-      from: {
-        type: Date,
-        required: true
-      },
-      to: {
-        type: Date
-      },
-      current: {
-        type: Boolean,
-        default: false
-      },
-      description: {
-        type: String
+      amount: {
+        type: Number
       }
     }
   ],
-  education: [
+  assist: [
     {
-      school: {
-        type: String,
-        required: true
+      match: {
+        type: Schema.Types.ObjectId,
+        ref: "match"
       },
-      degree: {
-        type: String,
-        required: true
-      },
-      fieldofstudy: {
-        type: String,
-        required: true
-      },
-      from: {
-        type: Date,
-        required: true
-      },
-      to: {
-        type: Date
-      },
-      current: {
-        type: Boolean,
-        default: false
-      },
-      description: {
-        type: String
+      amount: {
+        type: Number
       }
     }
   ],

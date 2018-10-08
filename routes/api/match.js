@@ -10,6 +10,7 @@ const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
 // Validation
 const validateMatchInput = require("../../validation/match");
+const validatePostInput = require("../../validation/post");
 
 // @route   GET api/posts/test
 // @desc    Test post route
@@ -167,8 +168,8 @@ router.post(
   }
 );
 
-// @route   POST api/posts/comment/:id
-// @desc    Add comment to post
+// @route   POST api/match/comment/:id
+// @desc    Add comment to match
 // @access  Private
 router.post(
   "/comment/:id",
@@ -182,8 +183,8 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    Post.findById(req.params.id)
-      .then(post => {
+    Match.findById(req.params.id)
+      .then(match => {
         const newComment = {
           text: req.body.text,
           name: req.body.name,
@@ -192,27 +193,27 @@ router.post(
         };
 
         // Add to comments array
-        post.comments.unshift(newComment);
+        match.comments.unshift(newComment);
 
         // Save
-        post.save().then(post => res.json(post));
+        match.save().then(match => res.json(match));
       })
-      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+      .catch(err => res.status(404).json({ matchnotfound: "No match found" }));
   }
 );
 
-// @route   DELETE api/posts/comment/:id/:comment_id
-// @desc    Remove comment from post
+// @route   DELETE api/match/comment/:id/:comment_id
+// @desc    Remove comment from match
 // @access  Private
 router.delete(
   "/comment/:id/:comment_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Post.findById(req.params.id)
-      .then(post => {
+    Match.findById(req.params.id)
+      .then(match => {
         // Check to see if comment exists
         if (
-          post.comments.filter(
+          match.comments.filter(
             comment => comment._id.toString() === req.params.comment_id
           ).length === 0
         ) {
@@ -222,17 +223,17 @@ router.delete(
         }
 
         // Get remove index
-        const removeIndex = post.comments
+        const removeIndex = match.comments
           .map(item => item._id.toString())
           .indexOf(req.params.comment_id);
 
         // Splice comment out of array
-        post.comments.splice(removeIndex, 1);
+        match.comments.splice(removeIndex, 1);
 
         // Save
-        post.save().then(post => res.json(post));
+        match.save().then(match => res.json(match));
       })
-      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+      .catch(err => res.status(404).json({ matchnotfound: "No match found" }));
   }
 );
 
