@@ -74,7 +74,7 @@ class Form extends Component {
     );
 
     let title;
-    type === "자체 연습" ? (title = "자체 연습") : (title = { opponent });
+    type === "자체 연습" ? (title = "자체 연습") : (title = opponent);
 
     const matchData = {
       title: title,
