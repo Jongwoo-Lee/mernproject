@@ -24,31 +24,25 @@ router.get("/", (req, res) => {
   Match.find()
     .sort({ date: -1 })
     .then(matches => res.json(matches))
-    .catch(err => res.status(404).json({ nopost: "No match is uploaded yet" }));
+    .catch(err =>
+      res.status(404).json({ nomatch: "No match is uploaded yet" })
+    );
 });
 
+// @route   GET api/match/:id
+// @desc    Get Match by id
+// @access  Public
 router.get("/:id", (req, res) => {
   Match.findById(req.params.id)
     .then(match => res.json(match))
     .catch(err =>
-      res.status(404).json({ nopostfound: "등록된 경기가 없습니다." })
+      res.status(404).json({ nomatchfound: "등록된 경기가 없습니다." })
     );
   //.catch(err => res.status(404).json({ nopost: "No post is uploaded yet" }));
 });
 
-// @route   GET api/posts/:id
-// @desc    Get Post by id
-// @access  Public
-router.get("/:id", (req, res) => {
-  Post.findById(req.params.id)
-    .then(post => res.json(post))
-    .catch(err =>
-      res.status(404).json({ nopostfound: "No post found with that id" })
-    );
-});
-
-// @route   POST api/posts
-// @desc    Create post
+// @route   POST api/match
+// @desc    Create match
 // @access  Private
 router.post(
   "/",
@@ -72,6 +66,21 @@ router.post(
     });
 
     newMatch.save().then(match => res.json(match));
+  }
+);
+
+// @route   POST api/match/result
+// @desc    Upload match result
+// @access  Private
+router.post(
+  "/result",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { players, scorer, result } = req.body;
+    Match.findOneAndUpdate(
+      { _id: req.body.matchID },
+      { $set: { players, scorer, result } }
+    ).then(match => res.json(match));
   }
 );
 
@@ -101,69 +110,6 @@ router.delete(
             res.status(404).json({ postnotfound: "No post found" })
           );
       });
-    });
-  }
-);
-
-// @route   POST api/posts/like/:id
-// @desc    Like post
-// @access  Private
-router.post(
-  "/like/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      Post.findById(req.params.id)
-        .then(post => {
-          if (
-            post.likes.filter(like => like.user.toString() === req.user.id)
-              .length > 0
-          ) {
-            return res
-              .status(400)
-              .json({ alreadyliked: "User already liked this post" });
-          }
-
-          // Add user id to likes array
-          post.likes.unshift({ user: req.user.id });
-          post.save().then(post => res.json(post));
-        })
-        .catch(err => res.status(404).json({ postnotfound: "No post found" }));
-    });
-  }
-);
-
-// @route   POST api/posts/unlike/:id
-// @desc    Unlike post
-// @access  Private
-router.post(
-  "/unlike/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      Post.findById(req.params.id)
-        .then(post => {
-          if (
-            post.likes.filter(like => like.user.toString() === req.user.id)
-              .length === 0
-          ) {
-            return res
-              .status(400)
-              .json({ notliked: "You have not yet liked this post" });
-          }
-
-          // GEt remove index
-          const removeIndex = post.likes
-            .map(item => item.user.toString())
-            .indexOf(req.user.id);
-
-          // Splice out of array
-          post.likes.splice(removeIndex, 1);
-
-          // Save
-          post.save().then(post => res.json(post));
-        })
-        .catch(err => res.status(404).json({ postnotfound: "No post found" }));
     });
   }
 );

@@ -66,6 +66,20 @@ export const getMatch = id => dispatch => {
     );
 };
 
+// Add Result
+export const addResult = matchData => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/match/result`, matchData)
+    .then(res => window.location.reload())
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Add Comment
 export const addComment = (matchID, commentData) => dispatch => {
   dispatch(clearErrors());

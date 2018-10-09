@@ -19,6 +19,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import EditIcon from "@material-ui/icons/EditOutlined";
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
 
 const styles = theme => ({
   grid: {
@@ -55,13 +57,16 @@ const styles = theme => ({
     width: 100
   },
   FormControl: {
-    width: 300,
+    width: 250,
     [theme.breakpoints.down("xs")]: {
-      width: 200
+      width: 150
     }
   },
   score: {
     width: 100
+  },
+  chip: {
+    margin: 5
   },
   font: {
     fontSize: 12
@@ -98,6 +103,9 @@ class Match extends Component {
             <Grid container spacing={16}>
               <Grid item>
                 <Typography variant="body2">{match.type}</Typography>
+                <Typography gutterBottom variant="body2">
+                  {match.start.slice(0, 10)} &nbsp; {match.place}
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -113,17 +121,25 @@ class Match extends Component {
                     src={totallogo}
                   />
                 </ButtonBase>
-                <Typography variant="display3" className={classes.title}>
-                  2
-                </Typography>
-                &nbsp;
-                <Typography variant="display1" className={classes.title}>
-                  vs
-                </Typography>
-                &nbsp;
-                <Typography variant="display3" className={classes.title}>
-                  0
-                </Typography>
+                {match.result ? (
+                  <Fragment>
+                    <Typography variant="display3" className={classes.title}>
+                      {match.result.totalScore}
+                    </Typography>
+                    &nbsp;
+                    <Typography variant="display1" className={classes.title}>
+                      vs
+                    </Typography>
+                    &nbsp;
+                    <Typography variant="display3" className={classes.title}>
+                      {match.result.opponentScore}
+                    </Typography>
+                  </Fragment>
+                ) : (
+                  <Typography variant="subheading" className={classes.title}>
+                    경기전
+                  </Typography>
+                )}
                 &nbsp;
                 <Typography variant="display1" className={classes.title}>
                   {match.title.replace("vs ", "")}
@@ -132,17 +148,27 @@ class Match extends Component {
               <Grid item xs={12} sm container>
                 <Grid item xs container direction="column" spacing={16}>
                   <Grid item xs>
-                    <Typography className={classes.font}>
-                      <i className="fas fa-futbol" />
-                      &nbsp;
-                      <b>조남헌</b> (이종우)
+                    {match.scorer.map(score => (
+                      <Typography className={classes.font}>
+                        <i className="fas fa-futbol" />
+                        &nbsp;
+                        <b>{score.scorer}</b> ({score.assist})
+                      </Typography>
+                    ))}
+                    <br />
+                    <Typography variant="subheading">
+                      <b>출전 명단</b>
                     </Typography>
-                    <Typography gutterBottom variant="subheading">
-                      {match.place}
-                    </Typography>
-                    <Typography gutterBottom variant="body2">
-                      {match.start.slice(0, 10)}
-                    </Typography>
+                    {match.players.map(player => (
+                      <Fragment>
+                        <Chip
+                          avatar={<Avatar src={player.image} />}
+                          label={player.name}
+                          className={classes.chip}
+                        />
+                        <br />
+                      </Fragment>
+                    ))}
                   </Grid>
                 </Grid>
               </Grid>

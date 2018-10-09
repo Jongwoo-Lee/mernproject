@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getProfiles } from "../../actions/profileActions";
+import { addResult } from "../../actions/matchActions";
 import ScoreInput from "./ScoreInput";
 
 // Material UI
@@ -17,6 +18,7 @@ import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 
 class MatchEdit extends Component {
   constructor(props) {
@@ -24,7 +26,6 @@ class MatchEdit extends Component {
     this.state = {
       totalScore: "",
       opponentScore: "",
-      players: [],
       lineup: [],
       scorer: [],
       inputNum: 0,
@@ -47,7 +48,6 @@ class MatchEdit extends Component {
   onScorerChange = i => person => {
     let scorer = [...this.state.scorer];
     scorer[i] = { ...scorer[i], scorer: person.key };
-    console.log(scorer);
     this.setState({
       scorer
     });
@@ -56,7 +56,6 @@ class MatchEdit extends Component {
   onAssistChange = i => person => {
     let scorer = [...this.state.scorer];
     scorer[i] = { ...scorer[i], assist: person.key };
-    console.log(scorer);
     this.setState({
       scorer
     });
@@ -76,6 +75,31 @@ class MatchEdit extends Component {
       inputNum,
       scorer
     });
+  };
+
+  onSubmit = e => {
+    const { totalScore, opponentScore, lineup, scorer } = this.state;
+    const { profile, match, addResult } = this.props;
+
+    const result = { totalScore, opponentScore };
+    const players = lineup.map(player => {
+      const playerProfile = profile.profiles.find(person => {
+        return person.user.name === player;
+      });
+      return {
+        playerID: playerProfile._id,
+        name: player,
+        image: playerProfile.user.thumbnail_image
+      };
+    });
+
+    const matchData = {
+      result,
+      players,
+      scorer,
+      matchID: match.match._id
+    };
+    addResult(matchData);
   };
 
   render() {
@@ -191,6 +215,15 @@ class MatchEdit extends Component {
             </IconButton>
           </Grid>
           {scoreInput}
+          <Button
+            color="primary"
+            size="small"
+            variant="raised"
+            onClick={this.onSubmit}
+            className={classes.button}
+          >
+            경기결과 등록
+          </Button>
         </Grid>
       </Fragment>
     );
@@ -199,18 +232,21 @@ class MatchEdit extends Component {
 
 MatchEdit.propTypes = {
   errors: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  getProfiles: PropTypes.func.isRequired
+  getProfiles: PropTypes.func.isRequired,
+  addResult: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
+  match: state.match,
   profile: state.profile,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { getProfiles }
+  { getProfiles, addResult }
 )(MatchEdit);
 
 {

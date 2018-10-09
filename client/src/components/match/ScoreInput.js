@@ -26,6 +26,7 @@ const ScoreInput = props => {
             : null}
         </Select>
       </FormControl>
+      &nbsp;
       <FormControl className={classes.FormControl}>
         <InputLabel htmlFor="age-simple">어시스트</InputLabel>
         <Select

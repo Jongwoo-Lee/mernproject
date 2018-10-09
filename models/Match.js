@@ -28,13 +28,28 @@ const MatchSchema = new Schema({
     type: String
   },
   result: {
-    type: String
+    type: Object
   },
   players: [
     {
-      user: {
+      playerID: {
         type: Schema.Types.ObjectId,
         ref: "users"
+      },
+      name: { type: String },
+      image: { type: String }
+    }
+  ],
+  scorer: [
+    {
+      id: {
+        type: Number
+      },
+      scorer: {
+        type: String
+      },
+      assist: {
+        type: String
       }
     }
   ],

@@ -1,13 +1,9 @@
-경기결과 - 선발라인업
-스쿼드 업데이트
+match goal scorer, assist, lineup data
+match 결과 수정 - match 결과 가져와서 넣어야됨
+match 경기결과 등록 goal scorer 삭제
+match delete
+profile - goal, assist 숫자, 경기별 결과
 
 카카오 프로필 업데이트
 썸네일 이미지 업로드 (업로드했으면 카카오 false 플래그 필요)
 
-글---DraftJS
-동영상 업로드
-링크 업로드
-
-스케쥴
-
-코멘트모양 - Youtube 코멘트 보고 바꾸기
