@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 // Material UI
+import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -44,24 +45,26 @@ class ProfileItem extends Component {
       //   </div>{" "}
       // </div>
 
-      <Card className={classes.card}>
-        <CardActionArea onClick={this.onPostClick.bind(this, profile.handle)}>
-          <CardMedia
-            component="img"
-            alt="Contemplative Reptile"
-            className={classes.media}
-            height="140"
-            image={profile.user.thumbnail_image}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography variant="title" component="h2">
-              {profile.handle}
-              &nbsp; <small>{profile.user.name}</small>
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <Grid item md={2} sm={4} xs={6}>
+        <Card className={classes.card}>
+          <CardActionArea onClick={this.onPostClick.bind(this, profile.handle)}>
+            <CardMedia
+              component="img"
+              alt={profile.user.name}
+              className={classes.media}
+              height="200"
+              image={profile.user.thumbnail_image}
+              title={profile.user.name}
+            />
+            <CardContent>
+              <Typography variant="title" component="h2">
+                {profile.handle}
+                &nbsp; <small>{profile.user.name}</small>
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Grid>
     );
   }
 }

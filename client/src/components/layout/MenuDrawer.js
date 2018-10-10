@@ -12,7 +12,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import FeedIcon from "@material-ui/icons/ChatOutlined";
 import CalendarIcon from "@material-ui/icons/TodayOutlined";
-import CollectionIcon from "@material-ui/icons/CollectionsOutlined";
 import ResultIcon from "@material-ui/icons/ListAlt";
 import FaceIcon from "@material-ui/icons/Face";
 import RegisterIcon from "@material-ui/icons/PersonAddOutlined";
