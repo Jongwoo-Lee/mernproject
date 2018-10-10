@@ -67,7 +67,7 @@ const MenuDrawer = props => {
           </ListItemIcon>
           <ListItemText primary="스케쥴" />
         </ListItem>
-        <ListItem button component={Link} to="/match">
+        <ListItem button component={Link} to="/matches">
           <ListItemIcon>
             <ResultIcon />
           </ListItemIcon>

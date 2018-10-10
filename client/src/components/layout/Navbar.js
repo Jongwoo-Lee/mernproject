@@ -40,6 +40,12 @@ class Navbar extends Component {
     menuOpen: false
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth) {
+      this.setState({ auth: nextProps.auth });
+    }
+  }
+
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open
@@ -111,7 +117,6 @@ class Navbar extends Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>프로파일</MenuItem>
                   <MenuItem onClick={this.onLogoutClick}>로그아웃</MenuItem>
                 </Menu>
               </div>
