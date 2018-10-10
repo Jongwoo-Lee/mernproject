@@ -85,7 +85,6 @@ class Form extends Component {
       type: type
     };
 
-    console.log(matchData);
     this.props.addMatch(matchData);
     this.props.onClose();
   };

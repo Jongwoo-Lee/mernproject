@@ -8,6 +8,8 @@ import {
 const initialState = {
   matches: [],
   match: {},
+  current: 1,
+  pages: 1,
   loading: false
 };
 
@@ -26,7 +28,9 @@ export default function(state = initialState, action) {
     case GET_MATCHES:
       return {
         ...state,
-        matches: action.payload,
+        matches: action.payload.matches,
+        current: action.payload.current,
+        pages: action.payload.pages,
         loading: false
       };
     case GET_MATCH:

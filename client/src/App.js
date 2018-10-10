@@ -27,6 +27,7 @@ import Notice from "./components/notice/Notice";
 import Rules from "./components/rules/Rules";
 import Schedule from "./components/match/Schedule";
 import Match from "./components/match/Match";
+import Matches from "./components/match/Matches";
 
 // Material UI
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -75,6 +76,9 @@ class App extends Component {
                 </Switch>
                 <Switch>
                   <PrivateRoute exact path="/notice/:id" component={Notice} />
+                </Switch>
+                <Switch>
+                  <PrivateRoute exact path="/matches" component={Matches} />
                 </Switch>
                 <Switch>
                   <PrivateRoute exact path="/match/:id" component={Match} />

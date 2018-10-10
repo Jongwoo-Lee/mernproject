@@ -29,10 +29,10 @@ export const addMatch = matchData => dispatch => {
 };
 
 // Get Matches
-export const getMatches = () => dispatch => {
+export const getMatches = pagenum => dispatch => {
   dispatch(setMatchLoading());
   axios
-    .get("/api/match")
+    .get(`/api/match/page/${pagenum}`)
     .then(res =>
       dispatch({
         type: GET_MATCHES,

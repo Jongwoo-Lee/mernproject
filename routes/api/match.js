@@ -28,6 +28,28 @@ router.get("/", (req, res) => {
       res.status(404).json({ nomatch: "No match is uploaded yet" })
     );
 });
+// @route   GET api/match/page/:pagenum
+// @desc    Get Matches by pagenum
+// @access  Public
+router.get("/page/:pagenum", (req, res) => {
+  const perPage = 8;
+  const { pagenum } = req.params;
+  Match.find()
+    .sort({ start: -1 })
+    .skip(perPage * pagenum - perPage)
+    .limit(perPage)
+    .exec(function(err, matches) {
+      Match.countDocuments().exec(function(err, count) {
+        if (err) return next(err);
+        res.json({
+          matches: matches,
+          current: pagenum,
+          pages: Math.ceil(count / perPage)
+        });
+      });
+    });
+  //.catch(err => res.status(404).json({ nopost: "No post is uploaded yet" }));
+});
 
 // @route   GET api/match/:id
 // @desc    Get Match by id
