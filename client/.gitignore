@@ -22,5 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 
 #Dev tool
-src/store.js
 package-lock.json
