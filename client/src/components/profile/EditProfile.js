@@ -112,6 +112,8 @@ class EditProfile extends Component {
         return foot.value;
       });
 
+      console.log(profile.mainposition);
+
       this.setState({
         handle: profile.handle,
         height: profile.height,

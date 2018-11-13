@@ -68,13 +68,7 @@ class Profiles extends Component {
         //   }
         // });
         profileItems = profiles.map(profile => (
-          <Grid item md={2} sm={4} xs={6}>
-            <ProfileItem
-              key={profile._id}
-              profile={profile}
-              classes={classes}
-            />
-          </Grid>
+          <ProfileItem key={profile._id} profile={profile} classes={classes} />
         ));
       } else {
         profileItems = <h4>No profiles found ...</h4>;
