@@ -54,7 +54,6 @@ export const createProfile = (profileData, history) => dispatch => {
   axios
     .post("/api/profile", profileData)
     .then(res => {
-      dispatch(getProfileAuth(profileData.id));
       history.push(`/profile/${profileData.handle}`);
     })
     .catch(err =>
