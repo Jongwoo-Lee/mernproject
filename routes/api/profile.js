@@ -64,7 +64,7 @@ router.get("/all", (req, res) => {
 // @access  Public
 router.get("/handle/:handle", (req, res) => {
   const errors = {};
-  Profile.findOne({ handle: req.params.handle })
+  Profile.findOne({ handle: parseInt(req.params.handle) })
     .populate("user", ["name", "thumbnail_image"])
     .then(profile => {
       if (!profile) {
@@ -82,7 +82,7 @@ router.get("/handle/:handle", (req, res) => {
 // @access  Public
 router.get("/user/:user_id", (req, res) => {
   const errors = {};
-  Profile.findOne({ user: req.params.user_id })
+  Profile.findOne({ user: parseInt(req.params.user_id) })
     .populate("user", ["name", "thumbnail_image"])
     .then(profile => {
       if (!profile) {
@@ -117,7 +117,7 @@ router.post(
     let name;
     profileFields.user = req.user.id;
     if (req.body.name) name = req.body.name;
-    if (req.body.handle) profileFields.handle = req.body.handle;
+    if (req.body.handle) profileFields.handle = parseInt(req.body.handle);
     if (req.body.height) profileFields.height = req.body.height;
     if (req.body.weight) profileFields.weight = req.body.weight;
     if (req.body.mainfoot) profileFields.mainfoot = req.body.mainfoot;
@@ -156,7 +156,7 @@ router.post(
         ).then(profile => {
           User.findOneAndUpdate(
             { _id: req.user.id },
-            { $set: { name, handle: profileFields.handle } }
+            { $set: { name, handle: profileFields.handle.toString() } }
           ).then(user => res.json(profile));
         });
       } else {
@@ -173,7 +173,7 @@ router.post(
           new Profile(profileFields).save().then(profile => {
             User.findOneAndUpdate(
               { _id: req.user.id },
-              { $set: { name, handle: profileFields.handle } }
+              { $set: { name, handle: profileFields.handle.toString() } }
             ).then(user => res.json(profile));
           });
         });

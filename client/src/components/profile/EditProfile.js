@@ -83,7 +83,7 @@ class EditProfile extends Component {
       // const footCSV = profile.mainfoot.join(",");
 
       // If profile field doesn't exist, make empty string
-      profile.handle = !isEmpty(profile.handle) ? profile.handle : "";
+      profile.handle = !isEmpty(profile.handle) ? profile.handle : 0;
       profile.height = !isEmpty(profile.height) ? profile.height : "";
       profile.weight = !isEmpty(profile.weight) ? profile.weight : "";
       profile.birthday = !isEmpty(profile.birthday) ? profile.birthday : "";

@@ -1,4 +1,6 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import setAuthToken from "../utils/setAuthToken";
 
 import {
   GET_PROFILE,
@@ -51,7 +53,10 @@ export const getProfileByHandle = handle => dispatch => {
 export const createProfile = (profileData, history) => dispatch => {
   axios
     .post("/api/profile", profileData)
-    .then(res => history.push(`/profile/${profileData.handle}`))
+    .then(res => {
+      dispatch(getProfileAuth(profileData.id));
+      history.push(`/profile/${profileData.handle}`);
+    })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -165,6 +170,38 @@ export const deleteAccount = () => dispatch => {
 export const setProfileLoading = () => {
   return {
     type: PROFILE_LOADING
+  };
+};
+
+// Change User name
+export const getProfileAuth = userData => dispatch => {
+  axios
+    .get(`/api/users/name/${userData}`)
+    .then(res => {
+      // Save to localStorage
+      const { token } = res.data;
+      // Set token to localStorage
+      localStorage.setItem("jwtToken", token);
+      // Set token to Auth header
+      setAuthToken(token);
+      // Decode token to get user data
+      const decoded = jwt_decode(token);
+      // Set current user
+      dispatch(setCurrentUser(decoded));
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Set logged in user
+export const setCurrentUser = decoded => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: decoded
   };
 };
 
